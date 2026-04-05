@@ -16,6 +16,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/oauth/*" element={<Login />} />{" "}
       <Route path="/login" element={<SystemLogin />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/home" element={<Home />} />
