@@ -1,6 +1,15 @@
-.html,
+html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+#root {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--background);
+  font-family: "Pretendard", sans-serif;
+  font-weight: 100;
 }

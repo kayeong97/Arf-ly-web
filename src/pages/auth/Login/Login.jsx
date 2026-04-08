@@ -3,10 +3,9 @@ import { useNavigate, useRevalidator } from "react-router-dom";
 import "./Login.css";
 
 import Logo from "../../../assets/logo.svg";
-import LoginIllust from "../../../assets/login/illust.svg";
-import GoogleLogin from "../../../assets/login/google.svg";
-import KakaoLogin from "../../../assets/login/kakao.svg";
-import NaverLogin from "../../../assets/login/naver.svg";
+import GoogleLogin from "../../../assets/login/social/google.svg";
+import KakaoLogin from "../../../assets/login/social/kakao.svg";
+import NaverLogin from "../../../assets/login/social/naver.svg";
 
 const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
 
@@ -24,7 +23,8 @@ const Login = () => {
     const state = searchParams.get("state");
     const provider = localStorage.getItem("oauth_provider");
 
-    if (code && provider) {
+    if (code && provider && !isOauthHandling.current) {
+      isOauthHandling.current = true;
       handleOAuthCallback(provider, code, state);
     }
   }, []);
@@ -66,10 +66,12 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const token = data.accessToken || data.accessToken;
+        const accessToken = data.accessToken;
+        const refreshToken = data.refreshToken;
 
-        if (token) {
-          localStorage.setItem("token", token);
+        if (accessToken || refreshToken) {
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
         }
 
         localStorage.removeItem("oauth_provider");
@@ -144,10 +146,6 @@ const Login = () => {
 
   return (
     <div className="login-wrapper">
-      {/* 로그인 일러스트*/}
-      <div className="login-illust">
-        <img src={LoginIllust} alt="LOGIN" />
-      </div>
       {/* 로그인 로고 */}
       <div className="login-logo">
         <img src={Logo} alt="LOGO" />

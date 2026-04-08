@@ -1,27 +1,13 @@
 /* 로그인 전체 틀 */
 .login-wrapper {
-  max-width: 600px;
+  background-color: var(--background);
   width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  background-color: #fff;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-}
-
-/* 로그인 일러스트 */
-.login-illust {
-  width: 100%;
-  display: flex;
   justify-content: center;
-}
-
-.login-illust img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+  position: relative;
 }
 
 /* 로그인 로고 */
@@ -29,8 +15,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 40px;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 }
 
 .login-logo img {
@@ -40,10 +25,9 @@
 }
 
 .login-logo span {
-  font-family: "Pretendard", sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: #111;
+  color: var(--common-black);
   letter-spacing: -0.5px;
 }
 
@@ -89,7 +73,7 @@
 
 .auth-links span {
   font-size: 14px;
-  color: #525252;
+  color: var(--gray-neutral-700);
   cursor: pointer;
 }
 
