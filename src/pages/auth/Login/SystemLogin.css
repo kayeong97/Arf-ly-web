@@ -1,0 +1,162 @@
+/* 시스템 로그인 */
+.SystemLoginWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+/* 뒤로가기 */
+.BackBtn {
+  margin-top: 50px;
+}
+
+.BackBtn button {
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+}
+
+/* 로그인 글 */
+.LoginText {
+  padding: 10px 30px 40px 30px;
+}
+
+.LoginText h2 {
+  font-size: 26px;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.4;
+  color: var(--common-black);
+}
+
+/* 입력 폼 */
+.LoginInputForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 30px;
+}
+
+.InputContainer {
+  display: flex;
+  align-items: center;
+  background-color: var(--common-white);
+  border-radius: 30px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.InputContainer:focus-within {
+  border: 1px solid var(--secondary-900);
+}
+
+.InputContainer img {
+  width: 30px;
+  height: 30px;
+  opacity: 0.5;
+}
+
+.InputContainer input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  margin-left: 15px;
+  font-size: 20px;
+  color: var(--common-black);
+}
+
+.InputContainer input::placeholder {
+  color: var(--gray-neutral-400);
+}
+
+/* 비밀번호 가리기/보이기 버튼 */
+#toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+#toggle img {
+  width: 24px;
+  height: 24px;
+  opacity: 1;
+}
+
+/* 아이디 비밀번호 찾기 */
+.findIdPw {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.problemText {
+  color: var(--gray-neutral-700);
+}
+
+.findLink {
+  color: var(--primary-500);
+  text-decoration: underline;
+  text-underline-position: under;
+}
+
+/* 에러 메시지 */
+.LoginErrorMessage {
+  color: var(--primary-500);
+  font-size: 14px;
+  margin-top: -5px;
+  padding-left: 15px;
+}
+
+/* 로그인 버튼 */
+.summitLogin {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.summitLogin button {
+  width: 100%;
+  height: 80px;
+  background-color: var(--gray-warm-300);
+  color: var(--common-white);
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  cursor: default;
+  padding-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.summitLogin button:not(:disabled) {
+  background-color: var(--secondary-700);
+  cursor: pointer;
+}
+
+@media (max-width: 400px) {
+  .LoginText h2 {
+    font-size: 22px;
+  }
+
+  .InputContainer input {
+    font-size: 14px;
+  }
+
+  .findIdPw {
+    font-size: 12px;
+  }
+
+  .summitLogin button {
+    font-size: 16px;
+    height: 70px;
+  }
+}
