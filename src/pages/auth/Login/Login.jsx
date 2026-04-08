@@ -23,7 +23,8 @@ const Login = () => {
     const state = searchParams.get("state");
     const provider = localStorage.getItem("oauth_provider");
 
-    if (code && provider) {
+    if (code && provider && !isOauthHandling.current) {
+      isOauthHandling.current = true;
       handleOAuthCallback(provider, code, state);
     }
   }, []);
