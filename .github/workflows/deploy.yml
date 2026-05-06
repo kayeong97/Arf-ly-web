@@ -21,7 +21,7 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Vercel 환경 설정 가져오기
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel env pull .env.production --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: 프로젝트 빌드하기
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
