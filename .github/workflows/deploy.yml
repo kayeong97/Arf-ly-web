@@ -26,6 +26,15 @@ jobs:
       - name: 3-1. Vite용 환경 변수(.env.production) 생성하기
         run: vercel env pull .env.production --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: 3-2. (디버깅) Vercel이 변수를 줬는지 확인!
+        run: |
+          echo "다운로드된 환경 변수 목록 (보안을 위해 값은 가렸습니다):"
+          if [ -s .env.production ]; then
+            cat .env.production | sed 's/=.*/=***_숨김_***/'
+          else
+            echo "❌ 파일이 텅 비었습니다!! Vercel 대시보드 설정을 다시 확인해야 합니다."
+          fi
+
       - name: 4. 프로젝트 빌드하기
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
