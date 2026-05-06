@@ -24,7 +24,7 @@ jobs:
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: 3-1. Vite용 환경 변수(.env.production) 생성하기
-        run: vercel env pull .env.production --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel env pull .env --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: 3-2. (디버깅) Vercel이 변수를 줬는지 확인!
         run: |
