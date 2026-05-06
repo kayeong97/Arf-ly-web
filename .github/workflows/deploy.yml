@@ -14,17 +14,20 @@ jobs:
   Deploy-to-Vercel:
     runs-on: ubuntu-latest
     steps:
-      - name: 코드 가져오기
+      - name: 1. 코드 가져오기
         uses: actions/checkout@v3
 
-      - name: Vercel 도구 설치하기
+      - name: 2. Vercel 도구 설치하기
         run: npm install --global vercel@latest
 
-      - name: Vercel 환경 설정 가져오기
+      - name: 3. Vercel 프로젝트 기본 설정 가져오기
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 3-1. Vite용 환경 변수(.env.production) 생성하기
         run: vercel env pull .env.production --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: 프로젝트 빌드하기
+      - name: 4. 프로젝트 빌드하기
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Vercel에 배포하기
+      - name: 5. Vercel에 배포하기
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
