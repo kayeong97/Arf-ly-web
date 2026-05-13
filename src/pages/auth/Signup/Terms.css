@@ -1,0 +1,186 @@
+.terms-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--background);
+  font-family:
+    "Pretendard",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: var(--common-black);
+  position: relative;
+}
+
+.terms-header {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--gray-neutral-400);
+  cursor: pointer;
+  padding: 0;
+}
+
+.detail-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: none;
+}
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--gray-neutral-600);
+  cursor: pointer;
+  margin-right: 15px;
+  padding: 0;
+}
+.detail-header h2 {
+  font-size: 15px;
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+  margin: 0;
+  margin-right: 39px;
+}
+
+.detail-content {
+  padding: 0 20px 40px;
+  overflow-y: auto;
+  flex: 1;
+  white-space: pre-line;
+}
+.detail-section {
+  margin-top: 24px;
+}
+.bold-text {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+  color: var(--gray-neutral-900);
+}
+.normal-text {
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--gray-neutral-800);
+}
+ul.normal-text {
+  padding-left: 20px;
+  list-style-type: disc;
+}
+ul.normal-text li {
+  margin-bottom: 4px;
+}
+
+.terms-main {
+  padding: 0 24px;
+  flex: 1;
+  overflow-y: auto;
+}
+.terms-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.terms-agree-all {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  cursor: pointer;
+}
+
+.checkbox-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 14px;
+  flex-shrink: 0;
+}
+
+.agree-all-text h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 6px 0;
+}
+.agree-all-text .subtitle {
+  font-size: 12px;
+  color: var(--gray-neutral-600);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.terms-divider {
+  height: 1px;
+  background-color: var(--gray-warm-200);
+  margin-bottom: 20px;
+}
+
+.terms-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+}
+.terms-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+.item-left {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.list-check-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+}
+
+.term-title {
+  font-size: 15px;
+  color: var(--common-black);
+  font-weight: 500;
+}
+
+.item-right-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.item-right-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.terms-footer {
+  width: 100%;
+}
+.next-btn {
+  width: 100%;
+  padding: 20px;
+  background-color: var(--secondary-700);
+  color: var(--common-white);
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
