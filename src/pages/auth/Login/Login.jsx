@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useRevalidator } from "react-router-dom";
 import "./Login.css";
 
@@ -11,6 +11,7 @@ const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
 
 const Login = () => {
   const navigate = useNavigate();
+  const isOauthHandling = useRef(false);
 
   const [formData, setFormData] = useState({
     userId: "",
