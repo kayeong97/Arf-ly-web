@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+﻿import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "../../../firebase";
+import Terms from "./Terms";
 import "./Signup.css";
 
 import BackBtn from "../../../assets/login/system/backbtn.svg";
@@ -36,6 +37,9 @@ const Signup = () => {
   const [timeLeft, setTimeLeft] = useState(300);
   const [codeStatus, setCodeStatus] = useState("idle");
   const [confirmationResult, setConfirmationResult] = useState(null);
+
+  // 파이어베이스 토큰 저장용 상태
+  const [authToken, setAuthToken] = useState("");
 
   // 뒤로 가기
   const handleGoBack = () => {
@@ -78,9 +82,18 @@ const Signup = () => {
     }
   };
 
+  // 비밀번호 정규식 패턴 (8~20자 영문, 숫자, 특수문자 조합)
+  const passwordPattern =
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,20}$/;
+
   // 아이디 입력 창 없어나면 자동으로 id 중복 체크
   const handleIdBlurOrEnter = (e) => {
     if (e.type === "blur" || e.key === "Enter") {
+      const idPattern = /^[A-Za-z0-9]{4,20}$/;
+      if (!idPattern.test(id)) {
+        setIdStatus("invalid_format");
+        return;
+      }
       checkDuplicateId(id);
     }
   };
@@ -95,18 +108,30 @@ const Signup = () => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    if (confirmPassword)
+
+    if (newPassword && !passwordPattern.test(newPassword)) {
+      setPwMatchStatus("invalid_format");
+    } else if (confirmPassword) {
       setPwMatchStatus(newPassword === confirmPassword ? "match" : "mismatch");
-    else setPwMatchStatus("idle");
+    } else {
+      setPwMatchStatus(newPassword ? "valid_format" : "idle");
+    }
   };
 
   // 비밀번호와 비밀번호 확인 칸의 두 값이 같은지 확인
   const handleConfirmPasswordChange = (e) => {
     const newConfirm = e.target.value;
     setConfirmPassword(newConfirm);
-    if (newConfirm)
+
+    if (newConfirm) {
       setPwMatchStatus(password === newConfirm ? "match" : "mismatch");
-    else setPwMatchStatus("idle");
+    } else if (password) {
+      setPwMatchStatus(
+        passwordPattern.test(password) ? "valid_format" : "invalid_format",
+      );
+    } else {
+      setPwMatchStatus("idle");
+    }
   };
 
   // 다음 단계로
@@ -132,7 +157,6 @@ const Signup = () => {
   }, [isCodeSent, timeLeft]);
 
   // 전화번호 인증을 위한 recaptcha 생성
-  //
   useEffect(() => {
     let isActive = true;
 
@@ -228,11 +252,74 @@ const Signup = () => {
 
   // 인증 완료
   const handleComplete = async () => {
-    if (codeStatus !== "match") {
-      await verifyCode();
+    try {
+      let result;
+      if (codeStatus !== "match") {
+        result = await confirmationResult.confirm(code);
+      } else {
+        result = { user: auth.currentUser };
+      }
+
+      const token = await result.user.getIdToken();
+      setAuthToken(token);
+      setCodeStatus("match");
+      setStep(3); // 이용약관 단계로 이동
+    } catch (error) {
+      setCodeStatus("mismatch");
     }
-    if (codeStatus === "match") {
+  };
+
+  // 약관 동의 완료 후 회원가입 API 호출
+  const handleTermsComplete = async (agreements) => {
+    // termsId 매핑
+    const termsMapping = {
+      service: 1,
+      privacy: 2,
+      ai_ref: 3,
+      location: 4,
+      ai_collect: 5,
+      push: 6,
+      night: 7,
+    };
+
+    const userAgreements = Object.keys(agreements).map((key) => ({
+      termId: termsMapping[key],
+      termsOfServiceAgreed: agreements[key],
+    }));
+
+    const phoneNumber = "+82" + phone.replace(/-/g, "").substring(1);
+
+    const payload = {
+      userId: id,
+      password: password,
+      token: {
+        tokenId: authToken,
+        phoneNumber: phoneNumber,
+      },
+      userAgreements: userAgreements,
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "회원가입에 실패했습니다.");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+
       navigate("/home");
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -288,6 +375,11 @@ const Signup = () => {
                   * 사용가능한 아이디 입니다.
                 </div>
               )}
+              {idStatus === "invalid_format" && (
+                <div className="StatusMessage errorText">
+                  * 4~20자의 영문자, 숫자만 사용 가능합니다.
+                </div>
+              )}
               {idStatus === "idle" && (
                 <div className="HintMessage">
                   * 숫자와 문자만을 조합해 작성해주세요.
@@ -304,6 +396,9 @@ const Signup = () => {
                   placeholder="PW"
                   value={password}
                   onChange={handlePasswordChange}
+                  className={
+                    pwMatchStatus === "invalid_format" ? "errorText" : ""
+                  }
                 />
                 <button
                   type="button"
@@ -316,10 +411,17 @@ const Signup = () => {
                   />
                 </button>
               </div>
-              <div className="HintMessage">
-                * 8자 이상, 20자 이하의 영문자, 숫자, 특수문자를 조합하여
-                작성해주세요.
-              </div>
+              {pwMatchStatus === "invalid_format" ? (
+                <div className="StatusMessage errorText">
+                  * 8자 이상, 20자 이하의 영문자, 숫자, 특수문자를 조합하여
+                  작성해주세요.
+                </div>
+              ) : (
+                <div className="HintMessage">
+                  * 8자 이상, 20자 이하의 영문자, 숫자, 특수문자를 조합하여
+                  작성해주세요.
+                </div>
+              )}
             </div>
 
             <div className="InputGroup">
@@ -352,7 +454,7 @@ const Signup = () => {
               )}
               {pwMatchStatus === "match" && (
                 <div className="StatusMessage successText">
-                  * 비밀번호가 확인 되었습니다.
+                  * 비밀번호가 확인되었습니다.
                 </div>
               )}
             </div>
@@ -448,6 +550,17 @@ const Signup = () => {
             </button>
           </div>
         </>
+      )}
+
+      {step === 3 && (
+        <div className="TermsModalOverlay">
+          <div className="TermsModalContent">
+            <Terms
+              onComplete={handleTermsComplete}
+              onClose={() => setStep(2)}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
