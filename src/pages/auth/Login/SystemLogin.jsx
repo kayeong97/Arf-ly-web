@@ -13,7 +13,7 @@ const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
 const SystemLogin = () => {
   const navigate = useNavigate();
 
-  const [id, setId] = useState("");
+  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState(false);
@@ -32,7 +32,7 @@ const SystemLogin = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, password }),
+        body: JSON.stringify({ userId, password }),
       });
 
       if (response.ok) {
@@ -70,11 +70,11 @@ const SystemLogin = () => {
         <div className="IdInput InputContainer">
           <img src={UserIcon} alt="아이디" />
           <input
-            id="id"
+            id="userId"
             type="text"
             placeholder="ID"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
           />
         </div>
         {/* 비밀번호 입력 칸 */}
@@ -113,7 +113,11 @@ const SystemLogin = () => {
       </div>
       {/* 로그인 버튼 */}
       <div className="summitLogin">
-        <button type="button" onClick={handleLogin} disabled={!id || !password}>
+        <button
+          type="button"
+          onClick={handleLogin}
+          disabled={!userId || !password}
+        >
           로그인 하기
         </button>
       </div>
