@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Home.css";
+import Terms from "../auth/Signup/Terms";
+
+const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
 
 import HOMELOGO from "../../assets/home/home_logo.png";
 import HOMEBELL from "../../assets/home/home_bell.png";
@@ -26,10 +29,10 @@ import TEMPDISEASE from "../../assets/home/home_temp_disease.png";
 let petList = [
   {
     img: HOMEDOG,
-    sex: 'male',
+    sex: "male",
     neuter: true,
-    name: '누룽지',
-    breed: '시고르자브종',
+    name: "누룽지",
+    breed: "시고르자브종",
     age: 5,
     weight: 5.6,
     todayWalked: 34356,
@@ -48,14 +51,14 @@ let petList = [
         day: 15,
         disease: "강아지 피부병2 (Dog Skin Disease2)",
       },
-    ]
+    ],
   },
   {
     img: HOMEDOG,
-    sex: 'male',
+    sex: "male",
     neuter: true,
-    name: '누룽지2',
-    breed: '시고르자브종',
+    name: "누룽지2",
+    breed: "시고르자브종",
     age: 3,
     weight: 3.6,
     todayWalked: 14356,
@@ -74,59 +77,130 @@ let petList = [
         day: 15,
         disease: "강아지 피부병2 (Dog Skin Disease2)",
       },
-    ]
+    ],
   },
   {
     img: HOMECAT,
-    sex: 'female',
+    sex: "female",
     neuter: false,
-    name: '야옹이',
-    breed: '고양이',
+    name: "야옹이",
+    breed: "고양이",
     age: 4,
     weight: 3.6,
     todayWalked: 24356,
     weekWalked: [10000, 50000, 10000, 40000, 50000, 0, 0],
     recentDistance: 11.4,
     recentWalked: 20346,
-    checkRecord: [
-
-    ]
+    checkRecord: [],
   },
-]
+];
 
 const weekLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
 export default function Home() {
   const [isPetSelectOpen, setIsPetSelectOpen] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
   const [currentPetIndex, setCurrentPetIndex] = useState(0);
   const currentPet = petList[currentPetIndex];
   const [selectedRecordPetIndex, setSelectedRecordPetIndex] = useState(null);
   const TEMP_DISEASE_IMAGE = undefined;
   const selectedRecordPetName =
-    selectedRecordPetIndex === null ? "전체" : petList[selectedRecordPetIndex].name;
+    selectedRecordPetIndex === null
+      ? "전체"
+      : petList[selectedRecordPetIndex].name;
   const visibleCheckRecords =
     selectedRecordPetIndex === null
       ? petList.flatMap((pet) =>
-        pet.checkRecord.map((record) => ({
-          ...record,
-          petName: pet.name,
-          petBreed: pet.breed,
-          petAge: pet.age,
-          diseaseImg: TEMP_DISEASE_IMAGE,
-        }))
-      )
+          pet.checkRecord.map((record) => ({
+            ...record,
+            petName: pet.name,
+            petBreed: pet.breed,
+            petAge: pet.age,
+            diseaseImg: TEMP_DISEASE_IMAGE,
+          })),
+        )
       : petList[selectedRecordPetIndex].checkRecord.map((record) => ({
-        ...record,
-        petName: petList[selectedRecordPetIndex].name,
-        petBreed: petList[selectedRecordPetIndex].breed,
-        petAge: petList[selectedRecordPetIndex].age,
-        diseaseImg: TEMP_DISEASE_IMAGE,
-      }));
+          ...record,
+          petName: petList[selectedRecordPetIndex].name,
+          petBreed: petList[selectedRecordPetIndex].breed,
+          petAge: petList[selectedRecordPetIndex].age,
+          diseaseImg: TEMP_DISEASE_IMAGE,
+        }));
 
   const maxWeekWalked = Math.max(...currentPet.weekWalked, 1);
 
   const isFirstPet = currentPetIndex === 0;
   const isLastPet = currentPetIndex === petList.length - 1;
+
+  // 이용약관 동의 여부 확인 후 약관 동의
+  useEffect(() => {
+    const fetchTermsAgreement = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) return;
+
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/terms/latest/agreement-status`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        if (response.ok) {
+          const isAgreed = await response.json();
+          if (isAgreed === false) {
+            setShowTerms(true);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to check terms agreement status", error);
+      }
+    };
+
+    fetchTermsAgreement();
+  }, []);
+
+  const handleTermsComplete = async (agreements) => {
+    const termsMapping = {
+      service: 1,
+      privacy: 2,
+      ai_ref: 3,
+      location: 4,
+      ai_collect: 5,
+      push: 6,
+      night: 7,
+    };
+
+    const userAgreements = Object.keys(agreements).map((key) => ({
+      termId: termsMapping[key],
+      termsOfServiceAgreed: agreements[key],
+    }));
+
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(`${API_BASE_URL}/terms/oauth/agree`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userAgreements),
+      });
+
+      if (response.ok) {
+        setShowTerms(false);
+      } else {
+        alert("약관 동의 처리에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("약관 동의 오류", error);
+      alert("약관 동의 처리 중 오류가 발생했습니다.");
+    }
+  };
 
   return (
     <div className="home-wrapper">
@@ -162,10 +236,7 @@ export default function Home() {
                   }
                 }}
               >
-                <img
-                  src={isLastPet ? HOMENEXT200 : HOMENEXT500}
-                  alt="다음"
-                />
+                <img src={isLastPet ? HOMENEXT200 : HOMENEXT500} alt="다음" />
               </button>
             </>
             {/* 임시 애완동물 사진
@@ -173,15 +244,19 @@ export default function Home() {
             <img className="home-pet-image" src={currentPet.img} />
             <div className="home-pet-profile-detail">
               <div className="home-pet-detail-top">
-                <img src={currentPet.sex === 'male' ? HOMEMALE : HOMEFEMALE} />
-                <span>{currentPet.neuter ? "중성화 완료" : "중성화 미완료"}</span>
+                <img src={currentPet.sex === "male" ? HOMEMALE : HOMEFEMALE} />
+                <span>
+                  {currentPet.neuter ? "중성화 완료" : "중성화 미완료"}
+                </span>
               </div>
               <div className="home-pet-detail-middle">
                 <span className="home-pet-name">{currentPet.name}</span>
               </div>
               <div className="home-pet-detail-bottom">
                 <span className="home-pet-breed">{currentPet.breed}</span>
-                <span>{currentPet.age}살 | {currentPet.weight}kg</span>
+                <span>
+                  {currentPet.age}살 | {currentPet.weight}kg
+                </span>
               </div>
             </div>
           </div>
@@ -189,7 +264,10 @@ export default function Home() {
             <div className="home-walk">
               <p className="home-today-walked">
                 오늘 총{" "}
-                <strong>{Number(currentPet.todayWalked).toLocaleString()}</strong>젤리 걸었어요!
+                <strong>
+                  {Number(currentPet.todayWalked).toLocaleString()}
+                </strong>
+                젤리 걸었어요!
               </p>
               <img src={HOMEPAW} />
             </div>
@@ -200,7 +278,10 @@ export default function Home() {
 
                   return (
                     <div className="home-chart-bar-wrap" key={`bar-${index}`}>
-                      <div className="home-chart-bar" style={{ height: barHeight }} />
+                      <div
+                        className="home-chart-bar"
+                        style={{ height: barHeight }}
+                      />
                     </div>
                   );
                 })}
@@ -209,8 +290,9 @@ export default function Home() {
               <div className="home-chart-label-row">
                 {weekLabels.map((label, index) => (
                   <span
-                    className={`home-chart-label ${index === 5 ? "today" : index === 6 ? "sunday" : ""
-                      }`}
+                    className={`home-chart-label ${
+                      index === 5 ? "today" : index === 6 ? "sunday" : ""
+                    }`}
                     key={`${label}-${index}`}
                   >
                     {label}
@@ -225,10 +307,12 @@ export default function Home() {
             <div className="home-pet-walked-top">
               <span>최근 산책 기록</span>
               <button type="button">
-                <img src={HOMEWALKEDBUTTON}/>
+                <img src={HOMEWALKEDBUTTON} />
               </button>
             </div>
-            <span className="home-pet-distance">{currentPet.recentDistance}</span>
+            <span className="home-pet-distance">
+              {currentPet.recentDistance}
+            </span>
             <span className="home-pet-distance-unit">km</span>
             <div className="home-pet-recent-walk">
               <img src={HOMEBROWNPAW} />
@@ -237,7 +321,9 @@ export default function Home() {
           </div>
           <div className="home-pet-disease-check">
             <p>피부 질환 체크하기</p>
-            <span className="home-pet-disease-check-span">{"사진 한장으로 빠르게\nAI가 피부 질환을 진단해요!"}</span>
+            <span className="home-pet-disease-check-span">
+              {"사진 한장으로 빠르게\nAI가 피부 질환을 진단해요!"}
+            </span>
             <div className="home-pet-go-check">
               <span>진단하기</span>
               <img src={HOMEPINKARROW} />
@@ -245,7 +331,9 @@ export default function Home() {
           </div>
         </div>
         <div className="home-iot">
-          <p className="home-iot-first-p">{"반려동물을 등록하고\n활동량 측정기를 받아보세요!"}</p>
+          <p className="home-iot-first-p">
+            {"반려동물을 등록하고\n활동량 측정기를 받아보세요!"}
+          </p>
           <p className="home-iot-second-p">활동량 측정기 더 알아보기 →</p>
         </div>
       </div>
@@ -257,7 +345,10 @@ export default function Home() {
               <img src={HOMESTAR} />
               <span>AI 스마트 진단 리스트</span>
             </div>
-            <div className="home-pet-select" onClick={() => setIsPetSelectOpen(true)}>
+            <div
+              className="home-pet-select"
+              onClick={() => setIsPetSelectOpen(true)}
+            >
               <span>{selectedRecordPetName}</span>
               <img src={HOMEDOWNARROW} />
             </div>
@@ -356,7 +447,17 @@ export default function Home() {
           )}
         </div>
       </div>
-    </div >
+
+      {showTerms && (
+        <div className="home-terms-overlay">
+          <div className="home-terms-content">
+            <Terms
+              onComplete={handleTermsComplete}
+              onClose={() => setShowTerms(false)}
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
-
