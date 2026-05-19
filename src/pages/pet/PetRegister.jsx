@@ -1,0 +1,790 @@
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./PetRegister.css";
+
+import BackIcon from "../../assets/pet/register/back.svg";
+import CheckIcon from "../../assets/pet/register/check.svg";
+import FemaleIcon from "../../assets/pet/register/female.svg";
+import MaleIcon from "../../assets/pet/register/male.svg";
+import PlusIcon from "../../assets/pet/register/plus.svg";
+import SearchIcon from "../../assets/pet/register/search.svg";
+import Profile1 from "../../assets/pet/register/profile1.svg";
+import Profile2 from "../../assets/pet/register/profile2.svg";
+import Profile3 from "../../assets/pet/register/profile3.svg";
+import Profile4 from "../../assets/pet/register/profile4.svg";
+import Profile5 from "../../assets/pet/register/profile5.svg";
+import Profile6 from "../../assets/pet/register/profile6.svg";
+import Profile7 from "../../assets/pet/register/profile7.svg";
+import Profile8 from "../../assets/pet/register/profile8.svg";
+
+const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
+
+const profileImages = [
+  Profile1,
+  Profile2,
+  Profile3,
+  Profile4,
+  Profile5,
+  Profile6,
+  Profile7,
+  Profile8,
+];
+
+const initialForm = {
+  name: "",
+  age: "",
+  neutered: "",
+  gender: "",
+  breed: "",
+  weight: "",
+  memo: "",
+};
+
+const normalizeBreedList = (data) => {
+  const list = Array.isArray(data) ? data : data?.breeds || data?.data || [];
+
+  return list
+    .map((breed) => {
+      if (typeof breed === "string") return breed;
+      return breed?.name || breed?.breed || breed?.breeds || "";
+    })
+    .filter(Boolean);
+};
+
+const PetRegister = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fileInputRef = useRef(null);
+
+  const entry = location.state?.entry;
+  const isSignupFlow = entry === "signup";
+  const isHomeTermsFlow = entry === "home";
+  const finishPath = isSignupFlow || isHomeTermsFlow ? "/home" : "/mypage";
+
+  const [step, setStep] = useState("type");
+  const [petType, setPetType] = useState("");
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
+  const [breedSearch, setBreedSearch] = useState("");
+  const [profileSheetOpen, setProfileSheetOpen] = useState(false);
+  const [allergySheetOpen, setAllergySheetOpen] = useState(false);
+  const [allergyInput, setAllergyInput] = useState("");
+  const [allergies, setAllergies] = useState([]);
+  const [profileImage, setProfileImage] = useState("");
+  const [profileFile, setProfileFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [breedOptions, setBreedOptions] = useState([]);
+  const [isBreedLoading, setIsBreedLoading] = useState(false);
+  const [breedError, setBreedError] = useState("");
+
+  const species = petType === "dog" ? "DOG" : "CAT";
+
+  const filteredBreeds = useMemo(() => {
+    if (!breedSearch.trim()) return breedOptions;
+    return breedOptions.filter((breed) => breed.includes(breedSearch.trim()));
+  }, [breedOptions, breedSearch]);
+
+  const isTypeSelected = petType !== "";
+  const isFormReady =
+    form.name.trim() &&
+    form.age.trim() &&
+    form.neutered &&
+    form.gender &&
+    form.breed.trim();
+
+  const updateForm = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const updateNumericForm = (field, value) => {
+    updateForm(field, value.replace(/[^0-9]/g, ""));
+  };
+
+  const updateWeightForm = (value) => {
+    const numericValue = value
+      .replace(/[^0-9.]/g, "")
+      .replace(/(\..*)\./g, "$1");
+
+    updateForm("weight", numericValue);
+  };
+
+  const getBirthFromAge = (age) => {
+    const birthYear = new Date().getFullYear() - Number(age);
+    return `${birthYear}-01-01`;
+  };
+
+  const createPetPayload = () => ({
+    neutered: form.neutered === "yes",
+    sex: form.gender === "male" ? "MALE" : "FEMALE",
+    name: form.name.trim(),
+    note: form.memo.trim(),
+    weight: form.weight ? Number(form.weight) : 0,
+    species,
+    allergies,
+    birth: getBirthFromAge(form.age),
+    breeds: form.breed.trim(),
+  });
+
+  const createProfileImageFile = async () => {
+    if (profileFile) return profileFile;
+    if (!profileImage) return null;
+
+    const response = await fetch(profileImage);
+    const blob = await response.blob();
+    const extension = blob.type.split("/")[1] || "svg";
+
+    return new File([blob], `pet-profile.${extension}`, {
+      type: blob.type || "image/svg+xml",
+    });
+  };
+
+  const createPetFormData = async () => {
+    const data = createPetPayload();
+    const imageFile = await createProfileImageFile();
+    const formData = new FormData();
+
+    formData.append(
+      "request",
+      new Blob([JSON.stringify(data)], {
+        type: "application/json",
+      }),
+    );
+
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
+    return formData;
+  };
+
+  const getNeuteredLabel = () =>
+    form.neutered === "yes" ? "중성화 완료" : "중성화 미완료";
+
+  const getGenderIcon = () => (form.gender === "male" ? MaleIcon : FemaleIcon);
+
+  const finishRegister = () => {
+    navigate(finishPath, { replace: true });
+  };
+
+  const handleAddAnotherPet = () => {
+    setStep("type");
+    setPetType("");
+    setForm(initialForm);
+    setErrors({});
+    setBreedSearch("");
+    setAllergies([]);
+    setAllergyInput("");
+    setProfileImage("");
+    setProfileFile(null);
+    setBreedOptions([]);
+    setBreedError("");
+  };
+
+  const handleBack = () => {
+    if (step === "complete") {
+      finishRegister();
+      return;
+    }
+
+    if (step === "breed") {
+      setStep("info");
+      return;
+    }
+
+    if (step === "info") {
+      setStep("type");
+      return;
+    }
+
+    if (isSignupFlow || isHomeTermsFlow) {
+      navigate("/home", { replace: true });
+      return;
+    }
+
+    navigate(-1);
+  };
+
+  const handleTypeNext = () => {
+    if (!petType) return;
+    if (petType === "none") {
+      finishRegister();
+      return;
+    }
+    setStep("info");
+  };
+
+  const handlePetTypeSelect = (nextPetType) => {
+    setPetType(nextPetType);
+    updateForm("breed", "");
+    setBreedSearch("");
+    setBreedOptions([]);
+    setBreedError("");
+  };
+
+  const validateForm = () => {
+    const nextErrors = {};
+    if (!form.name.trim()) {
+      nextErrors.name = "*이름은 필수 입력항목입니다.";
+    }
+    if (!form.age.trim()) {
+      nextErrors.age = "*나이는 필수 입력항목입니다.";
+    }
+    if (!form.neutered) {
+      nextErrors.neutered = "*중성화 여부는 필수 입력항목입니다.";
+    }
+    if (!form.gender) {
+      nextErrors.gender = "*성별은 필수 입력항목입니다.";
+    }
+    if (!form.breed.trim()) {
+      nextErrors.breed = "*품종은 필수 입력항목입니다.";
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const handleInfoNext = async () => {
+    if (!validateForm()) return;
+
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      alert("로그인이 필요합니다.");
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      const response = await fetch(`${API_BASE_URL}/api/pets`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: await createPetFormData(),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "반려동물 등록에 실패했습니다.");
+      }
+
+      setStep("complete");
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleProfileFileChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setProfileImage(URL.createObjectURL(file));
+    setProfileFile(file);
+    setProfileSheetOpen(false);
+  };
+
+  const addAllergy = () => {
+    const nextAllergy = allergyInput.trim();
+    if (!nextAllergy) return;
+
+    if (allergies.includes(nextAllergy)) {
+      setAllergyInput("");
+      return;
+    }
+
+    setAllergies((prev) => [...prev, nextAllergy]);
+    setAllergyInput("");
+  };
+
+  const closeAllergySheet = () => {
+    addAllergy();
+    setAllergySheetOpen(false);
+  };
+
+  const removeAllergy = (target) => {
+    setAllergies((prev) => prev.filter((allergy) => allergy !== target));
+  };
+
+  const selectBreed = (breed) => {
+    updateForm("breed", breed);
+    setBreedSearch(breed);
+  };
+
+  useEffect(() => {
+    if (step !== "breed" || !petType || petType === "none") return;
+
+    const fetchBreeds = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+
+      try {
+        setIsBreedLoading(true);
+        setBreedError("");
+
+        const response = await fetch(
+          `${API_BASE_URL}/api/pets/breeds?species=${species}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(
+            errorData.message || "품종 목록을 불러오지 못했습니다.",
+          );
+        }
+
+        const data = await response.json();
+        setBreedOptions(normalizeBreedList(data));
+      } catch (error) {
+        setBreedError(error.message);
+        setBreedOptions([]);
+      } finally {
+        setIsBreedLoading(false);
+      }
+    };
+
+    fetchBreeds();
+  }, [petType, species, step]);
+
+  return (
+    <main className="PetRegisterWrapper">
+      <header className="PetRegisterHeader">
+        <button
+          type="button"
+          className="PetRegisterBackBtn"
+          onClick={handleBack}
+        >
+          <img src={BackIcon} alt="뒤로가기" />
+        </button>
+        <h1>{step === "breed" ? "품종 찾기" : "프로필 등록"}</h1>
+      </header>
+
+      {step === "type" && (
+        <>
+          <section className="PetTypeSection">
+            <h2>어떤 친구와 함께 지내고 있나요?</h2>
+            <div className="PetTypeGrid">
+              <button
+                type="button"
+                className={`PetTypeCard ${petType === "dog" ? "selected" : ""}`}
+                onClick={() => handlePetTypeSelect("dog")}
+              >
+                강아지
+              </button>
+              <button
+                type="button"
+                className={`PetTypeCard ${petType === "cat" ? "selected" : ""}`}
+                onClick={() => handlePetTypeSelect("cat")}
+              >
+                고양이
+              </button>
+            </div>
+            <button
+              type="button"
+              className={`PetTypeNone ${petType === "none" ? "selected" : ""}`}
+              onClick={() => handlePetTypeSelect("none")}
+            >
+              없음
+            </button>
+          </section>
+
+          <button
+            type="button"
+            className={`PetRegisterBottomBtn ${isTypeSelected ? "active" : ""}`}
+            onClick={handleTypeNext}
+            disabled={!isTypeSelected}
+          >
+            다음
+          </button>
+        </>
+      )}
+
+      {step === "info" && (
+        <>
+          <section className="PetInfoSection">
+            <h2>반려동물 정보</h2>
+            <p>입력해주신 정보로 더 정확한 진단과 관리 방법을 안내해드려요!</p>
+
+            <div className="ProfileField">
+              <span>프로필 사진</span>
+              <button
+                type="button"
+                className="ProfileImageButton"
+                onClick={() => setProfileSheetOpen(true)}
+              >
+                {profileImage && <img src={profileImage} alt="선택한 프로필" />}
+                <span className="ProfilePlus">
+                  <img src={PlusIcon} alt="" />
+                </span>
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="PetRegisterFileInput"
+                onChange={handleProfileFileChange}
+              />
+            </div>
+
+            <label className="PetField">
+              <span>이름*</span>
+              <input
+                type="text"
+                value={form.name}
+                placeholder="이름을 입력해주세요."
+                className={errors.name ? "error" : ""}
+                onChange={(event) => updateForm("name", event.target.value)}
+              />
+              {errors.name && <small>{errors.name}</small>}
+            </label>
+
+            <label className="PetField">
+              <span>나이*</span>
+              <input
+                type="text"
+                value={form.age}
+                inputMode="numeric"
+                placeholder="나이를 숫자로 입력해주세요."
+                className={errors.age ? "error" : ""}
+                onChange={(event) =>
+                  updateNumericForm("age", event.target.value)
+                }
+              />
+              {errors.age && <small>{errors.age}</small>}
+            </label>
+
+            <div className="PetField">
+              <span>중성화 여부*</span>
+              <div className="PetToggleRow">
+                <button
+                  type="button"
+                  className={form.neutered === "yes" ? "selected" : ""}
+                  onClick={() => updateForm("neutered", "yes")}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  className={form.neutered === "no" ? "selected" : ""}
+                  onClick={() => updateForm("neutered", "no")}
+                >
+                  No
+                </button>
+              </div>
+              {errors.neutered && <small>{errors.neutered}</small>}
+            </div>
+
+            <div className="PetField">
+              <span>성별*</span>
+              <div className="PetToggleRow">
+                <button
+                  type="button"
+                  className={form.gender === "male" ? "selected" : ""}
+                  onClick={() => updateForm("gender", "male")}
+                >
+                  왕자님
+                </button>
+                <button
+                  type="button"
+                  className={form.gender === "female" ? "selected" : ""}
+                  onClick={() => updateForm("gender", "female")}
+                >
+                  공주님
+                </button>
+              </div>
+              {errors.gender && <small>{errors.gender}</small>}
+            </div>
+
+            <div className="PetField">
+              <span>품종*</span>
+              <button
+                type="button"
+                className={`PetSearchInput ${errors.breed ? "error" : ""}`}
+                onClick={() => setStep("breed")}
+              >
+                <span className={form.breed ? "" : "placeholder"}>
+                  {form.breed || "품종을 검색하여 찾아보세요."}
+                </span>
+                <img src={SearchIcon} alt="" />
+              </button>
+              {errors.breed && <small>{errors.breed}</small>}
+            </div>
+
+            <label className="PetField">
+              <span>몸무게</span>
+              <input
+                type="text"
+                inputMode="decimal"
+                value={form.weight}
+                placeholder="무게를 숫자로 입력해주세요."
+                onChange={(event) => updateWeightForm(event.target.value)}
+              />
+            </label>
+
+            <div className="PetField">
+              <span>알레르기 정보</span>
+              <div className="AllergyPreview">
+                <button type="button" onClick={() => setAllergySheetOpen(true)}>
+                  <img src={PlusIcon} alt="추가" />
+                </button>
+                {allergies.map((allergy) => (
+                  <span key={allergy}>{allergy}</span>
+                ))}
+              </div>
+            </div>
+
+            <label className="PetField">
+              <span>특이사항</span>
+              <input
+                type="text"
+                value={form.memo}
+                placeholder="특이사항을 입력해주세요."
+                onChange={(event) => updateForm("memo", event.target.value)}
+              />
+            </label>
+          </section>
+
+          <button
+            type="button"
+            className={`PetRegisterBottomBtn ${isFormReady ? "active" : ""}`}
+            onClick={handleInfoNext}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "등록 중" : "다음"}
+          </button>
+        </>
+      )}
+
+      {step === "breed" && (
+        <>
+          <section className="BreedSearchSection">
+            <label className="PetField">
+              <span>품종</span>
+              <div className="BreedSearchInput">
+                <input
+                  type="text"
+                  value={breedSearch}
+                  placeholder="품종을 검색하여 찾아보세요."
+                  autoFocus
+                  onChange={(event) => setBreedSearch(event.target.value)}
+                />
+                <img src={SearchIcon} alt="" />
+              </div>
+            </label>
+
+            <div className="BreedList">
+              {isBreedLoading && (
+                <p className="BreedStatusText">
+                  품종 목록을 불러오는 중입니다.
+                </p>
+              )}
+
+              {!isBreedLoading && breedError && (
+                <p className="BreedStatusText error">{breedError}</p>
+              )}
+
+              {!isBreedLoading &&
+                !breedError &&
+                filteredBreeds.length === 0 && (
+                  <p className="BreedStatusText">검색 결과가 없습니다.</p>
+                )}
+
+              {!isBreedLoading &&
+                !breedError &&
+                filteredBreeds.map((breed, index) => {
+                  const isSelected = form.breed === breed;
+                  return (
+                    <button
+                      type="button"
+                      key={`${breed}-${index}`}
+                      className={isSelected ? "selected" : ""}
+                      onClick={() => selectBreed(breed)}
+                    >
+                      <span>{breed}</span>
+                      {isSelected && <img src={CheckIcon} alt="선택됨" />}
+                    </button>
+                  );
+                })}
+            </div>
+          </section>
+
+          <button
+            type="button"
+            className={`PetRegisterBottomBtn ${form.breed ? "active" : ""}`}
+            onClick={() => setStep("info")}
+            disabled={!form.breed}
+          >
+            완료
+          </button>
+        </>
+      )}
+
+      {step === "complete" && (
+        <>
+          <section className="PetCompleteSection">
+            <h2>
+              {form.name}의 프로필이
+              <br />
+              완성되었어요!
+            </h2>
+
+            <div className="PetCompleteCard">
+              <div className="PetCompleteBadges">
+                <span className="GenderBadge">
+                  <img src={getGenderIcon()} alt="" />
+                </span>
+                <span>{getNeuteredLabel()}</span>
+              </div>
+
+              <div className="PetCompleteProfile">
+                {profileImage && (
+                  <img src={profileImage} alt={`${form.name} 프로필`} />
+                )}
+              </div>
+
+              <strong>
+                {form.name} ({form.age})
+              </strong>
+              <p>{form.breed}</p>
+              {form.weight.trim() && <p>{form.weight}kg</p>}
+
+              {allergies.length > 0 && (
+                <div className="PetCompleteInfoBlock">
+                  <span>알레르기 정보</span>
+                  <div className="PetCompleteChips">
+                    {allergies.map((allergy) => (
+                      <em key={allergy}>{allergy}</em>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {form.memo.trim() && (
+                <div className="PetCompleteInfoBlock">
+                  <span>특이사항</span>
+                  <div className="PetCompleteNote">{form.memo}</div>
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              className="PetAddMoreButton"
+              onClick={handleAddAnotherPet}
+            >
+              <img src={PlusIcon} alt="" />
+              <span>반려동물 더 키워요!</span>
+            </button>
+          </section>
+
+          <button
+            type="button"
+            className="PetRegisterBottomBtn active"
+            onClick={finishRegister}
+          >
+            완료
+          </button>
+        </>
+      )}
+
+      {profileSheetOpen && (
+        <div
+          className="PetSheetOverlay"
+          onClick={() => setProfileSheetOpen(false)}
+        >
+          <section
+            className="PetBottomSheet"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="ProfileActionRow">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                사진 촬영
+              </button>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                갤러리
+              </button>
+            </div>
+            <div className="ProfileImageGrid">
+              {profileImages.map((image, index) => (
+                <button
+                  type="button"
+                  key={image}
+                  onClick={() => {
+                    setProfileImage(image);
+                    setProfileFile(null);
+                    setProfileSheetOpen(false);
+                  }}
+                >
+                  <img src={image} alt={`프로필 ${index + 1}`} />
+                </button>
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
+
+      {allergySheetOpen && (
+        <div
+          className="PetSheetOverlay"
+          onClick={() => setAllergySheetOpen(false)}
+        >
+          <section
+            className="PetBottomSheet AllergySheet"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                addAllergy();
+              }}
+            >
+              <input
+                type="text"
+                value={allergyInput}
+                placeholder="직접 알레르기를 입력해주세요."
+                autoFocus
+                onChange={(event) => setAllergyInput(event.target.value)}
+              />
+            </form>
+            <div className="AllergyChipList">
+              {allergies.map((allergy) => (
+                <button
+                  type="button"
+                  key={allergy}
+                  onClick={() => removeAllergy(allergy)}
+                >
+                  {allergy}
+                  <span>×</span>
+                </button>
+              ))}
+            </div>
+          </section>
+          <button
+            type="button"
+            className="PetRegisterBottomBtn PetSheetDone active"
+            onClick={closeAllergySheet}
+          >
+            완료
+          </button>
+        </div>
+      )}
+    </main>
+  );
+};
+
+export default PetRegister;

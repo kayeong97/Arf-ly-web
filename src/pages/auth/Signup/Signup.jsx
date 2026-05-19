@@ -317,7 +317,10 @@ const Signup = () => {
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
 
-      navigate("/home");
+      navigate("/pet/register", {
+        replace: true,
+        state: { entry: "signup" },
+      });
     } catch (error) {
       alert(error.message);
     }
