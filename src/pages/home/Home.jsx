@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import Terms from "../auth/Signup/Terms";
 
@@ -98,6 +99,7 @@ let petList = [
 const weekLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
 export default function Home() {
+  const navigate = useNavigate();
   const [isPetSelectOpen, setIsPetSelectOpen] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [currentPetIndex, setCurrentPetIndex] = useState(0);
@@ -193,6 +195,10 @@ export default function Home() {
 
       if (response.ok) {
         setShowTerms(false);
+        navigate("/pet/register", {
+          replace: true,
+          state: { entry: "home" },
+        });
       } else {
         alert("약관 동의 처리에 실패했습니다.");
       }
