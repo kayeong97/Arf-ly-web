@@ -12,6 +12,7 @@ import Community from "./pages/community/Community";
 import MyPage from "./pages/mypage/MyPage";
 
 import MapPage from "./pages/map/MapPage";
+import PetRegister from "./pages/pet/PetRegister";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/community" element={<Community />} />
       {/* 마이페이지 관련 */}
       <Route path="/mypage" element={<MyPage />} />
+      <Route path="/pet/register" element={<PetRegister />} />
       {/* 지도 관련 */}
       <Route path="/map" element={<MapPage />} />
     </Routes>
