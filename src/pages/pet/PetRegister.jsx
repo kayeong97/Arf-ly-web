@@ -429,7 +429,7 @@ const PetRegister = () => {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/png,image/jpeg"
                 className="PetRegisterFileInput"
                 onChange={handleProfileFileChange}
               />
