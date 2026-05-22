@@ -44,36 +44,6 @@
 }
 
 .home-pet-profile {
-<<<<<<< HEAD
-  width: 100%;
-  aspect-ratio: 1.5/ 1.2;
-  background-color: var(--common-white);
-  border-radius: 20px;
-  padding: 16px 18px 18px;
-  box-sizing: border-box;
-}
-
-.home-pet-profile-top {
-  position: relative;
-  height: 13vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 60px;
-}
-
-.home-pet-profile-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-
-  border: 0;
-  background-color: transparent;
-  padding: 0;
-  line-height: 0;
-  cursor: pointer;
-=======
     width: 100%;
     height: 380px;
     background-color: var(--common-white);
@@ -102,7 +72,6 @@
     padding: 0;
     line-height: 0;
     cursor: pointer;
->>>>>>> feat/weeklyActive
 }
 
 .home-pet-profile-arrow.left {
@@ -197,13 +166,8 @@
 }
 
 .home-pet-profile-bottom {
-<<<<<<< HEAD
-  margin-top: 18px;
-  height: 17vh;
-=======
     margin-top: 18px;
     height: 170px;
->>>>>>> feat/weeklyActive
 }
 
 .home-walk {
@@ -214,20 +178,11 @@
 }
 
 .home-today-walked {
-<<<<<<< HEAD
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--common-black);
-  line-height: 1;
-  font-family: "Pretendard", sans-serif;
-=======
     margin: 0;
     font-size: 18px;
     font-weight: 700;
     color: var(--common-black);
     line-height: 1;
->>>>>>> feat/weeklyActive
 }
 
 .home-walk img {
@@ -242,15 +197,6 @@
 }
 
 .home-pet-profile-chart {
-<<<<<<< HEAD
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background-color: #f8f7f6;
-=======
     width: 100%;
     height: 100%;
     border-radius: 16px;
@@ -258,7 +204,6 @@
     display: flex;
     flex-direction: column;
     background-color: var(--background);
->>>>>>> feat/weeklyActive
 }
 
 .home-chart-bars {
@@ -332,23 +277,6 @@
 }
 
 .home-pet-walked {
-<<<<<<< HEAD
-  background-color: white;
-  border-radius: 20px;
-  padding: 15px 15px;
-  flex: 0 0 auto;
-}
-
-.home-pet-walked-top {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--common-black);
-  line-height: 1;
-  font-family: "Pretendard", sans-serif;
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-=======
     background-color: var(--common-white);
     border-radius: 20px;
     padding: 15px 15px;
@@ -363,7 +291,6 @@
     display: flex;
     align-items: center;
     margin-bottom: 25px;
->>>>>>> feat/weeklyActive
 }
 
 .home-pet-walked-top button {
@@ -382,78 +309,6 @@
 }
 
 .home-pet-distance {
-<<<<<<< HEAD
-  font-family: "Pretendard", sans-serif;
-  color: var(--primary-500);
-  font-weight: 700;
-  font-size: 40px;
-}
-
-.home-pet-distance-unit {
-  font-family: "Pretendard", sans-serif;
-  color: var(--common-black);
-  font-weight: 700;
-  font-size: 18px;
-}
-
-.home-pet-recent-walk {
-  font-family: "Pretendard", sans-serif;
-  color: var(--common-black);
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 5px;
-}
-
-.home-pet-disease-check {
-  position: relative;
-  flex: 1;
-  border-radius: 20px;
-  padding: 15px 15px;
-  background-image: url("../../assets/home/home_ai_background.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.home-pet-disease-check p {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--common-white);
-  line-height: 1;
-  font-family: "Pretendard", sans-serif;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.home-pet-disease-check-span {
-  white-space: pre-wrap;
-  color: var(--common-white);
-  font-family: "Pretendard", sans-serif;
-  font-size: 18px;
-}
-
-.home-pet-go-check {
-  position: absolute;
-  right: 15px;
-  bottom: 15px;
-
-  width: fit-content;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-
-  border-radius: 25px;
-  background-color: var(--common-white);
-  font-family: "Pretendard", sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 5px 8px;
-  cursor: pointer;
-=======
     color: var(--primary-500);
     font-weight: 700;
     font-size: 40px;
@@ -516,7 +371,6 @@
     font-weight: 600;
     padding: 5px 8px;
     cursor: pointer;
->>>>>>> feat/weeklyActive
 }
 
 .home-diagnosis-overlay,
@@ -744,39 +598,6 @@
 }
 
 .home-iot {
-<<<<<<< HEAD
-  margin-top: 20px;
-  padding: 15px 15px;
-  width: 100%;
-  height: 150px;
-  border-radius: 20px;
-  box-sizing: border-box;
-  background-image: url("../../assets/home/home_iot_background.png");
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.home-iot-first-p {
-  margin: 0;
-  white-space: pre-wrap;
-  font-family: "Pretendard", sans-serif;
-  line-height: 1.5;
-  font-size: 25px;
-  font-weight: 700;
-  color: var(--common-black);
-}
-
-.home-iot-second-p {
-  margin: 0;
-  margin-top: 10px;
-  font-family: "Pretendard", sans-serif;
-  line-height: 1.5;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--common-black);
-  cursor: pointer;
-=======
     margin-top: 20px;
     padding: 15px 15px;
     width: 100%;
@@ -806,7 +627,6 @@
     font-weight: 400;
     color: var(--gray-warm-700);
     cursor: pointer;
->>>>>>> feat/weeklyActive
 }
 
 .home-middle-line {
@@ -825,17 +645,6 @@
 }
 
 .home-ai-record-tab-text {
-<<<<<<< HEAD
-  margin-top: 30px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--common-black);
-  line-height: 1;
-  font-family: "Pretendard", sans-serif;
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-=======
     margin-top: 30px;
     font-size: 18px;
     font-weight: 600;
@@ -844,7 +653,6 @@
     display: flex;
     align-items: center;
     margin-bottom: 25px;
->>>>>>> feat/weeklyActive
 }
 
 .home-ai-record-tab-text img {
