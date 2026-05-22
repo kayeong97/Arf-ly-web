@@ -81,6 +81,13 @@ export default function Home() {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    const allowedImageTypes = ["image/png", "image/jpeg"];
+    if (!allowedImageTypes.includes(file.type)) {
+      alert("PNG 또는 JPEG 형식의 사진만 가져올 수 있습니다.");
+      event.target.value = "";
+      return;
+    }
+
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -538,7 +545,7 @@ export default function Home() {
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept="image/png,image/jpeg"
         style={{ display: "none" }}
         onChange={handleImportChange}
       />
