@@ -1,14 +1,14 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import "./BottomTabBar.css";
 
-import homeIcon from "../assets/tab_bar_icon/home.svg";
-import homeActiveIcon from "../assets/tab_bar_icon/home_active.svg";
-import communityIcon from "../assets/tab_bar_icon/community.svg";
-import communityActiveIcon from "../assets/tab_bar_icon/community_active.svg";
-import mapIcon from "../assets/tab_bar_icon/map.svg";
-import mapActiveIcon from "../assets/tab_bar_icon/map_active.svg";
-import myIcon from "../assets/tab_bar_icon/my.svg";
-import myActiveIcon from "../assets/tab_bar_icon/my_active.svg";
+import homeIcon from "../assets/bottom_tab_bar/home.svg";
+import homeActiveIcon from "../assets/bottom_tab_bar/home_active.svg";
+import communityIcon from "../assets/bottom_tab_bar/community.svg";
+import communityActiveIcon from "../assets/bottom_tab_bar/community_active.svg";
+import mapIcon from "../assets/bottom_tab_bar/map.svg";
+import mapActiveIcon from "../assets/bottom_tab_bar/map_active.svg";
+import myIcon from "../assets/bottom_tab_bar/my.svg";
+import myActiveIcon from "../assets/bottom_tab_bar/my_active.svg";
 
 const TABS = [
 	{
