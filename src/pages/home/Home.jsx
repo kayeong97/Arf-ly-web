@@ -1,102 +1,35 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Home.css";
 
-import HOMELOGO from "../../assets/home/home_logo.png";
-import HOMEBELL from "../../assets/home/home_bell.png";
-import HOMEMALE from "../../assets/home/home_male.png";
-import HOMEFEMALE from "../../assets/home/home_female.png";
-import HOMEPAW from "../../assets/home/home_paw.png";
-import HOMEWALKEDBUTTON from "../../assets/home/home_walked_button.png";
-import HOMEBROWNPAW from "../../assets/home/home_brown_paw.png";
-import HOMEPINKARROW from "../../assets/home/home_pink_arrow.png";
-import HOMESTAR from "../../assets/home/home_star.png";
-import HOMEDOWNARROW from "../../assets/home/home_down_arrow.png";
-import HOMEPREVIOUS200 from "../../assets/home/home_previous_200.png";
-import HOMEPREVIOUS500 from "../../assets/home/home_previous_500.png";
-import HOMENEXT200 from "../../assets/home/home_next_200.png";
-import HOMENEXT500 from "../../assets/home/home_next_500.png";
-import HOMENEXTBROWN from "../../assets/home/home_next_brown.png";
+import HOMELOGO from "../../assets/home/home_logo.svg";
+import HOMEBELL from "../../assets/home/home_bell.svg";
+import HOMEMALE from "../../assets/home/home_male.svg";
+import HOMEFEMALE from "../../assets/home/home_female.svg";
+import HOMEPAW from "../../assets/home/home_paw.svg";
+import HOMEWALKEDBUTTON from "../../assets/home/home_walked_button.svg";
+import HOMEBROWNPAW from "../../assets/home/home_brown_paw.svg";
+import HOMEPINKARROW from "../../assets/home/home_pink_arrow.svg";
+import HOMESTAR from "../../assets/home/home_star.svg";
+import HOMEDOWNARROW from "../../assets/home/home_down_arrow.svg";
+import HOMEPREVIOUS200 from "../../assets/home/home_previous_200.svg";
+import HOMEPREVIOUS500 from "../../assets/home/home_previous_500.svg";
+import HOMENEXT200 from "../../assets/home/home_next_200.svg";
+import HOMENEXT500 from "../../assets/home/home_next_500.svg";
+import HOMENEXTBROWN from "../../assets/home/home_next_brown.svg";
+import HOMECAMERA from "../../assets/home/home_camera.svg";
+import HOMEGET from "../../assets/home/home_get.svg";
 
 // 임시 사진
-import HOMEDOG from "../../assets/home/home_dog.png";
-import HOMECAT from "../../assets/home/home_cat.png";
-import TEMPDISEASE from "../../assets/home/home_temp_disease.png";
+import TEMPDISEASE from "../../assets/home/home_temp_disease.svg";
 
-// 서버로부터 받아와야할 정보
-let petList = [
-  {
-    img: HOMEDOG,
-    sex: 'male',
-    neuter: true,
-    name: '누룽지',
-    breed: '시고르자브종',
-    age: 5,
-    weight: 5.6,
-    todayWalked: 34356,
-    weekWalked: [30000, 20000, 10000, 40000, 50000, 0, 0],
-    recentDistance: 12.4,
-    recentWalked: 30346,
-    checkRecord: [
-      {
-        month: 4,
-        day: 15,
-        disease: "강아지 피부병1 (Dog Skin Disease1)",
-        petAge: 5,
-      },
-      {
-        month: 4,
-        day: 15,
-        disease: "강아지 피부병2 (Dog Skin Disease2)",
-      },
-    ]
-  },
-  {
-    img: HOMEDOG,
-    sex: 'male',
-    neuter: true,
-    name: '누룽지2',
-    breed: '시고르자브종',
-    age: 3,
-    weight: 3.6,
-    todayWalked: 14356,
-    weekWalked: [10000, 40000, 10000, 30000, 50000, 0, 0],
-    recentDistance: 12.4,
-    recentWalked: 30346,
-    checkRecord: [
-      {
-        month: 4,
-        day: 15,
-        disease: "강아지 피부병1 (Dog Skin Disease1)",
-        petAge: 5,
-      },
-      {
-        month: 4,
-        day: 15,
-        disease: "강아지 피부병2 (Dog Skin Disease2)",
-      },
-    ]
-  },
-  {
-    img: HOMECAT,
-    sex: 'female',
-    neuter: false,
-    name: '야옹이',
-    breed: '고양이',
-    age: 4,
-    weight: 3.6,
-    todayWalked: 24356,
-    weekWalked: [10000, 50000, 10000, 40000, 50000, 0, 0],
-    recentDistance: 11.4,
-    recentWalked: 20346,
-    checkRecord: [
-
-    ]
-  },
-]
+// 임시 변수 불러오기
+import { petList } from "./data/petList";
 
 const weekLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
 export default function Home() {
+  const navigate = useNavigate();
   const [isPetSelectOpen, setIsPetSelectOpen] = useState(false);
   const [currentPetIndex, setCurrentPetIndex] = useState(0);
   const currentPet = petList[currentPetIndex];
@@ -122,11 +55,39 @@ export default function Home() {
         petAge: petList[selectedRecordPetIndex].age,
         diseaseImg: TEMP_DISEASE_IMAGE,
       }));
-
   const maxWeekWalked = Math.max(...currentPet.weekWalked, 1);
-
   const isFirstPet = currentPetIndex === 0;
   const isLastPet = currentPetIndex === petList.length - 1;
+  const [isDiagnosisPetSheetOpen, setIsDiagnosisPetSheetOpen] = useState(false);
+  const [selectedDiagnosisPet, setSelectedDiagnosisPet] = useState(null);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const { state } = useLocation();
+  const selectedPet = state?.pet;
+  const fileInputRef = useRef(null);
+  const isMobileDevice = () => {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  };
+  const isMobile = isMobileDevice();
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+  const handleImportChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      navigate("/diseasecheck", {
+        state: {
+          pet: selectedDiagnosisPet,
+          image: reader.result,
+        },
+      });
+    };
+
+    reader.readAsDataURL(file);
+  };
 
   return (
     <div className="home-wrapper">
@@ -141,7 +102,9 @@ export default function Home() {
               <button
                 className="home-pet-profile-arrow left"
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
+
                   if (!isFirstPet) {
                     setCurrentPetIndex(currentPetIndex - 1);
                   }
@@ -156,7 +119,8 @@ export default function Home() {
               <button
                 className="home-pet-profile-arrow right"
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   if (!isLastPet) {
                     setCurrentPetIndex(currentPetIndex + 1);
                   }
@@ -168,8 +132,7 @@ export default function Home() {
                 />
               </button>
             </>
-            {/* 임시 애완동물 사진
-              <img src={petImg} /> */}
+            {/* 임시 애완동물 사진 */}
             <img className="home-pet-image" src={currentPet.img} />
             <div className="home-pet-profile-detail">
               <div className="home-pet-detail-top">
@@ -193,11 +156,12 @@ export default function Home() {
               </p>
               <img src={HOMEPAW} />
             </div>
-            <div className="home-pet-profile-chart">
+            <div className="home-pet-profile-chart"
+              onClick={() => navigate(`/weeklyactive/${currentPet.id}`)}
+            >
               <div className="home-chart-bars">
                 {currentPet.weekWalked.map((walked, index) => {
                   const barHeight = `${Math.max((walked / maxWeekWalked) * 100, 8)}%`;
-
                   return (
                     <div className="home-chart-bar-wrap" key={`bar-${index}`}>
                       <div className="home-chart-bar" style={{ height: barHeight }} />
@@ -224,8 +188,9 @@ export default function Home() {
           <div className="home-pet-walked">
             <div className="home-pet-walked-top">
               <span>최근 산책 기록</span>
-              <button type="button">
-                <img src={HOMEWALKEDBUTTON}/>
+              <button type="button"
+                onClick={() => navigate("/walkedresult")}>
+                <img src={HOMEWALKEDBUTTON} />
               </button>
             </div>
             <span className="home-pet-distance">{currentPet.recentDistance}</span>
@@ -238,7 +203,8 @@ export default function Home() {
           <div className="home-pet-disease-check">
             <p>피부 질환 체크하기</p>
             <span className="home-pet-disease-check-span">{"사진 한장으로 빠르게\nAI가 피부 질환을 진단해요!"}</span>
-            <div className="home-pet-go-check">
+            <div className="home-pet-go-check"
+              onClick={() => setIsDiagnosisPetSheetOpen(true)}>
               <span>진단하기</span>
               <img src={HOMEPINKARROW} />
             </div>
@@ -279,15 +245,12 @@ export default function Home() {
                     }}
                   >
                     <span className="home-pet-select-modal-all">전체</span>
-
                     {selectedRecordPetIndex === null && (
                       <span className="home-pet-select-modal-check">✓</span>
                     )}
                   </button>
-
                   {petList.map((pet, index) => {
                     const isSelected = selectedRecordPetIndex === index;
-
                     return (
                       <button
                         className="home-pet-select-modal-item"
@@ -325,16 +288,13 @@ export default function Home() {
                       <img src={record.diseaseImg} alt={record.disease} />
                     )}
                   </div>
-
                   <div className="home-ai-record-content">
                     <span className="home-ai-record-date">
                       {record.month}.{record.day}
                     </span>
-
                     <span className="home-ai-record-disease">
                       {record.disease}
                     </span>
-
                     <span className="home-ai-record-pet-info">
                       {record.petName} | {record.petBreed} | {record.petAge}살
                     </span>
@@ -348,14 +308,145 @@ export default function Home() {
                 <strong>첫 진단을 시작해보세요!</strong>
                 <span>사진 한 장으로 피부질환을 알려드릴게요</span>
               </div>
-
               <button className="home-without-record-button" type="button">
-                <img src={HOMENEXTBROWN} alt="진단 시작" />
+                <img src={HOMENEXTBROWN} alt="진단 시작"
+                  onClick={() => setIsDiagnosisPetSheetOpen(true)}
+                />
               </button>
             </div>
           )}
         </div>
       </div>
+      {isDiagnosisPetSheetOpen && (
+        <div
+          className="home-diagnosis-overlay"
+          onClick={() => setIsDiagnosisPetSheetOpen(false)}
+        >
+          <div
+            className="home-diagnosis-sheet"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="home-diagnosis-title">어떤 친구를 진단할까요?</p>
+
+            <div className="home-diagnosis-pet-list">
+              {petList.map((pet) => {
+                const isSelected = selectedDiagnosisPet?.id === pet.id;
+
+                return (
+                  <button
+                    type="button"
+                    key={pet.id}
+                    className={`home-diagnosis-pet-card ${isSelected ? "selected" : ""}`}
+                    onClick={() => setSelectedDiagnosisPet(pet)}
+                  >
+                    <div className="home-diagnosis-card-top">
+                      <img
+                        className="home-diagnosis-sex"
+                        src={pet.sex === "male" ? HOMEMALE : HOMEFEMALE}
+                        alt={pet.sex}
+                      />
+                      <span className="home-diagnosis-is-neuter">{pet.neuter ? "중성화 완료" : "중성화 미완료"}</span>
+                    </div>
+
+                    <div className="home-diagnosis-card-main">
+                      <img
+                        className="home-diagnosis-pet-img"
+                        src={pet.img}
+                        alt={pet.name}
+                      />
+                      <div>
+                        <strong>{pet.name}</strong>
+                        <span className="home-diagnosis-breed">{pet.breed}</span>
+                        <span className="home-diagnosis-age-weight">{pet.age}세 | {pet.weight}kg</span>
+                      </div>
+                    </div>
+
+                    <div className="home-diagnosis-allergy-list">
+                      {pet.allergic?.slice(0, 3).map((item) => (
+                        <span key={item}>{item}</span>
+                      ))}
+
+                      {pet.allergic?.length > 3 && (
+                        <span>...</span>
+                      )}
+                    </div>
+                    <span className="home-diagnosis-more-info">자세히 보기 &gt; </span>
+                  </button>
+                );
+              })}
+
+              <button
+                type="button"
+                className="home-diagnosis-add-card"
+                onClick={() => {
+                  setSelectedDiagnosisPet(null);
+                  setIsDiagnosisPetSheetOpen(false);
+                  // 반려동물 등록 페이지로 이동
+                  // navigate("mypage");
+                }}
+              >
+                <span>+</span>
+                <p>다른 친구를<br />진단하고 싶어요!</p>
+              </button>
+            </div>
+
+            <button
+              type="button"
+              className="home-diagnosis-complete"
+              disabled={!selectedDiagnosisPet}
+              onClick={() => {
+                if (!selectedDiagnosisPet) return;
+                setIsDiagnosisPetSheetOpen(false);
+                setIsPhotoModalOpen(true);
+              }}
+            >
+              완료
+            </button>
+          </div>
+        </div>
+      )}
+      {isPhotoModalOpen && (
+        <div
+          className="home-photo-overlay"
+          onClick={() => setIsPhotoModalOpen(false)}
+        >
+          <div
+            className="home-photo-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {isMobile && (
+              <button
+                type="button"
+                onClick={() => {
+                  navigate("/camera", {
+                    state: {
+                      pet: selectedDiagnosisPet,
+                    },
+                  });
+                }}
+              >
+                <img src={HOMECAMERA} />
+                사진 찍기
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={handleImportClick}
+            >
+              <img src={HOMEGET} />
+              가져오기
+            </button>
+          </div>
+        </div>
+      )}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleImportChange}
+      />
     </div >
   );
 }
