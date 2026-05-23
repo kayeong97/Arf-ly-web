@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
 import BottomTabBar from "../../components/BottomTabBar";
-import { getMapDetail, getMapList, getMapPhotoBlob } from "./mapApi";
+import { getMapDetail, getMapList, getMapPhotoBlob } from "./MapApi.js";
 
 import "./MapPage.css";
 
