@@ -224,7 +224,7 @@ const Find = () => {
     const response = await fetch(`${API_BASE_URL}/auth/id/find`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${firebaseToken}`,
+        "X-FirebaseToken": firebaseToken,
       },
     });
 
@@ -248,7 +248,7 @@ const Find = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${firebaseToken}`,
+        "X-FirebaseToken": firebaseToken,
       },
       body: JSON.stringify({ userId }),
     });
