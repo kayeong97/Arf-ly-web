@@ -44,34 +44,34 @@
 }
 
 .home-pet-profile {
-  width: 100%;
-  aspect-ratio: 1.5/ 1.2;
-  background-color: var(--common-white);
-  border-radius: 20px;
-  padding: 16px 18px 18px;
-  box-sizing: border-box;
+    width: 100%;
+    height: 380px;
+    background-color: var(--common-white);
+    border-radius: 20px;
+    padding: 16px 18px 18px;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
 .home-pet-profile-top {
-  position: relative;
-  height: 13vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 60px;
+    position: relative;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
 }
 
 .home-pet-profile-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-
-  border: 0;
-  background-color: transparent;
-  padding: 0;
-  line-height: 0;
-  cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+    line-height: 0;
+    cursor: pointer;
 }
 
 .home-pet-profile-arrow.left {
@@ -166,8 +166,8 @@
 }
 
 .home-pet-profile-bottom {
-  margin-top: 18px;
-  height: 17vh;
+    margin-top: 18px;
+    height: 170px;
 }
 
 .home-walk {
@@ -178,12 +178,11 @@
 }
 
 .home-today-walked {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--common-black);
-  line-height: 1;
-  font-family: "Pretendard", sans-serif;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--common-black);
+    line-height: 1;
 }
 
 .home-walk img {
@@ -198,13 +197,13 @@
 }
 
 .home-pet-profile-chart {
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background-color: #f8f7f6;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background);
 }
 
 .home-chart-bars {
@@ -278,21 +277,20 @@
 }
 
 .home-pet-walked {
-  background-color: white;
-  border-radius: 20px;
-  padding: 15px 15px;
-  flex: 0 0 auto;
+    background-color: var(--common-white);
+    border-radius: 20px;
+    padding: 15px 15px;
+    flex: 0 0 auto;
 }
 
 .home-pet-walked-top {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--common-black);
-  line-height: 1;
-  font-family: "Pretendard", sans-serif;
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--common-black);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
 }
 
 .home-pet-walked-top button {
@@ -311,110 +309,324 @@
 }
 
 .home-pet-distance {
-  font-family: "Pretendard", sans-serif;
-  color: var(--primary-500);
-  font-weight: 700;
-  font-size: 40px;
+    color: var(--primary-500);
+    font-weight: 700;
+    font-size: 40px;
 }
 
 .home-pet-distance-unit {
-  font-family: "Pretendard", sans-serif;
-  color: var(--common-black);
-  font-weight: 700;
-  font-size: 18px;
+    color: var(--common-black);
+    font-weight: 700;
+    font-size: 18px;
 }
 
 .home-pet-recent-walk {
-  font-family: "Pretendard", sans-serif;
-  color: var(--common-black);
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 5px;
+    color: var(--common-black);
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
 }
 
 .home-pet-disease-check {
-  position: relative;
-  flex: 1;
-  border-radius: 20px;
-  padding: 15px 15px;
-  background-image: url("../../assets/home/home_ai_background.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+    position: relative;
+    flex: 1;
+    border-radius: 20px;
+    padding: 15px 15px;
+    background-image: url("../../assets/home/home_ai_background.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .home-pet-disease-check p {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--common-white);
-  line-height: 1;
-  font-family: "Pretendard", sans-serif;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--common-white);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .home-pet-disease-check-span {
-  white-space: pre-wrap;
-  color: var(--common-white);
-  font-family: "Pretendard", sans-serif;
-  font-size: 18px;
+    white-space: pre-wrap;
+    color: var(--primary-50);
+    font-size: 18px;
 }
 
 .home-pet-go-check {
-  position: absolute;
-  right: 15px;
-  bottom: 15px;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 25px;
+    background-color: var(--common-white);
+    font-size: 18px;
+    font-weight: 600;
+    padding: 5px 8px;
+    cursor: pointer;
+}
 
-  width: fit-content;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+.home-diagnosis-overlay,
+.home-photo-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
 
-  border-radius: 25px;
-  background-color: var(--common-white);
-  font-family: "Pretendard", sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 5px 8px;
-  cursor: pointer;
+.home-diagnosis-sheet {
+    width: 100%;
+    max-width: 600px;
+    height: 480px;
+    background-color: var(--background);
+    border-radius: 28px 28px 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-diagnosis-title {
+    margin: 30px 30px;
+    font-size: 25px;
+    font-weight: 500;
+    color: var(--common-black);
+}
+
+.home-diagnosis-pet-list {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    padding: 0 0 20px;
+    margin-left: 30px;
+    scroll-snap-type: x mandatory;
+    box-sizing: border-box;
+}
+
+.home-diagnosis-pet-list::before,
+.home-diagnosis-pet-list::after {
+    display: none;
+}
+
+.home-diagnosis-pet-list::-webkit-scrollbar {
+    display: none;
+}
+
+.home-diagnosis-pet-card,
+.home-diagnosis-add-card {
+    flex: 0 0 310px;
+    min-height: 250px;
+    border: 3px solid transparent;
+    border-radius: 20px;
+    background-color: var(--common-white);
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    margin-bottom: 15px;
+}
+
+.home-diagnosis-pet-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 20px 15px;
+}
+
+.home-diagnosis-pet-card.selected {
+    border-color: var(--secondary-700);
+}
+
+.home-diagnosis-card-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.home-diagnosis-sex {
+    width: 32px;
+    height: 32px;
+}
+
+.home-diagnosis-is-neuter {
+    font-size: 18px;
+    padding: 5px 11px;
+    background-color: var(--background);
+    border-radius: 25px;
+    color: var(--common-black);
+}
+
+.home-diagnosis-card-main {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.home-diagnosis-pet-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.home-diagnosis-card-main div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.home-diagnosis-card-main strong {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--common-black);
+}
+
+.home-diagnosis-breed {
+    font-size: 18px;
+    color: var(--common-black);
+    line-height: 1;
+}
+
+.home-diagnosis-age-weight {
+    font-size: 18px;
+    color: var(--gray-warm-500);
+}
+
+.home-diagnosis-allergy-list {
+    display: flex;
+    gap: 4px;
+    flex-wrap: nowrap;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.home-diagnosis-allergy-list span {
+    padding: 4px 7px;
+    border-radius: 999px;
+    background-color: var(--gray-warm-200);
+    font-size: 18px;
+    color: var(--common-black);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.home-diagnosis-add-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.home-diagnosis-add-card span {
+    font-size: 70px;
+    color: var(--primary-500);
+}
+
+.home-diagnosis-add-card p {
+    margin: 8px 0 0;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.35;
+    color: var(--common-black);
+}
+
+.home-diagnosis-more-info {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    font-size: 18px;
+    color: var(--gray-warm-400);
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.home-diagnosis-complete {
+    width: 100%;
+    height: 90px;
+    border: 0;
+    background-color: var(--secondary-700);
+    color: var(--common-white);
+    font-size: 20px;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: auto;
+    cursor: pointer;
+}
+
+.home-diagnosis-complete:disabled {
+    background-color: var(--secondary-700);
+}
+
+.home-photo-modal {
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--common-white);
+    border-radius: 24px 24px 0 0;
+    padding: 18px 20px 34px;
+    box-sizing: border-box;
+}
+
+.home-photo-modal button {
+    width: 100%;
+    height: 80px;
+    border: 0;
+    border-bottom: 1px solid var(--gray-warm-200);
+    background-color: transparent;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--common-black);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.home-photo-modal button:last-child {
+    border-bottom: 0;
 }
 
 .home-iot {
-  margin-top: 20px;
-  padding: 15px 15px;
-  width: 100%;
-  height: 150px;
-  border-radius: 20px;
-  box-sizing: border-box;
-  background-image: url("../../assets/home/home_iot_background.png");
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
+    margin-top: 20px;
+    padding: 15px 15px;
+    width: 100%;
+    height: 150px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background-image: url("../../assets/home/home_iot_background.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .home-iot-first-p {
-  margin: 0;
-  white-space: pre-wrap;
-  font-family: "Pretendard", sans-serif;
-  line-height: 1.5;
-  font-size: 25px;
-  font-weight: 700;
-  color: var(--common-black);
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--common-black);
 }
 
 .home-iot-second-p {
-  margin: 0;
-  margin-top: 10px;
-  font-family: "Pretendard", sans-serif;
-  line-height: 1.5;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--common-black);
-  cursor: pointer;
+    margin: 0;
+    margin-top: 10px;
+    line-height: 1.5;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--gray-warm-700);
+    cursor: pointer;
 }
 
 .home-middle-line {
@@ -433,15 +645,14 @@
 }
 
 .home-ai-record-tab-text {
-  margin-top: 30px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--common-black);
-  line-height: 1;
-  font-family: "Pretendard", sans-serif;
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--common-black);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
 }
 
 .home-ai-record-tab-text img {
@@ -459,10 +670,9 @@
 }
 
 .home-pet-select {
-  color: var(--common-black);
-  font-family: "Pretendard", sans-serif;
-  font-weight: 400;
-  cursor: pointer;
+    color: var(--common-black);
+    font-weight: 400;
+    cursor: pointer;
 }
 
 .home-pet-select img {
@@ -492,17 +702,16 @@
 }
 
 .home-pet-select-modal-item {
-  width: 100%;
-  min-height: 60px;
-  border: 0;
-  border-bottom: 1px solid var(--gray-warm-200);
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
-  font-family: "Pretendard", sans-serif;
-  cursor: pointer;
+    width: 100%;
+    min-height: 60px;
+    border: 0;
+    border-bottom: 1px solid var(--gray-warm-200);
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    cursor: pointer;
 }
 
 .home-pet-select-modal-all {
@@ -598,19 +807,17 @@
 }
 
 .home-without-record-list {
-  margin-top: 10px;
-  width: 100%;
-  min-height: 120px;
-  padding: 24px 22px;
-  box-sizing: border-box;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  background-color: color-mix(in srgb, var(--primary-50) 50%, transparent);
-  border: 1.5px dashed var(--secondary-700);
-  border-radius: 24px;
+    margin-top: 10px;
+    width: 100%;
+    min-height: 120px;
+    padding: 24px 22px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--primary-50);
+    border: 1.5px dashed var(--secondary-700);
+    border-radius: 24px;
 }
 
 .home-without-record-text {
@@ -645,42 +852,474 @@
 }
 
 .home-without-record-button img {
-  width: 40px;
-  height: 40px;
-  display: block;
+    width: 40px;
+    height: 40px;
+    display: block;
+    background-color: var(--common-white);
+    border-radius: 50px;
 }
 
-/* 이용약관 */
-.home-terms-overlay {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 600px;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  z-index: 1000;
-}
+@media (max-width: 430px) {
+    .home-wrapper {
+        padding: 0 8px 92px;
+    }
 
-.home-terms-content {
-  width: 100%;
-  max-width: 600px;
-  height: 85vh;
-  background-color: var(--background);
-  border-radius: 20px 20px 0 0;
-  overflow: hidden;
-  animation: slideUp 0.3s ease-out;
-}
+    .home-top {
+        height: 64px;
+        padding: 0 8px;
+        margin-bottom: 8px;
+    }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+    .home-top img:first-child {
+        width: 62px;
+        height: auto;
+    }
+
+    .home-top img:last-child {
+        width: 25px;
+        height: 25px;
+    }
+
+    .home-middle {
+        max-width: none;
+        padding: 0;
+        gap: 10px;
+    }
+
+    .home-pet-profile {
+        width: 100%;
+        height: 345px;
+        border-radius: 12px;
+        padding: 14px 16px 12px;
+    }
+
+    .home-pet-profile-top {
+        height: 118px;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .home-pet-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .home-pet-profile-arrow img {
+        width: 32px;
+    }
+
+    .home-pet-profile-detail {
+        margin-top: 0;
+        gap: 6px;
+        height: 100%;
+        width: 118px;
+    }
+
+    .home-pet-detail-top {
+        gap: 4px;
+    }
+
+    .home-pet-detail-top img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .home-pet-detail-top span {
+        width: 84px;
+        height: 24px;
+        font-size: 13px;
+        padding: 2px 0;
+    }
+
+    .home-pet-name {
+        margin: 0;
+        font-size: 28px;
+    }
+
+    .home-pet-breed {
+        font-size: 16px;
+    }
+
+    .home-pet-detail-bottom {
+        font-size: 10px;
+        gap: 0;
+    }
+
+    .home-pet-profile-bottom {
+        height: 102px;
+        margin-top: 10px;
+    }
+
+    .home-walk {
+        margin-top: 22px;
+        gap: 3px;
+        margin-bottom: 12px;
+    }
+
+    .home-today-walked {
+        font-size: 15px;
+        line-height: 1.1;
+    }
+
+    .home-walk img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .home-pet-profile-chart {
+        height: 137px;
+        border-radius: 12px;
+    }
+
+    .home-chart-bars {
+        padding: 7px 12px 0;
+        gap: 10px;
+    }
+
+    .home-chart-label-row {
+        height: 20px;
+        padding: 0 12px;
+        gap: 10px;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .home-chart-label {
+        margin-top: 0px;
+        font-size: 14px;
+    }
+
+    .home-walked-and-disease {
+        margin-top: 10px;
+        gap: 10px;
+    }
+
+    .home-pet-walked,
+    .home-pet-disease-check {
+        height: 141px;
+        border-radius: 12px;
+        padding: 12px;
+        box-sizing: border-box;
+    }
+
+    .home-pet-walked {
+        width: 154px;
+    }
+
+    .home-pet-walked-top {
+        font-size: 16px;
+        margin-bottom: 24px;
+        line-height: 1;
+    }
+
+    .home-pet-walked-top button {
+        margin-left: auto;
+        padding: 0;
+    }
+
+    .home-pet-walked-top button img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .home-pet-distance {
+        font-size: 40px;
+        line-height: 1;
+    }
+
+    .home-pet-distance-unit {
+        font-size: 16px;
+    }
+
+    .home-pet-recent-walk {
+        margin-top: 8px;
+        gap: 5px;
+        font-size: 14px;
+    }
+
+    .home-pet-recent-walk img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .home-pet-disease-check {
+        overflow: hidden;
+    }
+
+    .home-pet-disease-check p {
+        display: block;
+        font-size: 16px;
+        line-height: 1.25;
+        margin-bottom: 8px;
+    }
+
+    .home-pet-disease-check-span {
+        display: block;
+        width: 130px;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.35;
+    }
+
+    .home-pet-go-check {
+        width: 80px;
+        height: 25px;
+        right: 9px;
+        bottom: 10px;
+        font-size: 16px;
+        padding: 5px 9px;
+    }
+
+    .home-pet-go-check img {
+        width: 16px;
+    }
+
+    .home-iot {
+        margin-top: 10px;
+        height: 122px;
+        border-radius: 12px;
+        padding: 14px 12px;
+        background-position: center right;
+    }
+
+    .home-iot-first-p {
+        font-size: 20px;
+        line-height: 1.45;
+    }
+
+    .home-iot-second-p {
+        margin-top: 4px;
+        font-size: 12px;
+    }
+
+    .home-middle-line {
+        width: calc(100% + 16px);
+        height: 6px;
+    }
+
+    .home-ai-record-tab {
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .home-ai-record-tab-text {
+        margin-top: 16px;
+        margin-bottom: 14px;
+        font-size: 16px;
+    }
+
+    .home-ai-record-tab-text img {
+        width: 19.2px;
+        margin-left: 16px;
+    }
+
+    .home-pet-select {
+        width: 65px;
+        max-width: 82px;
+        min-width: 0;
+        height: 30px;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: 0 8px;
+        gap: 4px;
+    }
+
+    .home-pet-select span {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    .home-pet-select img {
+        width: 16px;
+    }
+
+    .home-ai-record-list {
+        gap: 20px;
+        margin-left: 12px;
+    }
+
+    .home-ai-record-item {
+        gap: 10px;
+        height: 80px;
+    }
+
+    .home-ai-record-image {
+        width: 90px;
+        height: 90px;
+    }
+
+    .home-ai-record-date {
+        font-size: 12px;
+    }
+
+    .home-ai-record-disease {
+        margin-top: 15px;
+        font-size: 20px;
+    }
+
+    .home-ai-record-pet-info {
+        margin-top: 5px;
+        font-size: 12px;
+        margin-bottom: 9px;
+    }
+
+    .home-without-record-list {
+        min-height: 96px;
+    }
+
+    .home-without-record-text {
+        gap: 0;
+    }
+
+    .home-without-record-text strong {
+        font-size: 20px;
+        margin: 0;
+    }
+
+    .home-without-record-text span {
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .home-without-record-button {
+        height: 30px;
+        width: 30px;
+    }
+
+    .home-diagnosis-overlay {
+        background-color: rgba(0, 0, 0, 0.45);
+        align-items: flex-end;
+    }
+
+    .home-diagnosis-sheet {
+        width: 100%;
+        max-width: none;
+        height: 350px;
+        border-radius: 20px 20px 0 0;
+        background-color: var(--background);
+    }
+
+    .home-diagnosis-title {
+        margin: 22px 22px;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+
+    .home-diagnosis-pet-list {
+        gap: 14px;
+        margin-left: 20px;
+        padding: 0 22px 18px;
+    }
+
+    .home-diagnosis-pet-list::before,
+    .home-diagnosis-pet-list::after {
+        flex: 0 0 18px;
+    }
+
+    .home-diagnosis-pet-card,
+    .home-diagnosis-add-card {
+        flex: 0 0 215px;
+        min-height: 175px;
+        height: 175px;
+        border-width: 1.5px;
+        border-radius: 18px;
+        margin-bottom: 0;
+    }
+
+    .home-diagnosis-pet-card {
+        padding: 10px;
+        padding-top: 15px;
+        padding-left: 17px;
+        height: 175px;
+    }
+
+    .home-diagnosis-card-top {
+        gap: 4px;
+    }
+
+    .home-diagnosis-sex {
+        width: 24px;
+        height: 24px;
+    }
+
+    .home-diagnosis-is-neuter {
+        font-size: 12px;
+        padding: 4px 7px;
+    }
+
+    .home-diagnosis-card-main {
+        gap: 7px;
+        margin-top: 8px;
+        align-items: flex-start;
+    }
+
+    .home-diagnosis-pet-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .home-diagnosis-card-main div {
+        min-width: 0;
+        gap: 4px;
+    }
+
+    .home-diagnosis-card-main strong {
+        font-size: 16px;
+        line-height: 1.15;
+    }
+
+    .home-diagnosis-breed,
+    .home-diagnosis-age-weight {
+        font-size: 12px;
+        line-height: 1.15;
+    }
+
+    .home-diagnosis-breed {
+        max-width: 78px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .home-diagnosis-allergy-list {
+        gap: 4px;
+        margin-top: 12px;
+    }
+
+    .home-diagnosis-allergy-list span {
+        font-size: 12px;
+        padding: 3px 6px;
+    }
+
+    .home-diagnosis-more-info {
+        margin-top: 12px;
+        font-size: 12px;
+    }
+
+    .home-diagnosis-add-card span {
+        font-size: 50px;
+    }
+
+    .home-diagnosis-add-card p {
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+    .home-diagnosis-complete {
+        height: 72px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .home-photo-modal {
+        height: 195px;
+    }
+
+    .home-photo-modal button {
+        font-size: 16px;
+    }
 }
