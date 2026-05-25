@@ -287,14 +287,11 @@ const Signup = () => {
       termsOfServiceAgreed: agreements[key],
     }));
 
-    const phoneNumber = "+82" + phone.replace(/-/g, "").substring(1);
-
     const payload = {
       userId: id,
       password: password,
       token: {
-        tokenId: authToken,
-        phoneNumber: phoneNumber,
+        token: authToken,
       },
       userAgreements: userAgreements,
     };
