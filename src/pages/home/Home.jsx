@@ -55,12 +55,12 @@ export default function Home() {
           })),
         )
       : petList[selectedRecordPetIndex].checkRecord.map((record) => ({
-        ...record,
-        petName: petList[selectedRecordPetIndex].name,
-        petBreed: petList[selectedRecordPetIndex].breed,
-        petAge: petList[selectedRecordPetIndex].age,
-        diseaseImg: TEMP_DISEASE_IMAGE,
-      }));
+          ...record,
+          petName: petList[selectedRecordPetIndex].name,
+          petBreed: petList[selectedRecordPetIndex].breed,
+          petAge: petList[selectedRecordPetIndex].age,
+          diseaseImg: TEMP_DISEASE_IMAGE,
+        }));
   const maxWeekWalked = Math.max(...currentPet.weekWalked, 1);
   const isFirstPet = currentPetIndex === 0;
   const isLastPet = currentPetIndex === petList.length - 1;
@@ -247,7 +247,8 @@ export default function Home() {
               </p>
               <img src={HOMEPAW} />
             </div>
-            <div className="home-pet-profile-chart"
+            <div
+              className="home-pet-profile-chart"
               onClick={() => navigate(`/weeklyactive/${currentPet.id}`)}
             >
               <div className="home-chart-bars">
@@ -283,8 +284,7 @@ export default function Home() {
           <div className="home-pet-walked">
             <div className="home-pet-walked-top">
               <span>최근 산책 기록</span>
-              <button type="button"
-                onClick={() => navigate("/walkedresult")}>
+              <button type="button" onClick={() => navigate("/walkedresult")}>
                 <img src={HOMEWALKEDBUTTON} />
               </button>
             </div>
@@ -299,9 +299,13 @@ export default function Home() {
           </div>
           <div className="home-pet-disease-check">
             <p>피부 질환 체크하기</p>
-            <span className="home-pet-disease-check-span">{"사진 한장으로 빠르게\nAI가 피부 질환을 진단해요!"}</span>
-            <div className="home-pet-go-check"
-              onClick={() => setIsDiagnosisPetSheetOpen(true)}>
+            <span className="home-pet-disease-check-span">
+              {"사진 한장으로 빠르게\nAI가 피부 질환을 진단해요!"}
+            </span>
+            <div
+              className="home-pet-go-check"
+              onClick={() => setIsDiagnosisPetSheetOpen(true)}
+            >
               <span>진단하기</span>
               <img src={HOMEPINKARROW} />
             </div>
@@ -411,7 +415,9 @@ export default function Home() {
                 <span>사진 한 장으로 피부질환을 알려드릴게요</span>
               </div>
               <button className="home-without-record-button" type="button">
-                <img src={HOMENEXTBROWN} alt="진단 시작"
+                <img
+                  src={HOMENEXTBROWN}
+                  alt="진단 시작"
                   onClick={() => setIsDiagnosisPetSheetOpen(true)}
                 />
               </button>
@@ -447,7 +453,9 @@ export default function Home() {
                         src={pet.sex === "male" ? HOMEMALE : HOMEFEMALE}
                         alt={pet.sex}
                       />
-                      <span className="home-diagnosis-is-neuter">{pet.neuter ? "중성화 완료" : "중성화 미완료"}</span>
+                      <span className="home-diagnosis-is-neuter">
+                        {pet.neuter ? "중성화 완료" : "중성화 미완료"}
+                      </span>
                     </div>
 
                     <div className="home-diagnosis-card-main">
@@ -458,8 +466,12 @@ export default function Home() {
                       />
                       <div>
                         <strong>{pet.name}</strong>
-                        <span className="home-diagnosis-breed">{pet.breed}</span>
-                        <span className="home-diagnosis-age-weight">{pet.age}세 | {pet.weight}kg</span>
+                        <span className="home-diagnosis-breed">
+                          {pet.breed}
+                        </span>
+                        <span className="home-diagnosis-age-weight">
+                          {pet.age}세 | {pet.weight}kg
+                        </span>
                       </div>
                     </div>
 
@@ -468,11 +480,11 @@ export default function Home() {
                         <span key={item}>{item}</span>
                       ))}
 
-                      {pet.allergic?.length > 3 && (
-                        <span>...</span>
-                      )}
+                      {pet.allergic?.length > 3 && <span>...</span>}
                     </div>
-                    <span className="home-diagnosis-more-info">자세히 보기 &gt; </span>
+                    <span className="home-diagnosis-more-info">
+                      자세히 보기 &gt;{" "}
+                    </span>
                   </button>
                 );
               })}
@@ -488,7 +500,11 @@ export default function Home() {
                 }}
               >
                 <span>+</span>
-                <p>다른 친구를<br />진단하고 싶어요!</p>
+                <p>
+                  다른 친구를
+                  <br />
+                  진단하고 싶어요!
+                </p>
               </button>
             </div>
 
@@ -532,10 +548,7 @@ export default function Home() {
               </button>
             )}
 
-            <button
-              type="button"
-              onClick={handleImportClick}
-            >
+            <button type="button" onClick={handleImportClick}>
               <img src={HOMEGET} />
               가져오기
             </button>
@@ -549,6 +562,16 @@ export default function Home() {
         style={{ display: "none" }}
         onChange={handleImportChange}
       />
-    </div >
+      {showTerms && (
+        <div className="home-terms-overlay">
+          <div className="home-terms-content">
+            <Terms
+              onComplete={handleTermsComplete}
+              onClose={() => setShowTerms(false)}
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
