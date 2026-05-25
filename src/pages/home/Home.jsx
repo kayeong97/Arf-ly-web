@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Home.css";
 import Terms from "../auth/Signup/Terms";
+import BottomTabBar from "../../components/BottomTabBar.jsx";
 
 const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
 
@@ -572,6 +573,7 @@ export default function Home() {
           </div>
         </div>
       )}
+      <BottomTabBar></BottomTabBar>
     </div>
   );
 }
