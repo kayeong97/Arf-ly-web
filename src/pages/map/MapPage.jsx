@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
 import BottomTabBar from "../../components/BottomTabBar";
@@ -11,25 +11,35 @@ import pinPinkIcon from "../../assets/map/pin_pink.svg";
 import pinIcon from "../../assets/map/pin.svg";
 import returnIcon from "../../assets/map/return.svg";
 import timeIcon from "../../assets/map/time.svg";
+import markerPinkIcon from "../../assets/map/marker_pink.svg";
+import markerBrownIcon from "../../assets/map/marker_brown.svg";
+import exitIcon from "../../assets/map/exit.svg";
 
-/* 더미 데이터 (백엔드 개발 후, 추후 api 반영 예정) */
 const DEFAULT_LOCATION = {
 	address: "경상북도 경산시 대학로 280 (대동)",
 	lat: 35.8327,
 	lng: 128.7574,
 };
 
-const getFirstPhotoName = (imageUrl) => {
+const getPhotoNames = (imageUrl) => {
 	if (Array.isArray(imageUrl)) {
-		return imageUrl[0] || "";
+		return imageUrl.filter((photoName) => photoName);
 	}
 
-	return imageUrl || "";
+	if (imageUrl) {
+		return [imageUrl];
+	}
+
+	return [];
 };
 
 function MapPage() {
 	const [hospitals, setHospitals] = useState([]);
 	const [selectedHospital, setSelectedHospital] = useState(null);
+
+	const [isListExpanded, setIsListExpanded] = useState(false);
+	const touchStartY = useRef(0);
+	const isDraggingSheet = useRef(false);
 
 	const [baseAddress, setBaseAddress] = useState(DEFAULT_LOCATION.address);
 	const [baseCenter, setBaseCenter] = useState({
@@ -49,22 +59,8 @@ function MapPage() {
 	});
 
 	useEffect(() => {
-		fetchBaseLocation();
 		fetchHospitals();
 	}, []);
-
-	const fetchBaseLocation = async () => {
-		/* 더미 데이터 (백엔드 개발 후, 추후 api 반영 예정) */
-		setBaseAddress(DEFAULT_LOCATION.address);
-		setBaseCenter({
-			lat: DEFAULT_LOCATION.lat,
-			lng: DEFAULT_LOCATION.lng,
-		});
-		setCenter({
-			lat: DEFAULT_LOCATION.lat,
-			lng: DEFAULT_LOCATION.lng,
-		});
-	};
 
 	const fetchHospitals = async () => {
 		try {
@@ -72,23 +68,33 @@ function MapPage() {
 
 			const data = await getMapList();
 
-			if (!Array.isArray(data)) {
-				console.error("병원 목록 형식 오류", data);
+			const hospitalList = Array.isArray(data) ? data : data?.hospitals;
+
+			if (!Array.isArray(hospitalList)) {
 				setHospitals([]);
 				return;
 			}
 
-			setHospitals(data);
+			const userCenter = {
+				lat: Number(data?.latitude) || DEFAULT_LOCATION.lat,
+				lng: Number(data?.longitude) || DEFAULT_LOCATION.lng,
+			};
+			setBaseAddress(data?.roadAddress || DEFAULT_LOCATION.address);
 
-			if (data.length > 0) {
-				setCenter({
-					lat: Number(data[0].latitude),
-					lng: Number(data[0].longitude),
-				});
-			}
+			setBaseCenter(userCenter);
+			setCenter(userCenter);
+			setHospitals(hospitalList);
 		} catch (error) {
-			console.error("병원 목록 조회 실패", error);
 			setHospitals([]);
+			setBaseAddress(DEFAULT_LOCATION.address);
+			setBaseCenter({
+				lat: DEFAULT_LOCATION.lat,
+				lng: DEFAULT_LOCATION.lng,
+			});
+			setCenter({
+				lat: DEFAULT_LOCATION.lat,
+				lng: DEFAULT_LOCATION.lng,
+			});
 		} finally {
 			setIsLoading(false);
 		}
@@ -101,6 +107,7 @@ function MapPage() {
 				lng: Number(hospital.longitude),
 			});
 
+			setIsListExpanded(false);
 			setIsDetailMode(true);
 			setSelectedHospital(hospital);
 
@@ -111,8 +118,7 @@ function MapPage() {
 				...detailData,
 			});
 		} catch (error) {
-			console.error("병원 상세 조회 실패", error);
-
+			setIsListExpanded(false);
 			setSelectedHospital(hospital);
 			setIsDetailMode(true);
 		}
@@ -121,7 +127,52 @@ function MapPage() {
 	const handleReturnClick = () => {
 		setSelectedHospital(null);
 		setIsDetailMode(false);
+		setIsListExpanded(false);
 		setCenter(baseCenter);
+	};
+
+	const handleCloseDetail = () => {
+		setSelectedHospital(null);
+		setIsDetailMode(false);
+		setIsListExpanded(false);
+		setCenter(baseCenter);
+	};
+
+	const handleSheetPointerDown = (event) => {
+		touchStartY.current = event.clientY;
+		isDraggingSheet.current = false;
+
+		if (event.currentTarget.setPointerCapture) {
+			event.currentTarget.setPointerCapture(event.pointerId);
+		}
+	};
+
+	const handleSheetPointerMove = (event) => {
+		if (isDetailMode) {
+			return;
+		}
+
+		const dragDistance = touchStartY.current - event.clientY;
+
+		if (Math.abs(dragDistance) > 8) {
+			isDraggingSheet.current = true;
+		}
+
+		if (dragDistance > 15) {
+			setIsListExpanded(true);
+		}
+
+		if (dragDistance < -15) {
+			setIsListExpanded(false);
+		}
+	};
+
+	const handleSheetHandleClick = () => {
+		if (isDetailMode || isDraggingSheet.current) {
+			return;
+		}
+
+		setIsListExpanded((prev) => !prev);
 	};
 
 	const getCurrentAddress = () => {
@@ -129,7 +180,7 @@ function MapPage() {
 			return selectedHospital.roadAddress;
 		}
 
-		return baseAddress;
+		return baseAddress || DEFAULT_LOCATION.address;
 	};
 
 	if (loadError) {
@@ -164,6 +215,16 @@ function MapPage() {
 					gestureHandling: "greedy",
 				}}
 			>
+				{baseCenter && (
+					<Marker
+						position={baseCenter}
+						icon={{
+							url: markerPinkIcon,
+							scaledSize: new window.google.maps.Size(46, 46),
+							anchor: new window.google.maps.Point(23, 46),
+						}}
+					/>
+				)}
 				{hospitals.map((hospital) => (
 					<Marker
 						key={hospital.id}
@@ -172,9 +233,9 @@ function MapPage() {
 							lng: Number(hospital.longitude),
 						}}
 						icon={{
-							url: pinPinkIcon,
-							scaledSize: new window.google.maps.Size(42, 42),
-							anchor: new window.google.maps.Point(21, 42),
+							url: markerBrownIcon,
+							scaledSize: new window.google.maps.Size(46, 46),
+							anchor: new window.google.maps.Point(23, 46),
 						}}
 						onClick={() => handleHospitalClick(hospital)}
 					/>
@@ -209,13 +270,23 @@ function MapPage() {
 				className={
 					isDetailMode
 						? "map_bottom_sheet detail"
-						: "map_bottom_sheet list"
+						: isListExpanded
+							? "map_bottom_sheet list expanded"
+							: "map_bottom_sheet list"
 				}
 			>
-				<div className="bottom_sheet_handle" />
+				<div
+					className="bottom_sheet_handle"
+					onPointerDown={handleSheetPointerDown}
+					onPointerMove={handleSheetPointerMove}
+					onClick={handleSheetHandleClick}
+				/>
 
 				{isDetailMode && selectedHospital ? (
-					<HospitalDetail hospital={selectedHospital} />
+					<HospitalDetail
+						hospital={selectedHospital}
+						onClose={handleCloseDetail}
+					/>
 				) : (
 					<HospitalList
 						hospitals={hospitals}
@@ -263,7 +334,7 @@ function HospitalList({ hospitals, isLoading, onHospitalClick }) {
 						onClick={() => onHospitalClick(hospital)}
 					>
 						<HospitalImage
-							photoName={getFirstPhotoName(hospital.imageUrl)}
+							photoName={getPhotoNames(hospital.imageUrl)[0]}
 							alt={hospital.hospitalName}
 							className="hospital_card_image"
 						/>
@@ -291,23 +362,36 @@ function HospitalList({ hospitals, isLoading, onHospitalClick }) {
 	);
 }
 
-function HospitalDetail({ hospital }) {
+function HospitalDetail({ hospital, onClose }) {
 	return (
 		<div className="hospital_detail_area">
 			<div className="hospital_detail_title_row">
-				<h1>{hospital.hospitalName}</h1>
+				<div className="hospital_detail_title_group">
+					<h1>{hospital.hospitalName}</h1>
 
-				<span className="open_badge">
-					{hospital.opened ? "영업 중" : "영업 종료"}
-				</span>
+					<span className="open_badge">
+						{hospital.opened ? "영업 중" : "영업 종료"}
+					</span>
+				</div>
+
+				<button
+					type="button"
+					className="hospital_detail_close_button"
+					onClick={onClose}
+					aria-label="상세 정보 닫기"
+				>
+					<img
+						src={exitIcon}
+						alt=""
+						className="hospital_detail_close_icon"
+					/>
+				</button>
 			</div>
 
-			<HospitalImage
-				photoName={getFirstPhotoName(hospital.imageUrl)}
+			<HospitalImageList
+				imageUrl={hospital.imageUrl}
 				alt={hospital.hospitalName}
-				className="hospital_detail_image"
 			/>
-
 			<div className="hospital_detail_info">
 				<div className="hospital_detail_row">
 					<img
@@ -317,7 +401,6 @@ function HospitalDetail({ hospital }) {
 					/>
 					<p>{hospital.roadAddress}</p>
 				</div>
-
 				<div className="hospital_detail_row">
 					<img
 						src={timeIcon}
@@ -329,7 +412,6 @@ function HospitalDetail({ hospital }) {
 						{hospital.operationTime || "운영시간 정보 없음"}
 					</p>
 				</div>
-
 				<div className="hospital_detail_row">
 					<img
 						src={phoneIcon}
@@ -343,11 +425,38 @@ function HospitalDetail({ hospital }) {
 	);
 }
 
+function HospitalImageList({ imageUrl, alt }) {
+	const photoNames = getPhotoNames(imageUrl);
+
+	if (photoNames.length === 0) {
+		return (
+			<div
+				className="hospital_detail_image hospital_image_empty"
+				aria-label="병원 이미지 없음"
+			/>
+		);
+	}
+
+	return (
+		<div className="hospital_detail_image_list">
+			{photoNames.map((photoName) => (
+				<HospitalImage
+					key={photoName}
+					photoName={photoName}
+					alt={alt}
+					className="hospital_detail_image"
+				/>
+			))}
+		</div>
+	);
+}
+
 function HospitalImage({ photoName, alt, className }) {
 	const [imageSrc, setImageSrc] = useState("");
 
 	useEffect(() => {
 		let isActive = true;
+		let objectUrl = "";
 
 		const fetchImage = async () => {
 			try {
@@ -363,11 +472,9 @@ function HospitalImage({ photoName, alt, className }) {
 					return;
 				}
 
-				const imageUrl = URL.createObjectURL(blob);
-				setImageSrc(imageUrl);
+				objectUrl = URL.createObjectURL(blob);
+				setImageSrc(objectUrl);
 			} catch (error) {
-				console.error("병원 사진 조회 실패", error);
-
 				if (isActive) {
 					setImageSrc("");
 				}
@@ -378,6 +485,10 @@ function HospitalImage({ photoName, alt, className }) {
 
 		return () => {
 			isActive = false;
+
+			if (objectUrl) {
+				URL.revokeObjectURL(objectUrl);
+			}
 		};
 	}, [photoName]);
 

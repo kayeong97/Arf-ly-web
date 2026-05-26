@@ -44,7 +44,7 @@
 
 	padding: 0 28px;
 	box-sizing: border-box;
-	z-index: 20;
+	z-index: 30;
 }
 
 .map_address_box {
@@ -99,6 +99,8 @@
 	justify-content: center;
 
 	flex-shrink: 0;
+	position: relative;
+	z-index: 31;
 }
 
 .map_return_icon {
@@ -128,6 +130,10 @@
 	height: 330px;
 }
 
+.map_bottom_sheet.list.expanded {
+	height: 560px;
+}
+
 .map_bottom_sheet.detail {
 	height: 580px;
 }
@@ -139,6 +145,9 @@
 	margin: 0 auto 26px;
 	border-radius: 999px;
 	background-color: var(--gray-warm-300);
+
+	cursor: pointer;
+	touch-action: none;
 }
 
 .hospital_list_area {
@@ -173,6 +182,11 @@
 	box-sizing: border-box;
 
 	scrollbar-width: none;
+}
+
+.map_bottom_sheet.list.expanded .hospital_card_list {
+	height: calc(100% - 42px);
+	padding-bottom: 80px;
 }
 
 .hospital_card_list::-webkit-scrollbar {
@@ -280,7 +294,8 @@
 .hospital_detail_title_row {
 	display: flex;
 	align-items: center;
-	gap: 13px;
+	justify-content: space-between;
+	gap: 12px;
 
 	margin-bottom: 24px;
 }
@@ -294,7 +309,10 @@
 	line-height: 1.2;
 	letter-spacing: -1.1px;
 
-	word-break: keep-all;
+	min-width: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .hospital_detail_image {
@@ -356,4 +374,54 @@
 	font-weight: 600;
 	line-height: 1.45;
 	letter-spacing: -0.3px;
+}
+
+.hospital_detail_title_group {
+	display: flex;
+	align-items: center;
+	gap: 13px;
+	min-width: 0;
+	flex: 1;
+}
+
+.hospital_detail_close_button {
+	width: 32px;
+	height: 32px;
+
+	border: none;
+	background: transparent;
+	padding: 0;
+	cursor: pointer;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	flex-shrink: 0;
+}
+
+.hospital_detail_close_icon {
+	width: 24px;
+	height: 24px;
+	display: block;
+}
+
+.hospital_detail_image_list {
+	display: flex;
+	gap: 12px;
+
+	overflow-x: auto;
+	margin-bottom: 24px;
+
+	scrollbar-width: none;
+}
+
+.hospital_detail_image_list::-webkit-scrollbar {
+	display: none;
+}
+
+.hospital_detail_image_list .hospital_detail_image {
+	width: calc(100% - 54px);
+	min-width: calc(100% - 54px);
+	margin-bottom: 0;
 }
