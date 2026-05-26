@@ -1,8 +1,156 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import MYPAGELOGO from "../../assets/home/home_logo.svg";
+import MYPAGEBELL from "../../assets/home/home_bell.svg";
+import MYPAGENEXTARROW from "../../assets/mypage/mypage_next_arrow.svg";
+import MYPAGEMAPMARK from "../../assets/mypage/mypage_map_mark.svg";
+import MYPAGENOTICE from "../../assets/mypage/mypage_notice.svg";
+import MYPAGEQUESTION from "../../assets/mypage/mypage_question.svg";
+import MYPAGESERVICE from "../../assets/mypage/mypage_service.svg";
+import MYPAGEIOT from "../../assets/mypage/mypage_iot.svg";
+
+import MYPAGEMALE from "../../assets/home/home_male.svg";
+import MYPAGEFEMALE from "../../assets/home/home_female.svg";
+
+import "./MyPage.css";
+import BottomTabBar from "../../components/BottomTabBar.jsx";
+
+// 임시 변수 불러오기
+import { userInfo } from "./data/userInfo.jsx";
+import { petList } from "../home/data/petList.jsx";
+
 export default function MyPage() {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <h1>마이페이지</h1>
-      <p>배포 테스트</p>
+    <div className="mypage-wrapper">
+      <div className="mypage-top">
+        <img src={MYPAGELOGO} />
+        <img src={MYPAGEBELL} />
+      </div>
+      <div className="mypage-user-info">
+        <img src={userInfo.profileImg} />
+        <div className="mypage-user-info-detail">
+          <div className="mypage-user-info-detail-nickname">
+            <span>{userInfo.nickname} </span>
+            <span>님</span>
+            <img src={MYPAGENEXTARROW} />
+          </div>
+          <div className="mypage-user-info-detail-address">
+            <img src={MYPAGEMAPMARK} />
+            <span>{userInfo.roadAddress}</span>
+          </div>
+        </div>
+      </div>
+      <div className="mypage-user-activites">
+        <div className="mypage-user-activites-diagnosis">
+          <span>{userInfo.recordCount}</span>
+          <span>진단기록</span>
+        </div>
+        <div className="mypage-user-activites-post">
+          <span>{userInfo.postCount}</span>
+          <span>게시글</span>
+        </div>
+        <div className="mypage-user-activites-comment">
+          <span>{userInfo.commentCount}</span>
+          <span>댓글</span>
+        </div>
+        <div className="mypage-user-activites-dibs">
+          <span>{userInfo.dibsCount}</span>
+          <span>찜</span>
+        </div>
+      </div>
+      <div className="mypage-user-pet-info">
+        <div className="mypage-pet-list">
+          {petList.map((pet) => {
+            return (
+              <button
+                type="button"
+                key={pet.id}
+                className="mypage-pet-card"
+                onClick={() => setSelectedDiagnosisPet(pet)}
+              >
+                <div className="mypage-pet-card-top">
+                  <img
+                    className="mypage-pet-sex"
+                    src={pet.sex === "male" ? MYPAGEMALE : MYPAGEFEMALE}
+                    alt={pet.sex}
+                  />
+                  <span className="mypage-pet-is-neuter">
+                    {pet.neuter ? "중성화 완료" : "중성화 미완료"}
+                  </span>
+                </div>
+
+                <div className="mypage-pet-card-main">
+                  <img
+                    className="mypage-pet-img"
+                    src={pet.img}
+                    alt={pet.name}
+                  />
+                  <div>
+                    <strong>{pet.name}</strong>
+                    <span className="mypage-pet-breed">{pet.breed}</span>
+                    <span className="mypage-pet-age-weight">
+                      {pet.age}세 | {pet.weight}kg
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mypage-pet-allergy-list">
+                  {pet.allergic?.slice(0, 3).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+
+                  {pet.allergic?.length > 3 && <span>...</span>}
+                </div>
+                <span className="mypage-pet-more-info">자세히 보기 &gt; </span>
+              </button>
+            );
+          })}
+
+          <button
+            type="button"
+            className="mypage-pet-add-card"
+          >
+            <span>+</span>
+            <p>반려동물 더 키워요!</p>
+          </button>
+        </div>
+      </div>
+      <div className="mypage-medicine">
+        <div className="mypage-medicine-register">
+          <span>
+            아플리와 함께
+            <br />
+            복약관리를 시작해요!
+          </span>
+          <span>약 등록하고 알림받기</span>
+        </div>
+      </div>
+      <div className="mypage-tab">
+        <div onClick={() => navigate("/iotregister")}>
+          <img src={MYPAGEIOT} />
+          <span>기기등록</span>
+        </div>
+        <div>
+          <img src={MYPAGENOTICE} />
+          <span>공지사항</span>
+        </div>
+        <div>
+          <img src={MYPAGEQUESTION} />
+          <span>문의사항</span>
+        </div>
+        <div>
+          <img src={MYPAGESERVICE} />
+          <span>고객센터</span>
+        </div>
+      </div>
+      <div className="mypage-bottom">
+        <span>로그아웃</span>
+        <span>회원탈퇴</span>
+      </div>
+      <BottomTabBar></BottomTabBar>
     </div>
   );
 }

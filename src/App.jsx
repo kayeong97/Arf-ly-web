@@ -14,6 +14,7 @@ import Find from "./pages/auth/Find/Find";
 import Community from "./pages/community/Community";
 
 import MyPage from "./pages/mypage/MyPage";
+import IoTRegister from "./pages/mypage/IotRegisteration/IoTRegister.jsx";
 
 import MapPage from "./pages/map/MapPage";
 import PetRegister from "./pages/pet/PetRegister";
@@ -40,6 +41,7 @@ function App() {
       {/* 마이페이지 관련 */}
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/pet/register" element={<PetRegister />} />
+      <Route path="/iotregister" element={<IoTRegister />} />
       {/* 지도 관련 */}
       <Route path="/map" element={<MapPage />} />
     </Routes>
