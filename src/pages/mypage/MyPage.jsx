@@ -22,7 +22,6 @@ import { petList } from "../home/data/petList.jsx";
 
 export default function MyPage() {
   const navigate = useNavigate();
-  const [selectedDiagnosisPet, setSelectedDiagnosisPet] = useState(null);
 
   return (
     <div className="mypage-wrapper">
@@ -65,7 +64,6 @@ export default function MyPage() {
       <div className="mypage-user-pet-info">
         <div className="mypage-pet-list">
           {petList.map((pet) => {
-            const isSelected = selectedDiagnosisPet?.id === pet.id;
             return (
               <button
                 type="button"
@@ -114,12 +112,6 @@ export default function MyPage() {
           <button
             type="button"
             className="mypage-pet-add-card"
-            onClick={() => {
-              setSelectedDiagnosisPet(null);
-              setIsDiagnosisPetSheetOpen(false);
-              // 반려동물 등록 페이지로 이동
-              // navigate("mypage");
-            }}
           >
             <span>+</span>
             <p>반려동물 더 키워요!</p>

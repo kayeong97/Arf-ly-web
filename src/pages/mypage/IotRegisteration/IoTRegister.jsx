@@ -18,7 +18,7 @@ const IoTRegister = () => {
   const [wifiId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [picoUid, setPicoUid] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
