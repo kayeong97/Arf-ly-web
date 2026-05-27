@@ -432,7 +432,6 @@
 .home-diagnosis-sheet {
   width: 100%;
   max-width: 600px;
-  height: 480px;
   background-color: var(--background);
   border-radius: 28px 28px 0 0;
   display: flex;
@@ -742,7 +741,7 @@
   max-width: 600px;
   background-color: var(--common-white);
   border-radius: 28px 28px 0 0;
-  padding: 18px 26px 10px;
+  padding: 18px 26px 80px ;
   box-sizing: border-box;
 }
 
