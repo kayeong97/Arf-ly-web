@@ -88,4 +88,67 @@ export const searchPosts = async ({
 	return response.data;
 };
 
+export const getPostDetail = async (postId) => {
+	const response = await api.get(`/api/posts/${postId}`);
+	return response.data;
+};
+
+export const togglePostLike = async (postId) => {
+	const response = await api.post(`/api/posts/${postId}/likes`);
+	return response.data;
+};
+
+export const createComment = async ({
+	postId,
+	content,
+	mentionedUserIds = [],
+}) => {
+	const response = await api.post(`/api/posts/${postId}/comments`, {
+		content,
+		mentionedUserIds,
+	});
+
+	return response.data;
+};
+
+export const deletePost = async (postId) => {
+	const response = await api.delete(`/api/posts/${postId}`);
+	return response.data;
+};
+
+export const updatePost = async ({
+	postId,
+	title,
+	content,
+	files = [],
+	deleteFileIds = [],
+}) => {
+	const formData = new FormData();
+
+	const requestBody = {
+		title,
+		content,
+		deleteFileIds,
+	};
+
+	formData.append(
+		"request",
+		new Blob([JSON.stringify(requestBody)], {
+			type: "application/json",
+		})
+	);
+
+	files.forEach((file) => {
+		formData.append("files", file);
+	});
+
+	const response = await api.patch(`/api/posts/${postId}`, formData, {
+		headers: {
+			"Content-Type": "multipart/form-data",
+		},
+	});
+
+	return response.data;
+};
+
 export default api;
