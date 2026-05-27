@@ -23,7 +23,7 @@ export const getPostList = async ({ sort = "latest", cursor, size = 20 }) => {
 		size,
 	};
 
-	if (cursor) {
+	if (cursor !== undefined && cursor !== null) {
 		params.cursor = cursor;
 	}
 
@@ -60,6 +60,29 @@ export const createPost = async ({ title, content, files }) => {
 		headers: {
 			"Content-Type": "multipart/form-data",
 		},
+	});
+
+	return response.data;
+};
+
+export const searchPosts = async ({
+	keyword,
+	sort = "latest",
+	cursor,
+	size = 20,
+}) => {
+	const params = {
+		keyword,
+		sort,
+		size,
+	};
+
+	if (cursor !== undefined && cursor !== null) {
+		params.cursor = cursor;
+	}
+
+	const response = await api.get("/api/posts/search", {
+		params,
 	});
 
 	return response.data;
