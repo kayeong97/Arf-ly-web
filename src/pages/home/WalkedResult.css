@@ -1,712 +1,724 @@
 .walkedResult-wrapper {
-    width: 100%;
-    min-height: 100vh;
-    background-color: var(--background);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 0 8px 90px;
-    font-family: "Pretendard", sans-serif;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 8px 90px;
+  font-family: "Pretendard", sans-serif;
 }
 
 .walkedResult-top {
-    position: relative;
-    width: 100%;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .walkedResult-back-button {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 32px;
-    height: 32px;
-    border: 0;
-    background: transparent;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .walkedResult-back-button img {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .walkedResult-top span {
-    color: var(--common-black);
-    font-size: 14px;
-    font-weight: 700;
+  color: var(--common-black);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.walkedResult-state {
+  width: 100%;
+  padding: 80px 20px;
+  box-sizing: border-box;
+  color: var(--gray-neutral-600);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .walkedResult-undefined {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 18px;
-    box-sizing: border-box;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 18px;
+  box-sizing: border-box;
 }
 
 .walkedResult-undefined-top {
-    margin-top: 30px;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--common-black);
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    margin-bottom: 25px;
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--common-black);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
 .walkedResult-undefined-top img {
-    display: block;
-    margin-right: 10px;
+  display: block;
+  margin-right: 10px;
 }
 
 .walkedResult-undefined-list {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
-    scroll-snap-type: none;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  scroll-snap-type: none;
 }
 
 .walkedResult-undefined-list::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .walkedResult-undefined-elements,
 .walkedResult-undefined-elements-selection {
-    touch-action: pan-x;
+  touch-action: pan-x;
 }
 
 .walkedResult-undefined-elements {
-    flex: 0 0 194px;
-    width: 194px;
-    height: 222px;
-    background-color: var(--common-white);
-    border-radius: 20px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    scroll-snap-align: start;
+  flex: 0 0 194px;
+  width: 194px;
+  height: 222px;
+  background-color: var(--common-white);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
 }
 
 .walkedResult-undefined-elements-day {
-    margin: 18px 18px 0;
-    color: var(--gray-warm-500);
-    font-size: 12px;
-    font-weight: 500;
+  margin: 18px 18px 0;
+  color: var(--gray-warm-500);
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .walkedResult-undefined-elements-time {
-    margin: 6px 18px 0;
-    color: var(--common-black);
-    font-size: 18px;
-    font-weight: 500;
+  margin: 6px 18px 0;
+  color: var(--common-black);
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .walkedResult-undefined-elements-distance {
-    margin: 12px 18px 0;
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
+  margin: 12px 18px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
 .walkedResult-undefined-elements-distance span:first-child {
-    color: var(--primary-500);
-    font-size: 48px;
-    font-weight: 800;
-    line-height: 1;
+  color: var(--primary-500);
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .walkedResult-distance-em {
-    color: var(--common-black);
-    font-size: 18px;
-    font-weight: 800;
+  color: var(--common-black);
+  font-size: 18px;
+  font-weight: 800;
 }
 
 .walkedResult-undefined-elements-count {
-    margin: 10px 18px 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--common-black);
-    font-size: 16px;
-    font-weight: 500;
+  margin: 10px 18px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--common-black);
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .walkedResult-undefined-elements-count img {
-    width: 22px;
-    height: 22px;
+  width: 22px;
+  height: 22px;
 }
 
 .walkedResult-undefined-elements-selection {
-    margin-top: auto;
-    width: 100%;
-    height: 55px;
-    border: 0;
-    background-color: var(--primary-500);
-    color: var(--common-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
+  margin-top: auto;
+  width: 100%;
+  height: 55px;
+  border: 0;
+  background-color: var(--primary-500);
+  color: var(--common-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .walkedResult-undefined-elements-selection img {
-    width: 14px;
-    height: 14px;
+  width: 14px;
+  height: 14px;
 }
 
 .walkedResult-defined {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 18px;
-    box-sizing: border-box;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 18px;
+  box-sizing: border-box;
 }
 
 .walkedResult-defined-top {
-    margin-top: 30px;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--common-black);
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    margin-bottom: 25px;
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--common-black);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
 .walkedResult-defined-top img {
-    display: block;
-    margin-right: 10px;
+  display: block;
+  margin-right: 10px;
 }
 
 .walkedResult-undefined-empty {
-    width: 194px;
-    height: 222px;
-    background-color: var(--common-white);
-    border-radius: 16px;
-    padding: 12px 12px 14px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
+  width: 194px;
+  height: 222px;
+  background-color: var(--common-white);
+  border-radius: 16px;
+  padding: 12px 12px 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .walkedResult-undefined-empty img {
-    width: 125px;
-    height: 125px;
-    object-fit: contain;
-    align-self: center;
-    margin-top: 2px;
+  width: 125px;
+  height: 125px;
+  object-fit: contain;
+  align-self: center;
+  margin-top: 2px;
 }
 
 .walkedResult-undefined-empty-text {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .walkedResult-undefined-empty-text strong {
-    color: var(--gray-warm-500);
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1.2;
+  color: var(--gray-warm-500);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .walkedResult-undefined-empty-text span {
-    color: var(--gray-warm-500);
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.25;
+  color: var(--gray-warm-500);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.25;
 }
 
 .walkedResult-defined-filter {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .walkedResult-defined-filter button {
-    height: 34px;
-    padding: 0 18px;
-    border: 0;
-    border-radius: 999px;
-    background: var(--common-white);
-    color: var(--gray-warm-500);
-    font-size: 14px;
-    cursor: pointer;
+  height: 34px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--common-white);
+  color: var(--gray-warm-500);
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .walkedResult-defined-filter button.active {
-    border: 1px solid var(--secondary-700);
-    color: var(--common-black);
+  border: 1px solid var(--secondary-700);
+  color: var(--common-black);
 }
 
 .walkedResult-defined-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .walkedResult-defined-card {
-    height: 167px;
-    border-radius: 16px;
-    overflow: hidden;
-    background: var(--common-white);
-    display: flex;
+  height: 167px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--common-white);
+  display: flex;
 }
 
 .walkedResult-defined-card-content {
-    flex: 1;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  flex: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .walkedResult-defined-card-distance,
 .walkedResult-defined-card-count {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .walkedResult-defined-card-day {
-    margin: 18px 18px 0;
-    color: var(--gray-warm-500);
-    font-size: 12px;
-    font-weight: 500;
+  margin: 18px 18px 0;
+  color: var(--gray-warm-500);
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .walkedResult-defined-card-time {
-    margin: 6px 18px 0;
-    color: var(--common-black);
-    font-size: 18px;
-    font-weight: 500;
+  margin: 6px 18px 0;
+  color: var(--common-black);
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .walkedResult-defined-card-distance {
-    margin: 12px 18px 0;
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
+  margin: 12px 18px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
 .walkedResult-defined-card-distance span:first-child {
-    color: var(--primary-500);
-    font-size: 48px;
-    font-weight: 600;
-    line-height: 1;
+  color: var(--primary-500);
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .walkedResult-defined-card-distance span:nth-child(2) {
-    color: var(--common-black);
-    font-size: 18px;
-    font-weight: 600;
+  color: var(--common-black);
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .walkedResult-defined-card-distance em {
-    color: var(--common-black);
-    font-size: 18px;
-    font-weight: 800;
+  color: var(--common-black);
+  font-size: 18px;
+  font-weight: 800;
 }
 
 .walkedResult-defined-card-count {
-    margin: 10px 18px 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--common-black);
-    font-size: 16px;
-    font-weight: 500;
+  margin: 10px 18px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--common-black);
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .walkedResult-defined-card-pet {
-    width: 100px;
-    border: 0;
-    background: var(--secondary-700);
-    color: var(--common-white);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    font-size: 18px;
+  width: 100px;
+  border: 0;
+  background: var(--secondary-700);
+  color: var(--common-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 18px;
 }
 
 .walkedResult-defined-empty {
-    position: relative;
-    width: 100%;
-    min-height: 167px;
-    display: flex;
-    padding: 0 8px 0 4px;
-    box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  min-height: 167px;
+  display: flex;
+  padding: 0 8px 0 4px;
+  box-sizing: border-box;
 }
 
 .walkedResult-defined-empty-text {
-    margin: 18px 18px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  margin: 18px 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .walkedResult-defined-empty-text strong {
-    color: var(--common-black);
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 1;
+  color: var(--common-black);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .walkedResult-defined-empty-text span {
-    color: var(--gray-warm-700);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.6;
+  color: var(--gray-warm-700);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
-.walkedResult-defined-empty>img {
-    position: absolute;
-    left: 85%;
-    bottom: 0;
-    transform: translateX(-50%);
-    width: 130px;
-    height: 130px;
-    object-fit: contain;
+.walkedResult-defined-empty > img {
+  position: absolute;
+  left: 85%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
 }
 
 .walkedResult-pet-modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.55);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .walkedResult-pet-modal {
-    width: 100%;
-    height: 400px;
-    max-width: 600px;
-    background-color: var(--background);
-    border-radius: 20px 20px 0 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  height: 400px;
+  max-width: 600px;
+  background-color: var(--background);
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .walkedResult-pet-modal p {
-    margin: 0;
-    margin: 24px 18px 18px;
-    color: var(--common-black);
-    font-size: 25px;
-    font-weight: 500;
-    line-height: 1.35;
-    white-space: pre-line;
+  margin: 0;
+  margin: 24px 18px 18px;
+  color: var(--common-black);
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: pre-line;
 }
 
 .walkedResult-pet-modal-list {
-    --pet-modal-card-width: 120px;
-    --pet-modal-card-half: 60px;
-    --pet-modal-gap: 16px;
-    position: relative;
-    overflow: hidden;
-    height: 190px;
-    box-sizing: border-box;
+  --pet-modal-card-width: 120px;
+  --pet-modal-card-half: 60px;
+  --pet-modal-gap: 16px;
+  position: relative;
+  overflow: hidden;
+  height: 190px;
+  box-sizing: border-box;
 }
 
 .walkedResult-pet-modal-list::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .walkedResult-pet-modal-track {
-    position: absolute;
-    left: 50%;
-    bottom: 22px;
-    display: flex;
-    align-items: flex-end;
-    gap: var(--pet-modal-gap);
-    transition: transform 0.25s ease;
-    will-change: transform;
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--pet-modal-gap);
+  transition: transform 0.25s ease;
+  will-change: transform;
 }
 
 .walkedResult-pet-modal-item {
-    flex: 0 0 var(--pet-modal-card-width);
-    width: var(--pet-modal-card-width);
-    height: 170px;
-    border: 0;
-    background: transparent;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 30px;
-    cursor: pointer;
+  flex: 0 0 var(--pet-modal-card-width);
+  width: var(--pet-modal-card-width);
+  height: 170px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;
+  cursor: pointer;
 }
 
 .walkedResult-pet-modal-image-wrap {
-    width: 110px;
-    height: 120px;
-    background-color: transparent;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+  width: 110px;
+  height: 120px;
+  background-color: transparent;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .walkedResult-pet-modal-image-wrap img {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    object-fit: cover;
-    transform: scale(1.5);
-    transition: transform 0.18s ease;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  transform: scale(1.5);
+  transition: transform 0.18s ease;
 }
 
 .walkedResult-pet-modal-item.selected .walkedResult-pet-modal-image-wrap img {
-    transform: scale(2);
+  transform: scale(2);
 }
 
 .walkedResult-pet-modal-item img {
-    border-radius: 50%;
-    object-fit: cover;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .walkedResult-pet-modal-item span {
-    color: var(--gray-neutral-700);
-    font-size: 18px;
-    font-weight: 500;
-    white-space: nowrap;
-    line-height: 1;
-    transition: transform 0.18s ease, font-weight 0.18s ease;
+  color: var(--gray-neutral-700);
+  font-size: 18px;
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1;
+  transition:
+    transform 0.18s ease,
+    font-weight 0.18s ease;
 }
 
 .walkedResult-pet-modal-item.selected span {
-    color: var(--common-black);
-    font-weight: 700;
-    transform: translateY(14px);
+  color: var(--common-black);
+  font-weight: 700;
+  transform: translateY(14px);
 }
 
 .walkedResult-pet-modal-confirm {
-    margin-top: auto;
-    width: 100%;
-    height: 58px;
-    border: 0;
-    background-color: var(--secondary-700);
-    color: var(--common-white);
-    font-size: 20px;
-    font-weight: 500;
-    cursor: pointer;
-    flex-shrink: 0;
+  margin-top: auto;
+  width: 100%;
+  height: 58px;
+  border: 0;
+  background-color: var(--secondary-700);
+  color: var(--common-white);
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 @media (max-width: 430px) {
-    .walkedResult-undefined-top img {
-        width: 20px;
-    }
+  .walkedResult-undefined-top img {
+    width: 20px;
+  }
 
-    .walkedResult-undefined-top {
-        font-size: 16px;
-    }
+  .walkedResult-undefined-top {
+    font-size: 16px;
+  }
 
-    .walkedResult-undefined-elements {
-        flex: 0 0 166px;
-        height: 190px;
-    }
+  .walkedResult-undefined-elements {
+    flex: 0 0 166px;
+    height: 190px;
+  }
 
-    .walkedResult-undefined-elements-day {
-        margin: 13px 18px 0;
-        font-size: 10px;
-    }
+  .walkedResult-undefined-elements-day {
+    margin: 13px 18px 0;
+    font-size: 10px;
+  }
 
-    .walkedResult-undefined-elements-time {
-        margin: 3.72px 18px 0;
-        font-size: 14px;
-    }
+  .walkedResult-undefined-elements-time {
+    margin: 3.72px 18px 0;
+    font-size: 14px;
+  }
 
-    .walkedResult-undefined-elements-distance {
-        margin: 8px 18px 0;
-        gap: 0;
-    }
+  .walkedResult-undefined-elements-distance {
+    margin: 8px 18px 0;
+    gap: 0;
+  }
 
-    .walkedResult-undefined-elements-distance span:first-child {
-        font-size: 40px;
-    }
+  .walkedResult-undefined-elements-distance span:first-child {
+    font-size: 40px;
+  }
 
-    .walkedResult-distance-em {
-        font-size: 16px;
-    }
+  .walkedResult-distance-em {
+    font-size: 16px;
+  }
 
-    .walkedResult-undefined-elements-count {
-        margin: 8px 18px 0;
-        gap: 5px;
-        font-size: 14px;
-    }
+  .walkedResult-undefined-elements-count {
+    margin: 8px 18px 0;
+    gap: 5px;
+    font-size: 14px;
+  }
 
-    .walkedResult-undefined-elements-count img {
-        width: 17px;
-        height: 17px;
-    }
+  .walkedResult-undefined-elements-count img {
+    width: 17px;
+    height: 17px;
+  }
 
-    .walkedResult-undefined-elements-selection {
-        margin-top: 16px;
-        height: 53px;
-        font-size: 13px;
-    }
+  .walkedResult-undefined-elements-selection {
+    margin-top: 16px;
+    height: 53px;
+    font-size: 13px;
+  }
 
-    .walkedResult-defined-top {
-        font-size: 16px;
-        margin-bottom: 20px;
-    }
+  .walkedResult-defined-top {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
 
-    .walkedResult-defined-top img {
-        width: 20px;
-        height: 20px;
-    }
+  .walkedResult-defined-top img {
+    width: 20px;
+    height: 20px;
+  }
 
-    .walkedResult-undefined-empty {
-        width: 166px;
-        height: 190px;
-    }
+  .walkedResult-undefined-empty {
+    width: 166px;
+    height: 190px;
+  }
 
-    .walkedResult-undefined-empty img {
-        width: 105.47px;
-        height: 105.47px;
-    }
+  .walkedResult-undefined-empty img {
+    width: 105.47px;
+    height: 105.47px;
+  }
 
-    .walkedResult-undefined-empty-text {
-        gap: 0px;
-    }
+  .walkedResult-undefined-empty-text {
+    gap: 0px;
+  }
 
-    .walkedResult-undefined-empty-text strong {
-        font-size: 12px;
-    }
+  .walkedResult-undefined-empty-text strong {
+    font-size: 12px;
+  }
 
-    .walkedResult-undefined-empty-text span {
-        font-size: 12px;
-    }
+  .walkedResult-undefined-empty-text span {
+    font-size: 12px;
+  }
 
-    .walkedResult-defined-card {
-        height: 140px;
-    }
+  .walkedResult-defined-card {
+    height: 140px;
+  }
 
-    .walkedResult-defined-card-day {
-        margin: 11.36px 14px 0;
-        font-size: 10px;
-    }
+  .walkedResult-defined-card-day {
+    margin: 11.36px 14px 0;
+    font-size: 10px;
+  }
 
-    .walkedResult-defined-card-time {
-        font-size: 14px;
-        margin: 8px 14px 0;
-    }
+  .walkedResult-defined-card-time {
+    font-size: 14px;
+    margin: 8px 14px 0;
+  }
 
-    .walkedResult-defined-card-distance {
-        gap: 0px;
-        margin: 8px 14px 0;
-    }
+  .walkedResult-defined-card-distance {
+    gap: 0px;
+    margin: 8px 14px 0;
+  }
 
-    .walkedResult-defined-card-distance span:first-child {
-        font-size: 40px;
-    }
+  .walkedResult-defined-card-distance span:first-child {
+    font-size: 40px;
+  }
 
-    .walkedResult-defined-card-distance span:nth-child(2) {
-        font-size: 16px;
-    }
+  .walkedResult-defined-card-distance span:nth-child(2) {
+    font-size: 16px;
+  }
 
-    .walkedResult-defined-card-count {
-        gap: 5px;
-        margin: 8px 14px 0;
-        font-size: 14px;
-    }
+  .walkedResult-defined-card-count {
+    gap: 5px;
+    margin: 8px 14px 0;
+    font-size: 14px;
+  }
 
-    .walkedResult-defined-card-count img {
-        width: 17px;
-        height: 17px;
-    }
+  .walkedResult-defined-card-count img {
+    width: 17px;
+    height: 17px;
+  }
 
-    .walkedResult-defined-card-pet {
-        width: 74px;
-        font-size: 16px;
-    }
+  .walkedResult-defined-card-pet {
+    width: 74px;
+    font-size: 16px;
+  }
 
-    .walkedResult-defined-card-pet span{
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+  .walkedResult-defined-card-pet span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-    .walkedResult-defined-card-pet img:first-child {
-        width: 44px;
-        height: 44px;
-    }
+  .walkedResult-defined-card-pet img:first-child {
+    width: 44px;
+    height: 44px;
+  }
 
-    .walkedResult-defined-empty {
-        min-height: 145.28px;
-    }
+  .walkedResult-defined-empty {
+    min-height: 145.28px;
+  }
 
-    .walkedResult-defined-empty-text {
-        gap: 4px;
-        margin: 10px 7px 0;
-    }
+  .walkedResult-defined-empty-text {
+    gap: 4px;
+    margin: 10px 7px 0;
+  }
 
-    .walkedResult-defined-empty-text strong {
-        font-size: 20px;
-    }
+  .walkedResult-defined-empty-text strong {
+    font-size: 20px;
+  }
 
-    .walkedResult-defined-empty-text span {
-        font-size: 12px;
-    }
+  .walkedResult-defined-empty-text span {
+    font-size: 12px;
+  }
 
-    .walkedResult-defined-empty>img {
-        width: 98.34px;
-        height: 110.09px;
-        bottom: 11.62px;
-    }
+  .walkedResult-defined-empty > img {
+    width: 98.34px;
+    height: 110.09px;
+    bottom: 11.62px;
+  }
 
-    .walkedResult-pet-modal {
-        height: 430px;
-    }
+  .walkedResult-pet-modal {
+    height: 430px;
+  }
 
-    .walkedResult-pet-modal p {
-        margin: 35.22px 25.65px 0;
-        font-size: 24px;
-    }
+  .walkedResult-pet-modal p {
+    margin: 35.22px 25.65px 0;
+    font-size: 24px;
+  }
 
-    .walkedResult-pet-modal-list {
-        height: 172px;
-        margin-top: 35px;
-    }
+  .walkedResult-pet-modal-list {
+    height: 172px;
+    margin-top: 35px;
+  }
 
-    .walkedResult-pet-modal-list::-webkit-scrollbar {
-        display: none;
-    }
+  .walkedResult-pet-modal-list::-webkit-scrollbar {
+    display: none;
+  }
 
-    .walkedResult-pet-modal-item {
-        height: 160px;
-    }
+  .walkedResult-pet-modal-item {
+    height: 160px;
+  }
 
-    .walkedResult-pet-modal-image-wrap img {
-        width: 70px;
-        height: 70px;
-    }
+  .walkedResult-pet-modal-image-wrap img {
+    width: 70px;
+    height: 70px;
+  }
 }
