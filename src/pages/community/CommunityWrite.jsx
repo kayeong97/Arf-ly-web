@@ -53,7 +53,16 @@ function CommunityWrite() {
 	};
 
 	const isAllowedFile = (file) => {
-		return file.type.startsWith("image/") || file.type.startsWith("video/");
+		const allowedTypes = [
+			"image/png",
+			"image/jpeg",
+			"image/jpg",
+			"image/webp",
+			"video/mp4",
+			"video/quicktime",
+		];
+
+		return allowedTypes.includes(file.type);
 	};
 
 	const makePreviewItems = (targetFiles) => {
@@ -74,7 +83,9 @@ function CommunityWrite() {
 		const allowedFiles = selectedFiles.filter((file) => isAllowedFile(file));
 
 		if (allowedFiles.length !== selectedFiles.length) {
-			alert("이미지 또는 동영상 파일만 업로드할 수 있습니다.");
+			alert(
+				"이미지 또는 동영상 파일만 업로드할 수 있습니다."
+			);
 		}
 
 		const newFiles = allowedFiles.filter((selectedFile) => {
@@ -129,7 +140,7 @@ function CommunityWrite() {
 			});
 
 			navigate("/community");
-		} catch (error) {
+		} catch {
 			alert("게시글 작성에 실패했습니다.");
 		} finally {
 			setIsSubmitting(false);
@@ -162,87 +173,97 @@ function CommunityWrite() {
 				</button>
 			</header>
 
-			<main className="community_write_main">
-				<section className="community_write_field">
-					<textarea
-						className={`community_write_title_input ${
-							isSubmitted && isTitleEmpty ? "error" : ""
-						}`}
-						value={title}
-						onChange={handleTitleChange}
-						placeholder="제목을 입력해주세요."
-						maxLength={50}
-						rows={1}
+			{isSubmitting ? (
+				<main className="community_write_main">
+					<p className="community_write_state_text">
+						게시글을 업로드 중입니다.
+					</p>
+				</main>
+			) : (
+				<main className="community_write_main">
+					<section className="community_write_field">
+						<textarea
+							className={`community_write_title_input ${
+								isSubmitted && isTitleEmpty ? "error" : ""
+							}`}
+							value={title}
+							onChange={handleTitleChange}
+							placeholder="제목을 입력해주세요."
+							maxLength={50}
+							rows={1}
+						/>
+
+						{isSubmitted && isTitleEmpty && (
+							<p className="community_write_error_text">
+								* 제목을 입력해주세요
+							</p>
+						)}
+					</section>
+
+					<section className="community_write_field content">
+						<textarea
+							className={`community_write_content_input ${
+								isSubmitted && isContentEmpty ? "error" : ""
+							}`}
+							value={content}
+							onChange={(event) => setContent(event.target.value)}
+							placeholder={
+								"우리 아이의 이야기, 궁금한 점, 일상 등\n반려동물 이야기를 자유롭게 적어보세요."
+							}
+						/>
+
+						{isSubmitted && isContentEmpty && (
+							<p className="community_write_error_text">
+								* 내용을 입력해주세요
+							</p>
+						)}
+					</section>
+
+					<section className="community_write_file_section">
+						<button
+							className="community_write_file_add_button"
+							type="button"
+							onClick={handleFileButtonClick}
+						>
+							<img src={ImageIcon} alt="" />
+							<span>사진 추가</span>
+						</button>
+
+						{previewItems.map((item, index) => (
+							<div className="community_write_file_preview" key={item.url}>
+								{item.type === "image" ? (
+									<img src={item.url} alt={`첨부 이미지 ${index + 1}`} />
+								) : (
+									<video src={item.url} muted playsInline />
+								)}
+
+								{item.type === "video" && (
+									<span className="community_write_video_badge">
+										동영상
+									</span>
+								)}
+
+								<button
+									type="button"
+									onClick={() => handleRemoveFile(index)}
+									aria-label="파일 삭제"
+								>
+									<img src={ExitImageIcon} alt="" />
+								</button>
+							</div>
+						))}
+					</section>
+
+					<input
+						ref={fileInputRef}
+						className="community_write_file_input"
+						type="file"
+						accept="image/png,image/jpeg,image/jpg,image/webp,video/mp4,video/quicktime"
+						multiple
+						onChange={handleFileChange}
 					/>
-
-					{isSubmitted && isTitleEmpty && (
-						<p className="community_write_error_text">
-							* 제목을 입력해주세요
-						</p>
-					)}
-				</section>
-
-				<section className="community_write_field content">
-					<textarea
-						className={`community_write_content_input ${
-							isSubmitted && isContentEmpty ? "error" : ""
-						}`}
-						value={content}
-						onChange={(event) => setContent(event.target.value)}
-						placeholder={
-							"우리 아이의 이야기, 궁금한 점, 일상 등\n반려동물 이야기를 자유롭게 적어보세요."
-						}
-					/>
-
-					{isSubmitted && isContentEmpty && (
-						<p className="community_write_error_text">
-							* 내용을 입력해주세요
-						</p>
-					)}
-				</section>
-
-				<section className="community_write_file_section">
-					<button
-						className="community_write_file_add_button"
-						type="button"
-						onClick={handleFileButtonClick}
-					>
-						<img src={ImageIcon} alt="" />
-						<span>사진 추가</span>
-					</button>
-
-					{previewItems.map((item, index) => (
-						<div className="community_write_file_preview" key={item.url}>
-							{item.type === "image" ? (
-								<img src={item.url} alt={`첨부 이미지 ${index + 1}`} />
-							) : (
-								<video src={item.url} muted playsInline />
-							)}
-
-							{item.type === "video" && (
-								<span className="community_write_video_badge">동영상</span>
-							)}
-
-							<button
-								type="button"
-								onClick={() => handleRemoveFile(index)}
-								aria-label="파일 삭제"
-							>
-								<img src={ExitImageIcon} alt="" />
-							</button>
-						</div>
-					))}
-				</section>
-
-				<input
-					ref={fileInputRef}
-					className="community_write_file_input"
-					type="file"
-					accept="image/*,video/*"
-					multiple
-					onChange={handleFileChange}
-				/>
-			</main>
+				</main>
+			)}
 		</div>
 	);
 }
