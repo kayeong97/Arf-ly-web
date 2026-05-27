@@ -50,7 +50,7 @@ const format_created_at = (created_at) => {
 };
 
 const should_show_ad_banner = (index) => {
-	return index === 3 || (index > 3 && (index - 3) % 10 === 0);
+	return index === 2 || (index > 2 && (index - 2) % 10 === 0);
 };
 
 function CommunityThumbnailImage({ src, alt }) {
