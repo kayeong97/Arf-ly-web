@@ -88,6 +88,11 @@ export const searchPosts = async ({
 	return response.data;
 };
 
+export const deleteRecentSearch = async (keyword) => {
+	const response = await api.delete(`/api/search/recent/${keyword}`);
+	return response.data;
+};
+
 export const getPostDetail = async (postId) => {
 	const response = await api.get(`/api/posts/${postId}`);
 	return response.data;
