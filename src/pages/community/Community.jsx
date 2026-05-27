@@ -144,7 +144,6 @@ function Community() {
 
       set_meta(next_meta);
     } catch (error) {
-      console.error(error);
       set_error_message("게시글을 불러오지 못했습니다.");
     } finally {
       set_is_loading(false);
@@ -286,24 +285,13 @@ function Community() {
               url: thumbnail_url,
             }));
 
-            const api_total_media_count = Number(post.totalMediaCount) || 0;
-
-            const video_placeholder_count = Math.max(
-              api_total_media_count - thumbnail_urls.length,
-              post.hasVideo ? 1 : 0
-            );
-
-            Array.from({ length: video_placeholder_count }).forEach(() => {
+            if (post.hasVideo) {
               media_items.push({
                 type: "video",
               });
-            });
+            }
 
-            const total_media_count = Math.max(
-              api_total_media_count,
-              media_items.length
-            );
-
+            const total_media_count = media_items.length;
             const should_show_more = total_media_count > 3;
 
             const visible_media_items = should_show_more
