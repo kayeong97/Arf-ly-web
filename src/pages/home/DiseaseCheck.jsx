@@ -10,6 +10,8 @@ import DISEASECHECKMARK from "../../assets/home/diseaseCheck/diseaseCheck_mark.s
 import DISEASECHECKMALE from "../../assets/home/diseaseCheck/diseaseCheck_male.svg";
 import DISEASECHECKFEMALE from "../../assets/home/diseaseCheck/diseaseCheck_female.svg";
 import DISEASECHECKMAP from "../../assets/home/diseaseCheck/diseaseCheck_map.svg";
+import HOMEDOG from "../../assets/home/home_dog.svg";
+import HOMECAT from "../../assets/home/home_cat.svg";
 
 const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
 
@@ -37,6 +39,9 @@ const formatKoreanDate = (dateValue) => {
 
 const normalizeSex = (sex) =>
   String(sex).toUpperCase() === "FEMALE" ? "female" : "male";
+
+const getDefaultPetImage = (species) =>
+  String(species).toUpperCase() === "CAT" ? HOMECAT : HOMEDOG;
 
 const parseMaybeJson = (value) => {
   if (typeof value !== "string") return value;
@@ -255,14 +260,21 @@ export default function DiseaseCheck() {
     stateImage || report?.imageUrl || stateDiagnosis?.diseaseImg;
   const pet = report
     ? {
-        img: statePet?.img,
+        img:
+          statePet?.img ||
+          report.petImageUrl ||
+          report.petImageurl ||
+          getDefaultPetImage(report.species),
         sex: normalizeSex(report.sex),
         neuter: Boolean(report.neutered),
         name: report.petName,
         breed: report.breed,
+        species: report.species,
         age: getAgeFromBirth(report.birth),
         weight: report.weight,
-        allergic: statePet?.allergic || [],
+        allergic: Array.isArray(report.allergies)
+          ? report.allergies
+          : statePet?.allergic || [],
       }
     : statePet;
 
