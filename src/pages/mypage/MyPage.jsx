@@ -58,6 +58,7 @@ const getDefaultPetImage = (species) =>
   String(species).toUpperCase() === "CAT" ? HOMECAT : HOMEDOG;
 
 const normalizeUserInfo = (data) => ({
+  ...data,
   nickname: data?.nickname || "",
   roadAddress: data?.roadAddress || "",
   recordCount: Number(data?.diagnosisCounts ?? 0),
@@ -105,9 +106,7 @@ export default function MyPage() {
           fetchApiData("/api/pets"),
         ]);
 
-        const petSummaries = Array.isArray(petsData?.pets)
-          ? petsData.pets
-          : [];
+        const petSummaries = Array.isArray(petsData?.pets) ? petsData.pets : [];
         const nextPetList = await Promise.all(
           petSummaries.map(async (petSummary) => {
             const petId = petSummary.petId ?? petSummary.id;
@@ -149,7 +148,9 @@ export default function MyPage() {
           <img src={MYPAGELOGO} />
           <img src={MYPAGEBELL} />
         </div>
-        <div className="mypage-empty-state">마이페이지 정보를 불러오는 중입니다.</div>
+        <div className="mypage-empty-state">
+          마이페이지 정보를 불러오는 중입니다.
+        </div>
         <BottomTabBar></BottomTabBar>
       </div>
     );
@@ -180,7 +181,18 @@ export default function MyPage() {
           <div className="mypage-user-info-detail-nickname">
             <span>{userInfo.nickname} </span>
             <span>님</span>
-            <img src={MYPAGENEXTARROW} />
+            <img
+              src={MYPAGENEXTARROW}
+              onClick={() => {
+                navigate("/userprofile", {
+                  state: {
+                    userInfo,
+                    nickname: userInfo.nickname,
+                    address: userInfo.roadAddress,
+                  },
+                });
+              }}
+            />
           </div>
           <div className="mypage-user-info-detail-address">
             <img src={MYPAGEMAPMARK} />
@@ -210,11 +222,7 @@ export default function MyPage() {
         <div className="mypage-pet-list">
           {petList.map((pet) => {
             return (
-              <button
-                type="button"
-                key={pet.id}
-                className="mypage-pet-card"
-              >
+              <button type="button" key={pet.id} className="mypage-pet-card">
                 <div className="mypage-pet-card-top">
                   <img
                     className="mypage-pet-sex"
@@ -253,10 +261,7 @@ export default function MyPage() {
             );
           })}
 
-          <button
-            type="button"
-            className="mypage-pet-add-card"
-          >
+          <button type="button" className="mypage-pet-add-card">
             <span>+</span>
             <p>반려동물 더 키워요!</p>
           </button>

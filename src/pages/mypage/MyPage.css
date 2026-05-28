@@ -67,6 +67,7 @@
 .mypage-user-info-detail-nickname img {
     height: 25px;
     margin-left: 3px;
+    cursor: pointer;
 }
 
 .mypage-user-info-detail-address {
