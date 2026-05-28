@@ -58,6 +58,7 @@ const getDefaultPetImage = (species) =>
   String(species).toUpperCase() === "CAT" ? HOMECAT : HOMEDOG;
 
 const normalizeUserInfo = (data) => ({
+  ...data,
   nickname: data?.nickname || "",
   roadAddress: data?.roadAddress || "",
   recordCount: Number(data?.diagnosisCounts ?? 0),
@@ -183,7 +184,18 @@ export default function MyPage() {
           <div className="mypage-user-info-detail-nickname">
             <span>{userInfo.nickname} </span>
             <span>님</span>
-            <img src={MYPAGENEXTARROW} />
+            <img
+              src={MYPAGENEXTARROW}
+              onClick={() => {
+                navigate("/userprofile", {
+                  state: {
+                    userInfo,
+                    nickname: userInfo.nickname,
+                    address: userInfo.roadAddress,
+                  },
+                });
+              }}
+            />
           </div>
           <div className="mypage-user-info-detail-address">
             <img src={MYPAGEMAPMARK} />

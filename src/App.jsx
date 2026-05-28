@@ -20,6 +20,7 @@ import CommunityEdit from "./pages/community/CommunityEdit";
 import MyPage from "./pages/mypage/MyPage";
 import IoTRegister from "./pages/mypage/IotRegisteration/IoTRegister.jsx";
 import PetDetail from "./pages/mypage/PetDetail.jsx";
+import UserProfile from "./pages/mypage/UserProfile.jsx";
 
 import MapPage from "./pages/map/MapPage";
 import PetRegister from "./pages/pet/PetRegister";
@@ -52,6 +53,7 @@ function App() {
       <Route path="/pet/register" element={<PetRegister />} />
       <Route path="/iotregister" element={<IoTRegister />} />
       <Route path="/petdetail" element={<PetDetail />} />
+      <Route path="/userprofile" element={<UserProfile />} />
       {/* 지도 관련 */}
       <Route path="/map" element={<MapPage />} />
     </Routes>

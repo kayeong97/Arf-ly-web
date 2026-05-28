@@ -14,6 +14,7 @@ import timeIcon from "../../assets/map/time.svg";
 import markerPinkIcon from "../../assets/map/marker_pink.svg";
 import markerBrownIcon from "../../assets/map/marker_brown.svg";
 import exitIcon from "../../assets/map/exit.svg";
+import defaultHospitalImage from "../../assets/map/default_hospital_image.svg";
 
 const DEFAULT_LOCATION = {
 	address: "경상북도 경산시 대학로 280 (대동)",
@@ -430,10 +431,14 @@ function HospitalImageList({ imageUrl, alt }) {
 
 	if (photoNames.length === 0) {
 		return (
-			<div
-				className="hospital_detail_image hospital_image_empty"
-				aria-label="병원 이미지 없음"
-			/>
+			<div className="hospital_detail_empty_image_box">
+				<img
+					src={defaultHospitalImage}
+					alt=""
+					className="hospital_detail_default_image"
+				/>
+				<p>등록된 이미지가 없습니다.</p>
+			</div>
 		);
 	}
 
@@ -453,18 +458,25 @@ function HospitalImageList({ imageUrl, alt }) {
 
 function HospitalImage({ photoName, alt, className }) {
 	const [imageSrc, setImageSrc] = useState("");
+	const [isLoadingImage, setIsLoadingImage] = useState(false);
+	const [hasImageError, setHasImageError] = useState(false);
 
 	useEffect(() => {
 		let isActive = true;
 		let objectUrl = "";
 
 		const fetchImage = async () => {
-			try {
-				setImageSrc("");
+			setImageSrc("");
+			setHasImageError(false);
 
-				if (!photoName || typeof photoName !== "string") {
-					return;
-				}
+			if (!photoName || typeof photoName !== "string") {
+				setIsLoadingImage(false);
+				setHasImageError(true);
+				return;
+			}
+
+			try {
+				setIsLoadingImage(true);
 
 				const blob = await getMapPhotoBlob(photoName, 400);
 
@@ -477,6 +489,11 @@ function HospitalImage({ photoName, alt, className }) {
 			} catch (error) {
 				if (isActive) {
 					setImageSrc("");
+					setHasImageError(true);
+				}
+			} finally {
+				if (isActive) {
+					setIsLoadingImage(false);
 				}
 			}
 		};
@@ -492,22 +509,45 @@ function HospitalImage({ photoName, alt, className }) {
 		};
 	}, [photoName]);
 
-	if (!imageSrc) {
+	if (imageSrc) {
+
+		return (
+			<img
+				src={imageSrc}
+				alt={alt}
+				className={className}
+			/>
+		);
+	}
+	if (isLoadingImage) {
+		return (
+			<div
+				className={`${className} hospital_image_empty hospital_image_loading`}
+				aria-label="병원 이미지 불러오는 중"
+			/>
+		);
+	}
+	if (hasImageError) {
 		return (
 			<div
 				className={`${className} hospital_image_empty`}
 				aria-label="병원 이미지 없음"
-			/>
+			>
+				<img
+					src={defaultHospitalImage}
+					alt=""
+					className="hospital_default_image"
+				/>
+			</div>
 		);
 	}
-
 	return (
-		<img
-			src={imageSrc}
-			alt={alt}
-			className={className}
+		<div
+			className={`${className} hospital_image_empty hospital_image_loading`}
+			aria-label="병원 이미지 불러오는 중"
 		/>
 	);
+
 }
 
 export default MapPage;
