@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import MYPAGELOGO from "../../assets/home/home_logo.svg";
@@ -9,19 +9,164 @@ import MYPAGENOTICE from "../../assets/mypage/mypage_notice.svg";
 import MYPAGEQUESTION from "../../assets/mypage/mypage_question.svg";
 import MYPAGESERVICE from "../../assets/mypage/mypage_service.svg";
 import MYPAGEIOT from "../../assets/mypage/mypage_iot.svg";
-
+import PROFILEIMG from "../../assets/mypage/mypage_temp_profile_img.svg";
 import MYPAGEMALE from "../../assets/home/home_male.svg";
 import MYPAGEFEMALE from "../../assets/home/home_female.svg";
+import HOMEDOG from "../../assets/home/home_dog.svg";
+import HOMECAT from "../../assets/home/home_cat.svg";
 
 import "./MyPage.css";
 import BottomTabBar from "../../components/BottomTabBar.jsx";
 
-// 임시 변수 불러오기
-import { userInfo } from "./data/userInfo.jsx";
-import { petList } from "../home/data/petList.jsx";
+const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
+
+const getAuthHeaders = () => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+};
+
+const fetchApiData = async (path) => {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: "GET",
+    headers: {
+      ...getAuthHeaders(),
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`API request failed: ${path}`);
+  }
+
+  return response.json();
+};
+
+const getAgeFromBirth = (birth) => {
+  if (!birth) return 0;
+
+  const birthYear = Number(String(birth).slice(0, 4));
+  if (!Number.isFinite(birthYear)) return 0;
+
+  return Math.max(new Date().getFullYear() - birthYear, 0);
+};
+
+const normalizeSex = (sex) =>
+  String(sex).toUpperCase() === "FEMALE" ? "female" : "male";
+
+const getDefaultPetImage = (species) =>
+  String(species).toUpperCase() === "CAT" ? HOMECAT : HOMEDOG;
+
+const normalizeUserInfo = (data) => ({
+  nickname: data?.nickname || "",
+  roadAddress: data?.roadAddress || "",
+  recordCount: Number(data?.diagnosisCounts ?? 0),
+  postCount: Number(data?.postCounts ?? 0),
+  commentCount: Number(data?.commentCounts ?? 0),
+  dibsCount: Number(data?.likeCounts ?? 0),
+});
+
+const normalizePet = (summary, detail = {}) => {
+  const species = detail.species || summary.species;
+
+  return {
+    id: summary.petId ?? summary.id,
+    sex: normalizeSex(detail.sex),
+    neuter: Boolean(detail.neutered),
+    img:
+      detail.profileImageUrl ||
+      summary.profileImageUrl ||
+      getDefaultPetImage(species),
+    name: detail.name || summary.name,
+    breed: detail.breed || "",
+    age: getAgeFromBirth(detail.birth),
+    weight: detail.weight ?? 0,
+    allergic: Array.isArray(detail.allergies) ? detail.allergies : [],
+  };
+};
 
 export default function MyPage() {
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
+  const [petList, setPetList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    let isActive = true;
+
+    const fetchMyPageData = async () => {
+      try {
+        setIsLoading(true);
+        setErrorMessage("");
+
+        const [memberData, petsData] = await Promise.all([
+          fetchApiData("/member/me"),
+          fetchApiData("/api/pets"),
+        ]);
+
+        const petSummaries = Array.isArray(petsData?.pets)
+          ? petsData.pets
+          : [];
+        const nextPetList = await Promise.all(
+          petSummaries.map(async (petSummary) => {
+            const petId = petSummary.petId ?? petSummary.id;
+            const detailData = await fetchApiData(`/api/pets/${petId}`);
+            const detail = detailData?.pet || detailData;
+
+            return normalizePet(petSummary, detail);
+          }),
+        );
+
+        if (!isActive) return;
+
+        setUserInfo(normalizeUserInfo(memberData));
+        setPetList(nextPetList);
+      } catch (error) {
+        if (!isActive) return;
+
+        setUserInfo(null);
+        setPetList([]);
+        setErrorMessage("마이페이지 정보를 불러오지 못했습니다.");
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchMyPageData();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="mypage-wrapper">
+        <div className="mypage-top">
+          <img src={MYPAGELOGO} />
+          <img src={MYPAGEBELL} />
+        </div>
+        <div className="mypage-empty-state">마이페이지 정보를 불러오는 중입니다.</div>
+        <BottomTabBar></BottomTabBar>
+      </div>
+    );
+  }
+
+  if (errorMessage || !userInfo) {
+    return (
+      <div className="mypage-wrapper">
+        <div className="mypage-top">
+          <img src={MYPAGELOGO} />
+          <img src={MYPAGEBELL} />
+        </div>
+        <div className="mypage-empty-state">{errorMessage}</div>
+        <BottomTabBar></BottomTabBar>
+      </div>
+    );
+  }
 
   return (
     <div className="mypage-wrapper">
@@ -30,7 +175,7 @@ export default function MyPage() {
         <img src={MYPAGEBELL} />
       </div>
       <div className="mypage-user-info">
-        <img src={userInfo.profileImg} />
+        <img src={PROFILEIMG} />
         <div className="mypage-user-info-detail">
           <div className="mypage-user-info-detail-nickname">
             <span>{userInfo.nickname} </span>
@@ -69,7 +214,6 @@ export default function MyPage() {
                 type="button"
                 key={pet.id}
                 className="mypage-pet-card"
-                onClick={() => setSelectedDiagnosisPet(pet)}
               >
                 <div className="mypage-pet-card-top">
                   <img
