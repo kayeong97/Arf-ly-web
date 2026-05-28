@@ -1,0 +1,144 @@
+.userProfile-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+.userProfile-top {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userProfile-back-button {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.userProfile-back-button img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.userProfile-top span {
+  color: var(--common-black);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.userProfile-profileImg {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 20px auto 0;
+}
+
+.userProfile-profileImg img:first-child {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.userProfile-profileImg img:last-child {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 32px;
+  height: 32px;
+  display: block;
+  cursor: pointer;
+}
+
+.userProfile-login-form {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 30px;
+}
+
+.userProfile-login-form-text {
+    color: var(--common-black);
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.userProfile-input-container {
+  display: flex;
+  align-items: center;
+  background-color: var(--common-white);
+  border-radius: 30px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.userProfile-input-container:focus-within {
+  border: 1px solid var(--secondary-900);
+}
+
+.userProfile-input-container img {
+  width: 30px;
+  height: 30px;
+  opacity: 0.5;
+}
+
+.userProfile-input-container input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  margin-left: 15px;
+  font-size: 20px;
+  color: var(--common-black);
+}
+
+.userProfile-input-container input::placeholder {
+  color: var(--gray-neutral-400);
+}
+
+.userProfile-nickname-message {
+  color: var(--primary-500);
+  font-weight: 400;
+}
+
+.userProfile-confirm {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.userProfile-confirm button {
+  width: 100%;
+  height: 80px;
+  background-color: var(--gray-warm-300);
+  color: var(--common-white);
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  cursor: default;
+  padding-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.userProfile-confirm button:not(:disabled) {
+  background-color: var(--secondary-700);
+  cursor: pointer;
+}
