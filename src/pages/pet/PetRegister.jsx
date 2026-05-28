@@ -40,6 +40,19 @@ const initialForm = {
   memo: "",
 };
 
+const getPetTypeFromSpecies = (species) =>
+  String(species).toUpperCase() === "CAT" ? "cat" : "dog";
+
+const createEditForm = (pet = {}) => ({
+  name: pet.name ? String(pet.name) : "",
+  age: pet.age ? String(pet.age) : "",
+  neutered: pet.neuter ? "yes" : "no",
+  gender: pet.sex || "",
+  breed: pet.breed || "",
+  weight: pet.weight || pet.weight === 0 ? String(pet.weight) : "",
+  memo: pet.note || "",
+});
+
 const normalizeBreedList = (data) => {
   const list = Array.isArray(data) ? data : data?.breeds || data?.data || [];
 
@@ -57,20 +70,33 @@ const PetRegister = () => {
   const fileInputRef = useRef(null);
 
   const entry = location.state?.entry;
+  const editPet = location.state?.pet;
   const isSignupFlow = entry === "signup";
   const isHomeTermsFlow = entry === "home";
+  const isEditFlow = entry === "edit" && Boolean(editPet?.id);
+  const isMyPageAddFlow = entry === "mypage-add";
   const finishPath = isSignupFlow || isHomeTermsFlow ? "/home" : "/mypage";
 
-  const [step, setStep] = useState("type");
-  const [petType, setPetType] = useState("");
-  const [form, setForm] = useState(initialForm);
+  const [step, setStep] = useState(isEditFlow ? "info" : "type");
+  const [petType, setPetType] = useState(
+    isEditFlow ? getPetTypeFromSpecies(editPet.species) : "",
+  );
+  const [form, setForm] = useState(
+    isEditFlow ? createEditForm(editPet) : initialForm,
+  );
   const [errors, setErrors] = useState({});
-  const [breedSearch, setBreedSearch] = useState("");
+  const [breedSearch, setBreedSearch] = useState(
+    isEditFlow ? editPet.breed || "" : "",
+  );
   const [profileSheetOpen, setProfileSheetOpen] = useState(false);
   const [allergySheetOpen, setAllergySheetOpen] = useState(false);
   const [allergyInput, setAllergyInput] = useState("");
-  const [allergies, setAllergies] = useState([]);
-  const [profileImage, setProfileImage] = useState("");
+  const [allergies, setAllergies] = useState(
+    isEditFlow && Array.isArray(editPet.allergic) ? editPet.allergic : [],
+  );
+  const [profileImage, setProfileImage] = useState(
+    isEditFlow ? editPet.img || "" : "",
+  );
   const [profileFile, setProfileFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [breedOptions, setBreedOptions] = useState([]);
@@ -128,6 +154,7 @@ const PetRegister = () => {
 
   const createProfileImageFile = async () => {
     if (profileFile) return profileFile;
+    if (isEditFlow && profileImage === editPet?.img) return null;
     if (!profileImage) return null;
 
     const response = await fetch(profileImage);
@@ -193,6 +220,11 @@ const PetRegister = () => {
     }
 
     if (step === "info") {
+      if (isEditFlow) {
+        navigate(-1);
+        return;
+      }
+
       setStep("type");
       return;
     }
@@ -257,7 +289,8 @@ const PetRegister = () => {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch(`${API_BASE_URL}/api/pets`, {
+      const requestPath = isEditFlow ? `/api/pets/${editPet.id}` : "/api/pets";
+      const response = await fetch(`${API_BASE_URL}${requestPath}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -267,7 +300,17 @@ const PetRegister = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || "반려동물 등록에 실패했습니다.");
+        throw new Error(
+          errorData.message ||
+            (isEditFlow
+              ? "반려동물 수정에 실패했습니다."
+              : "반려동물 등록에 실패했습니다."),
+        );
+      }
+
+      if (isEditFlow || isMyPageAddFlow) {
+        navigate("/mypage", { replace: true });
+        return;
       }
 
       setStep("complete");
@@ -365,7 +408,9 @@ const PetRegister = () => {
         >
           <img src={BackIcon} alt="뒤로가기" />
         </button>
-        <h1>{step === "breed" ? "품종 찾기" : "프로필 등록"}</h1>
+        <h1>
+          {isEditFlow ? "수정" : step === "breed" ? "품종 찾기" : "프로필 등록"}
+        </h1>
       </header>
 
       {step === "type" && (
@@ -418,7 +463,7 @@ const PetRegister = () => {
               <span>프로필 사진</span>
               <button
                 type="button"
-                className="ProfileImageButton"
+                className={`ProfileImageButton ${isEditFlow ? "edit" : ""}`}
                 onClick={() => setProfileSheetOpen(true)}
               >
                 {profileImage && <img src={profileImage} alt="선택한 프로필" />}
@@ -559,7 +604,15 @@ const PetRegister = () => {
             onClick={handleInfoNext}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "등록 중" : "다음"}
+            {isSubmitting
+              ? isEditFlow
+                ? "수정 중"
+                : "등록 중"
+              : isEditFlow
+                ? "수정 완료"
+                : isMyPageAddFlow
+                  ? "프로필 만들기"
+                : "다음"}
           </button>
         </>
       )}

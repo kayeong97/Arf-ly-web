@@ -71,6 +71,7 @@ const normalizePet = (summary, detail = {}) => {
 
   return {
     id: summary.petId ?? summary.id,
+    species,
     sex: normalizeSex(detail.sex),
     neuter: Boolean(detail.neutered),
     img:
@@ -78,10 +79,12 @@ const normalizePet = (summary, detail = {}) => {
       summary.profileImageUrl ||
       getDefaultPetImage(species),
     name: detail.name || summary.name,
-    breed: detail.breed || "",
+    breed:
+      detail.breed || detail.breeds || summary.breed || summary.breeds || "",
     age: getAgeFromBirth(detail.birth),
     weight: detail.weight ?? 0,
     allergic: Array.isArray(detail.allergies) ? detail.allergies : [],
+    note: detail.note || summary.note || "",
   };
 };
 
@@ -105,9 +108,7 @@ export default function MyPage() {
           fetchApiData("/api/pets"),
         ]);
 
-        const petSummaries = Array.isArray(petsData?.pets)
-          ? petsData.pets
-          : [];
+        const petSummaries = Array.isArray(petsData?.pets) ? petsData.pets : [];
         const nextPetList = await Promise.all(
           petSummaries.map(async (petSummary) => {
             const petId = petSummary.petId ?? petSummary.id;
@@ -149,7 +150,9 @@ export default function MyPage() {
           <img src={MYPAGELOGO} />
           <img src={MYPAGEBELL} />
         </div>
-        <div className="mypage-empty-state">마이페이지 정보를 불러오는 중입니다.</div>
+        <div className="mypage-empty-state">
+          마이페이지 정보를 불러오는 중입니다.
+        </div>
         <BottomTabBar></BottomTabBar>
       </div>
     );
@@ -214,6 +217,7 @@ export default function MyPage() {
                 type="button"
                 key={pet.id}
                 className="mypage-pet-card"
+                onClick={() => navigate("/petdetail", { state: { pet } })} 
               >
                 <div className="mypage-pet-card-top">
                   <img
@@ -256,6 +260,9 @@ export default function MyPage() {
           <button
             type="button"
             className="mypage-pet-add-card"
+            onClick={() =>
+              navigate("/pet/register", { state: { entry: "mypage-add" } })
+            }
           >
             <span>+</span>
             <p>반려동물 더 키워요!</p>
