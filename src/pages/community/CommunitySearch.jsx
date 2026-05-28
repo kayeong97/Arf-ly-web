@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./CommunitySearch.css";
-import { searchPosts } from "./CommunityApi";
+import { deleteRecentSearch, searchPosts } from "./CommunityApi";
 
 import BackIcon from "../../assets/community/back.svg";
 import SearchIcon from "../../assets/community/search.svg";
 import SortArrowIcon from "../../assets/community/sort_^.svg";
 import RecentIcon from "../../assets/community/recent.svg";
-import SearchArrowIcon from "../../assets/community/search_arrow.svg";
+import DeleteIcon from "../../assets/community/delete_recent.svg";
 import NoSearchDogIcon from "../../assets/community/no_search_dog.svg";
 
 const RECENT_SEARCH_KEY = "communityRecentSearches";
@@ -316,6 +316,23 @@ function CommunitySearch() {
 		});
 	};
 
+	const handle_recent_search_delete = async (recent_keyword) => {
+		const next_recent_searches = recent_searches.filter(
+			(item) => item !== recent_keyword
+		);
+
+		set_recent_searches(next_recent_searches);
+		localStorage.setItem(
+			RECENT_SEARCH_KEY,
+			JSON.stringify(next_recent_searches)
+		);
+
+		try {
+			await deleteRecentSearch(recent_keyword);
+		} catch (error) {
+		}
+	};
+
 	const handle_sort_change = (next_sort) => {
 		set_sort(next_sort);
 		set_is_sort_open(false);
@@ -334,23 +351,30 @@ function CommunitySearch() {
 			<ul className="community_search_recent_list">
 				{recent_searches.map((recent_keyword, index) => (
 					<li key={`${recent_keyword}-${index}`}>
-						<button
-							className="community_search_recent_button"
-							type="button"
-							onClick={() => handle_recent_search_click(recent_keyword)}
-						>
-							<img
-								className="community_search_recent_icon"
-								src={RecentIcon}
-								alt=""
-							/>
-							<span>{recent_keyword}</span>
-							<img
-								className="community_search_recent_arrow"
-								src={SearchArrowIcon}
-								alt=""
-							/>
-						</button>
+						<div className="community_search_recent_item">
+							<button
+								className="community_search_recent_button"
+								type="button"
+								onClick={() => handle_recent_search_click(recent_keyword)}
+							>
+								<img
+									className="community_search_recent_icon"
+									src={RecentIcon}
+									alt=""
+								/>
+
+								<span>{recent_keyword}</span>
+							</button>
+
+							<button
+								className="community_search_recent_delete_button"
+								type="button"
+								onClick={() => handle_recent_search_delete(recent_keyword)}
+								aria-label="최근 검색어 삭제"
+							>
+								<img src={DeleteIcon} alt="" />
+							</button>
+						</div>
 					</li>
 				))}
 			</ul>
@@ -366,24 +390,13 @@ function CommunitySearch() {
 			url: thumbnail_url,
 		}));
 
-		const api_total_media_count = Number(post.totalMediaCount) || 0;
-
-		const video_placeholder_count = Math.max(
-			api_total_media_count - thumbnail_urls.length,
-			post.hasVideo ? 1 : 0
-		);
-
-		Array.from({ length: video_placeholder_count }).forEach(() => {
+		if (post.hasVideo) {
 			media_items.push({
 				type: "video",
 			});
-		});
+		}
 
-		const total_media_count = Math.max(
-			api_total_media_count,
-			media_items.length
-		);
-
+		const total_media_count = media_items.length;
 		const should_show_more = total_media_count > 3;
 
 		const visible_media_items = should_show_more

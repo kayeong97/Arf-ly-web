@@ -15,6 +15,7 @@ import Community from "./pages/community/Community";
 import CommunityWrite from "./pages/community/CommunityWrite";
 import CommunitySearch from "./pages/community/CommunitySearch";
 import CommunityDetail from "./pages/community/CommunityDetail";
+import CommunityEdit from "./pages/community/CommunityEdit";
 
 import MyPage from "./pages/mypage/MyPage";
 import IoTRegister from "./pages/mypage/IotRegisteration/IoTRegister.jsx";
@@ -44,6 +45,7 @@ function App() {
       <Route path="/community/write" element={<CommunityWrite />} />
       <Route path="/community/search" element={<CommunitySearch />} />
       <Route path="/community/:postId" element={<CommunityDetail />} />
+      <Route path="/community/:postId/edit" element={<CommunityEdit />} />
       {/* 마이페이지 관련 */}
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/pet/register" element={<PetRegister />} />
