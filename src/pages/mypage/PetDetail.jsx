@@ -158,6 +158,7 @@ export default function PetDetail() {
   const [isWalkRecordsLoading, setIsWalkRecordsLoading] = useState(false);
   const [walkRecordsErrorMessage, setWalkRecordsErrorMessage] = useState("");
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isDeletingPet, setIsDeletingPet] = useState(false);
   const shouldShowWalkRecords =
     isWalkRecordsLoading || walkRecordsErrorMessage || walkRecords.length > 0;
@@ -172,9 +173,6 @@ export default function PetDetail() {
 
   const handleDeletePet = async () => {
     if (!pet?.id || isDeletingPet) return;
-
-    const shouldDelete = window.confirm("반려동물 정보를 삭제하시겠습니까?");
-    if (!shouldDelete) return;
 
     try {
       setIsDeletingPet(true);
@@ -256,15 +254,46 @@ export default function PetDetail() {
             <button
               className="petDetail-action-item"
               type="button"
-              onClick={handleDeletePet}
+              onClick={() => {
+                setIsActionModalOpen(false);
+                setIsDeleteConfirmOpen(true);
+              }}
               disabled={isDeletingPet}
             >
-              <span>{isDeletingPet ? "삭제 중" : "삭제"}</span>
+              <span>삭제</span>
               <img src={PETDETAILTRASH} />
             </button>
           </div>
         )}
       </div>
+
+      {isDeleteConfirmOpen && (
+        <div className="petDetail-delete-overlay">
+          <div className="petDetail-delete-modal">
+            <div className="petDetail-delete-icon">
+              <img src={PETDETAILTRASH} alt="" />
+            </div>
+            <strong>정말 삭제하시겠어요?</strong>
+            <p>삭제 후에는 되돌릴 수 없어요.</p>
+            <button
+              className="petDetail-delete-cancel"
+              type="button"
+              onClick={() => setIsDeleteConfirmOpen(false)}
+              disabled={isDeletingPet}
+            >
+              취소
+            </button>
+            <button
+              className="petDetail-delete-submit"
+              type="button"
+              onClick={handleDeletePet}
+              disabled={isDeletingPet}
+            >
+              {isDeletingPet ? "삭제 중" : "삭제"}
+            </button>
+          </div>
+        </div>
+      )}
 
       {pet && (
         <>
