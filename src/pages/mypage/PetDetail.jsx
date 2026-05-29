@@ -149,7 +149,11 @@ export default function PetDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const pet = location.state?.pet;
-  const petProfileImg = pet?.species === "CAT" ? HOMECAT : HOMEDOG;
+  const petProfileImg =
+    pet?.img ||
+    pet?.profileImageUrl ||
+    pet?.profileImage ||
+    (pet?.species === "CAT" ? HOMECAT : HOMEDOG);
   const [walkRecords, setWalkRecords] = useState([]);
   const [isWalkRecordsLoading, setIsWalkRecordsLoading] = useState(false);
   const [walkRecordsErrorMessage, setWalkRecordsErrorMessage] = useState("");
