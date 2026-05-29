@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import MYPAGELOGO from "../../assets/home/home_logo.svg";
@@ -14,6 +14,7 @@ import MYPAGEMALE from "../../assets/home/home_male.svg";
 import MYPAGEFEMALE from "../../assets/home/home_female.svg";
 import HOMEDOG from "../../assets/home/home_dog.svg";
 import HOMECAT from "../../assets/home/home_cat.svg";
+import MYPAGEPILL from "../../assets/mypage/mypage_pill.svg";
 
 import "./MyPage.css";
 import BottomTabBar from "../../components/BottomTabBar.jsx";
@@ -93,6 +94,7 @@ export default function MyPage() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
   const [petList, setPetList] = useState([]);
+  const [medicineAlarms, setMedicineAlarms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -104,12 +106,16 @@ export default function MyPage() {
         setIsLoading(true);
         setErrorMessage("");
 
-        const [memberData, petsData] = await Promise.all([
+        const [memberData, petsData, alarmsData] = await Promise.all([
           fetchApiData("/member/me"),
           fetchApiData("/api/pets"),
+          fetchApiData("/api/alarms"),
         ]);
 
         const petSummaries = Array.isArray(petsData?.pets) ? petsData.pets : [];
+        const nextMedicineAlarms = Array.isArray(alarmsData)
+          ? alarmsData
+          : alarmsData?.alarms || [];
         const nextPetList = await Promise.all(
           petSummaries.map(async (petSummary) => {
             const petId = petSummary.petId ?? petSummary.id;
@@ -124,12 +130,14 @@ export default function MyPage() {
 
         setUserInfo(normalizeUserInfo(memberData));
         setPetList(nextPetList);
+        setMedicineAlarms(nextMedicineAlarms);
       } catch (error) {
         if (!isActive) return;
 
         setUserInfo(null);
         setPetList([]);
-        setErrorMessage("마이페이지 정보를 불러오지 못했습니다.");
+        setMedicineAlarms([]);
+        setErrorMessage("마이페이지를 불러오지 못했습니다.");
       } finally {
         if (isActive) {
           setIsLoading(false);
@@ -149,10 +157,10 @@ export default function MyPage() {
       <div className="mypage-wrapper">
         <div className="mypage-top">
           <img src={MYPAGELOGO} />
-          <img src={MYPAGEBELL} />
+          <img src={MYPAGEBELL} onClick={() => navigate("/alarmnotification")} />
         </div>
-        <div className="mypage-empty-state">
-          마이페이지 정보를 불러오는 중입니다.
+        <div className="mypage-loading-overlay">
+          <div className="mypage-loading-spinner" />
         </div>
         <BottomTabBar></BottomTabBar>
       </div>
@@ -164,7 +172,7 @@ export default function MyPage() {
       <div className="mypage-wrapper">
         <div className="mypage-top">
           <img src={MYPAGELOGO} />
-          <img src={MYPAGEBELL} />
+          <img src={MYPAGEBELL} onClick={() => navigate("/alarmnotification")} />
         </div>
         <div className="mypage-empty-state">{errorMessage}</div>
         <BottomTabBar></BottomTabBar>
@@ -176,7 +184,7 @@ export default function MyPage() {
     <div className="mypage-wrapper">
       <div className="mypage-top">
         <img src={MYPAGELOGO} />
-        <img src={MYPAGEBELL} />
+        <img src={MYPAGEBELL} onClick={() => navigate("/alarmnotification")} />
       </div>
       <div className="mypage-user-info">
         <img src={PROFILEIMG} />
@@ -229,7 +237,7 @@ export default function MyPage() {
                 type="button"
                 key={pet.id}
                 className="mypage-pet-card"
-                onClick={() => navigate("/petdetail", { state: { pet } })} 
+                onClick={() => navigate("/petdetail", { state: { pet } })}
               >
                 <div className="mypage-pet-card-top">
                   <img
@@ -252,7 +260,7 @@ export default function MyPage() {
                     <strong>{pet.name}</strong>
                     <span className="mypage-pet-breed">{pet.breed}</span>
                     <span className="mypage-pet-age-weight">
-                      {pet.age}세 | {pet.weight}kg
+                      {pet.age}살 | {pet.weight}kg
                     </span>
                   </div>
                 </div>
@@ -282,19 +290,32 @@ export default function MyPage() {
         </div>
       </div>
       <div className="mypage-medicine">
-        <div className="mypage-medicine-register">
-          <span>
-            아플리와 함께
-            <br />
-            복약관리를 시작해요!
-          </span>
-          <span>약 등록하고 알림받기</span>
+        <div
+          className="mypage-medicine-register"
+          onClick={() => navigate("/medicinealarm")}
+        >
+          {medicineAlarms.length > 0 ? (
+            <div className="mypage-medicine-alarm-summary">
+              <img src={MYPAGEPILL} alt="" />
+              <span>
+                등록된 복약알람이 <br />
+                {medicineAlarms.length}개 있어요!
+              </span>
+            </div>
+          ) : (
+            <span className="mypage-medicine-start-text">
+              아플리와 함께
+              <br />
+              복약관리를 시작해요!
+            </span>
+          )}
+          <button type="button">등록된 알람 보러가기</button>
         </div>
       </div>
       <div className="mypage-tab">
         <div onClick={() => navigate("/iotregister")}>
           <img src={MYPAGEIOT} />
-          <span>기기등록</span>
+          <span>기기 등록</span>
         </div>
         <div>
           <img src={MYPAGENOTICE} />

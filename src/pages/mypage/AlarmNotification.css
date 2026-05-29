@@ -1,0 +1,61 @@
+.alarmNotification-wrapper {
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 8px;
+  font-family: "Pretendard", sans-serif;
+  overflow: hidden;
+}
+
+.alarmNotification-top {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alarmNotification-back-button {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.alarmNotification-back-button img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.alarmNotification-top span {
+  color: var(--common-black);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.alarmNotification-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-neutral-400);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
