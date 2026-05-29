@@ -72,6 +72,7 @@ const normalizePet = (summary, detail = {}) => {
 
   return {
     id: summary.petId ?? summary.id,
+    species,
     sex: normalizeSex(detail.sex),
     neuter: Boolean(detail.neutered),
     img:
@@ -79,10 +80,12 @@ const normalizePet = (summary, detail = {}) => {
       summary.profileImageUrl ||
       getDefaultPetImage(species),
     name: detail.name || summary.name,
-    breed: detail.breed || "",
+    breed:
+      detail.breed || detail.breeds || summary.breed || summary.breeds || "",
     age: getAgeFromBirth(detail.birth),
     weight: detail.weight ?? 0,
     allergic: Array.isArray(detail.allergies) ? detail.allergies : [],
+    note: detail.note || summary.note || "",
   };
 };
 
@@ -222,7 +225,12 @@ export default function MyPage() {
         <div className="mypage-pet-list">
           {petList.map((pet) => {
             return (
-              <button type="button" key={pet.id} className="mypage-pet-card">
+              <button
+                type="button"
+                key={pet.id}
+                className="mypage-pet-card"
+                onClick={() => navigate("/petdetail", { state: { pet } })} 
+              >
                 <div className="mypage-pet-card-top">
                   <img
                     className="mypage-pet-sex"
@@ -261,7 +269,13 @@ export default function MyPage() {
             );
           })}
 
-          <button type="button" className="mypage-pet-add-card">
+          <button
+            type="button"
+            className="mypage-pet-add-card"
+            onClick={() =>
+              navigate("/pet/register", { state: { entry: "mypage-add" } })
+            }
+          >
             <span>+</span>
             <p>반려동물 더 키워요!</p>
           </button>
