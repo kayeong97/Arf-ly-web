@@ -253,10 +253,19 @@
 .walkedResult-defined-filter {
   display: flex;
   gap: 10px;
+  width: 100%;
   margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+}
+
+.walkedResult-defined-filter::-webkit-scrollbar {
+  display: none;
 }
 
 .walkedResult-defined-filter button {
+  flex: 0 0 auto;
   height: 34px;
   padding: 0 18px;
   border: 0;
@@ -264,6 +273,7 @@
   background: var(--common-white);
   color: var(--gray-warm-500);
   font-size: 14px;
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -362,6 +372,13 @@
   gap: 8px;
   cursor: pointer;
   font-size: 18px;
+}
+
+.walkedResult-defined-card-pet span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .walkedResult-defined-empty {
@@ -659,12 +676,6 @@
   .walkedResult-defined-card-pet {
     width: 74px;
     font-size: 16px;
-  }
-
-  .walkedResult-defined-card-pet span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .walkedResult-defined-card-pet img:first-child {

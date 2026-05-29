@@ -49,22 +49,12 @@
   margin: 20px auto 0;
 }
 
-.userProfile-profileImg img:first-child {
+.userProfile-profileImg-main {
   width: 150px;
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
-}
-
-.userProfile-profileImg img:last-child {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 32px;
-  height: 32px;
-  display: block;
-  cursor: pointer;
 }
 
 .userProfile-login-form {
@@ -92,12 +82,6 @@
 
 .userProfile-input-container:focus-within {
   border: 1px solid var(--secondary-900);
-}
-
-.userProfile-input-container img {
-  width: 30px;
-  height: 30px;
-  opacity: 0.5;
 }
 
 .userProfile-input-container input {
@@ -141,4 +125,25 @@
 .userProfile-confirm button:not(:disabled) {
   background-color: var(--secondary-700);
   cursor: pointer;
+}
+
+@media (max-width: 430px) {
+  .userProfile-profileImg {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .userProfile-profileImg-main {
+    width: 120px;
+    height: 120px;
+  }
+
+  .userProfile-login-form-text {
+    font-size: 12px;
+    margin-top: 4.29px;
+  }
+
+  .userProfile-nickname-message {
+    font-size: 12px;
+  }
 }
