@@ -96,7 +96,45 @@ export default function MyPage() {
   const [petList, setPetList] = useState([]);
   const [medicineAlarms, setMedicineAlarms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (!refreshToken) {
+      localStorage.removeItem("accessToken");
+      navigate("/", { replace: true });
+      return;
+    }
+
+    try {
+      setIsLoggingOut(true);
+
+      const response = await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: "POST",
+        headers: {
+          ...getAuthHeaders(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (!response.ok) {
+        throw new Error("logout failed");
+      }
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      navigate("/", { replace: true });
+    } catch (error) {
+      alert("로그아웃에 실패했습니다.");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   useEffect(() => {
     let isActive = true;
@@ -331,7 +369,9 @@ export default function MyPage() {
         </div>
       </div>
       <div className="mypage-bottom">
-        <span>로그아웃</span>
+        <span onClick={handleLogout}>
+          {isLoggingOut ? "로그아웃 중" : "로그아웃"}
+        </span>
         <span>회원탈퇴</span>
       </div>
       <BottomTabBar></BottomTabBar>
