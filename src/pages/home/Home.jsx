@@ -438,22 +438,22 @@ export default function Home() {
           <img src={HOMELOGO} alt="ARFLY" />
           <img src={HOMEBELL} alt="" />
         </div>
-        <div className="home-empty-state">홈 정보를 불러오는 중입니다.</div>
+        <div className="home-loading-overlay">
+          <div className="home-loading-spinner" />
+        </div>
         <BottomTabBar />
       </div>
     );
   }
 
-  if (!currentPet) {
+  if (homeError) {
     return (
       <div className="home-wrapper">
         <div className="home-top">
           <img src={HOMELOGO} alt="ARFLY" />
           <img src={HOMEBELL} alt="" />
         </div>
-        <div className="home-empty-state">
-          {homeError || "등록된 반려동물이 없습니다."}
-        </div>
+        <div className="home-empty-state">{homeError}</div>
         <BottomTabBar />
       </div>
     );
@@ -466,110 +466,117 @@ export default function Home() {
         <img src={HOMEBELL} />
       </div>
       <div className="home-middle">
-        <div className="home-pet-profile">
-          <div className="home-pet-profile-top">
-            <>
-              <button
-                className="home-pet-profile-arrow left"
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
+        {currentPet && (
+          <div className="home-pet-profile">
+            <div className="home-pet-profile-top">
+              <>
+                <button
+                  className="home-pet-profile-arrow left"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
 
-                  if (!isFirstPet) {
-                    setCurrentPetIndex(currentPetIndex - 1);
-                  }
-                }}
-              >
-                <img
-                  src={isFirstPet ? HOMEPREVIOUS200 : HOMEPREVIOUS500}
-                  alt="이전"
-                />
-              </button>
+                    if (!isFirstPet) {
+                      setCurrentPetIndex(currentPetIndex - 1);
+                    }
+                  }}
+                >
+                  <img
+                    src={isFirstPet ? HOMEPREVIOUS200 : HOMEPREVIOUS500}
+                    alt="이전"
+                  />
+                </button>
 
-              <button
-                className="home-pet-profile-arrow right"
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (!isLastPet) {
-                    setCurrentPetIndex(currentPetIndex + 1);
-                  }
-                }}
-              >
-                <img src={isLastPet ? HOMENEXT200 : HOMENEXT500} alt="다음" />
-              </button>
-            </>
-            <img className="home-pet-image" src={currentPet.img} />
-            <div className="home-pet-profile-detail">
-              <div className="home-pet-detail-top">
-                <img src={currentPet.sex === "male" ? HOMEMALE : HOMEFEMALE} />
-                <span>
-                  {currentPet.neuter ? "중성화 완료" : "중성화 미완료"}
-                </span>
-              </div>
-              <div className="home-pet-detail-middle">
-                <span className="home-pet-name">{currentPet.name}</span>
-              </div>
-              <div className="home-pet-detail-bottom">
-                <span className="home-pet-breed">{currentPet.breed}</span>
-                <span>
-                  {currentPet.age}살 | {currentPet.weight}kg
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="home-pet-profile-bottom">
-            <div className="home-walk">
-              <p className="home-today-walked">
-                오늘 총{" "}
-                <strong>
-                  {Number(currentPet.todayWalked).toLocaleString()}
-                </strong>
-                젤리만큼 활동했어요!
-              </p>
-              <img src={HOMEPAW} />
-            </div>
-            <div
-              className="home-pet-profile-chart"
-              onClick={() =>
-                navigate(`/weeklyactive/${currentPet.id}`, {
-                  state: { pet: currentPet },
-                })
-              }
-            >
-              <div className="home-chart-bars">
-                {currentPet.weekWalked.map((walked, index) => {
-                  const barHeight = `${Math.max((walked / maxWeekWalked) * 100, 8)}%`;
-                  return (
-                    <div className="home-chart-bar-wrap" key={`bar-${index}`}>
-                      <div
-                        className="home-chart-bar"
-                        style={{ height: barHeight }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="home-chart-label-row">
-                {weekLabels.map((label, index) => (
-                  <span
-                    className={`home-chart-label ${
-                      index === todayWeekIndex
-                        ? "today"
-                        : index === 6
-                          ? "sunday"
-                          : ""
-                    }`}
-                    key={`${label}-${index}`}
-                  >
-                    {label}
+                <button
+                  className="home-pet-profile-arrow right"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!isLastPet) {
+                      setCurrentPetIndex(currentPetIndex + 1);
+                    }
+                  }}
+                >
+                  <img src={isLastPet ? HOMENEXT200 : HOMENEXT500} alt="다음" />
+                </button>
+              </>
+              <img className="home-pet-image" src={currentPet.img} />
+              <div className="home-pet-profile-detail">
+                <div className="home-pet-detail-top">
+                  <img
+                    src={currentPet.sex === "male" ? HOMEMALE : HOMEFEMALE}
+                  />
+                  <span>
+                    {currentPet.neuter ? "중성화 완료" : "중성화 미완료"}
                   </span>
-                ))}
+                </div>
+                <div className="home-pet-detail-middle">
+                  <span className="home-pet-name">{currentPet.name}</span>
+                </div>
+                <div className="home-pet-detail-bottom">
+                  <span className="home-pet-breed">{currentPet.breed}</span>
+                  <span>
+                    {currentPet.age}살 | {currentPet.weight}kg
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="home-pet-profile-bottom">
+              <div className="home-walk">
+                <p className="home-today-walked">
+                  오늘 총{" "}
+                  <strong>
+                    {Number(currentPet.todayWalked).toLocaleString()}
+                  </strong>
+                  젤리만큼 활동했어요!
+                </p>
+                <img src={HOMEPAW} />
+              </div>
+              <div
+                className="home-pet-profile-chart"
+                onClick={() =>
+                  navigate(`/weeklyactive/${currentPet.id}`, {
+                    state: { pet: currentPet },
+                  })
+                }
+              >
+                <div className="home-chart-bars">
+                  {currentPet.weekWalked.map((walked, index) => {
+                    const barHeight = `${Math.max((walked / maxWeekWalked) * 100, 8)}%`;
+                    return (
+                      <div
+                        className="home-chart-bar-wrap"
+                        key={`bar-${index}`}
+                      >
+                        <div
+                          className="home-chart-bar"
+                          style={{ height: barHeight }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="home-chart-label-row">
+                  {weekLabels.map((label, index) => (
+                    <span
+                      className={`home-chart-label ${
+                        index === todayWeekIndex
+                          ? "today"
+                          : index === 6
+                            ? "sunday"
+                            : ""
+                      }`}
+                      key={`${label}-${index}`}
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="home-walked-and-disease">
           <div className="home-pet-walked">
             <div className="home-pet-walked-top">
@@ -581,14 +588,24 @@ export default function Home() {
                 <img src={HOMEWALKEDBUTTON} />
               </button>
             </div>
-            <span className="home-pet-distance">
-              {currentPet.recentDistance}
-            </span>
-            <span className="home-pet-distance-unit">km</span>
-            <div className="home-pet-recent-walk">
-              <img src={HOMEBROWNPAW} />
-              <span>{Number(currentPet.todayWalked).toLocaleString()}젤리</span>
-            </div>
+            {currentPet ? (
+              <>
+                <span className="home-pet-distance">
+                  {currentPet.recentDistance}
+                </span>
+                <span className="home-pet-distance-unit">km</span>
+                <div className="home-pet-recent-walk">
+                  <img src={HOMEBROWNPAW} />
+                  <span>
+                    {Number(currentPet.todayWalked).toLocaleString()}젤리
+                  </span>
+                </div>
+              </>
+            ) : (
+              <p className="home-pet-walked-empty">
+                {"기록이 없어요!\n기기를 사용해서 반려동물의\n운동량을 체크해봐요!"}
+              </p>
+            )}
           </div>
           <div className="home-pet-disease-check">
             <p>피부 질환 체크하기</p>
