@@ -69,7 +69,7 @@ function MapPage() {
 
 			const data = await getMapList();
 
-			const hospitalList = Array.isArray(data) ? data : data?.hospitals;
+			const hospitalList = Array.isArray(data) ? data : data?.hospitalList || data?.hospitals || [];
 
 			if (!Array.isArray(hospitalList)) {
 				setHospitals([]);
