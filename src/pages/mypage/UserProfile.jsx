@@ -4,7 +4,6 @@ import "./UserProfile.css";
 
 import USERPROFILEBACK from "../../assets/login/system/backbtn.svg";
 import USERPROFILEIMG from "../../assets/mypage/UserProfile/UserProfile_profileImg.svg";
-import USERPROFILEPHOTO from "../../assets/mypage/UserProfile/UserProfile_photo.svg";
 
 const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
 
@@ -142,8 +141,10 @@ export default function UserProfile() {
         <span>프로필 수정</span>
       </div>
       <div className="userProfile-profileImg">
-        <img src={USERPROFILEIMG} alt="" />
-        <img src={USERPROFILEPHOTO} alt="" />
+        <img
+          className="userProfile-profileImg-main"
+          src={USERPROFILEIMG}
+        />
       </div>
       <div className="userProfile-login-form">
         <span className="userProfile-login-form-text"> 닉네임 </span>

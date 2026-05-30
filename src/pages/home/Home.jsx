@@ -499,7 +499,6 @@ export default function Home() {
                 <img src={isLastPet ? HOMENEXT200 : HOMENEXT500} alt="다음" />
               </button>
             </>
-            {/* 임시 애완동물 사진 */}
             <img className="home-pet-image" src={currentPet.img} />
             <div className="home-pet-profile-detail">
               <div className="home-pet-detail-top">
