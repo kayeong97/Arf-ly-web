@@ -375,6 +375,7 @@
 	display: block;
 	border-radius: 22px;
 	object-fit: cover;
+	object-position: center;
 	background-color: var(--gray-warm-100);
 
 	margin-bottom: 24px;
@@ -457,24 +458,4 @@
 	width: 24px;
 	height: 24px;
 	display: block;
-}
-
-.hospital_detail_image_list {
-	display: flex;
-	gap: 12px;
-
-	overflow-x: auto;
-	margin-bottom: 24px;
-
-	scrollbar-width: none;
-}
-
-.hospital_detail_image_list::-webkit-scrollbar {
-	display: none;
-}
-
-.hospital_detail_image_list .hospital_detail_image {
-	width: calc(100% - 54px);
-	min-width: calc(100% - 54px);
-	margin-bottom: 0;
 }
