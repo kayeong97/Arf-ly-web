@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
-import Terms from "../auth/Signup/Terms";
 import BottomTabBar from "../../components/BottomTabBar.jsx";
 
 const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
@@ -199,7 +198,6 @@ export default function Home() {
   const [isHomeLoading, setIsHomeLoading] = useState(true);
   const [homeError, setHomeError] = useState("");
   const [isPetSelectOpen, setIsPetSelectOpen] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
   const [currentPetIndex, setCurrentPetIndex] = useState(0);
   const currentPet = pets[currentPetIndex];
   const [selectedRecordPetIndex, setSelectedRecordPetIndex] = useState(null);
@@ -359,77 +357,6 @@ export default function Home() {
 
     fetchHomeData();
   }, []);
-
-  // 이용약관 동의 여부 확인 후 약관 동의
-  useEffect(() => {
-    const fetchTermsAgreement = async () => {
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) return;
-
-      try {
-        const response = await fetch(
-          `${API_BASE_URL}/terms/latest/agreement-status`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            },
-          },
-        );
-
-        if (response.ok) {
-          const isAgreed = await response.json();
-          if (isAgreed === false) {
-            setShowTerms(true);
-          }
-        }
-      } catch (error) {}
-    };
-
-    fetchTermsAgreement();
-  }, []);
-
-  const handleTermsComplete = async (agreements) => {
-    const termsMapping = {
-      service: 1,
-      privacy: 2,
-      ai_ref: 3,
-      location: 4,
-      ai_collect: 5,
-      push: 6,
-      night: 7,
-    };
-
-    const userAgreements = Object.keys(agreements).map((key) => ({
-      termId: termsMapping[key],
-      termsOfServiceAgreed: agreements[key],
-    }));
-
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await fetch(`${API_BASE_URL}/terms/oauth/agree`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userAgreements),
-      });
-
-      if (response.ok) {
-        setShowTerms(false);
-        navigate("/pet/register", {
-          replace: true,
-          state: { entry: "home" },
-        });
-      } else {
-        alert("약관 동의 처리에 실패했습니다.");
-      }
-    } catch (error) {
-      alert("약관 동의 처리 중 오류가 발생했습니다.");
-    }
-  };
 
   if (isHomeLoading) {
     return (
@@ -890,16 +817,6 @@ export default function Home() {
         style={{ display: "none" }}
         onChange={handleImportChange}
       />
-      {showTerms && (
-        <div className="home-terms-overlay">
-          <div className="home-terms-content">
-            <Terms
-              onComplete={handleTermsComplete}
-              onClose={() => setShowTerms(false)}
-            />
-          </div>
-        </div>
-      )}
       <BottomTabBar></BottomTabBar>
     </div>
   );
