@@ -555,10 +555,7 @@ const Signup = () => {
       {step === 3 && (
         <div className="TermsModalOverlay">
           <div className="TermsModalContent">
-            <Terms
-              onComplete={handleTermsComplete}
-              onClose={() => setStep(2)}
-            />
+            <Terms onComplete={handleTermsComplete} />
           </div>
         </div>
       )}

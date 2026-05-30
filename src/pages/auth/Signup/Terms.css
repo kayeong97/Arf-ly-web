@@ -16,20 +16,40 @@
   position: relative;
 }
 
+.terms-bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.terms-bottom-sheet-content {
+  width: 100%;
+  max-width: 600px;
+  height: 85vh;
+  background-color: var(--background);
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 .terms-header {
   padding: 16px 20px;
   display: flex;
   justify-content: flex-start;
 }
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: var(--gray-neutral-400);
-  cursor: pointer;
-  padding: 0;
-}
-
 .detail-header {
   padding: 16px 20px;
   display: flex;

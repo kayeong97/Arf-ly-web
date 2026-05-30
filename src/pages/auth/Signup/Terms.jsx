@@ -8,7 +8,7 @@ import pinkCheck from "../../../assets/terms/pink_check.svg";
 import nextIcon from "../../../assets/terms/next.svg";
 import backbtn from "../../../assets/terms/backbtn.svg";
 
-const Terms = ({ onComplete, onClose }) => {
+const Terms = ({ onComplete }) => {
   const [detailView, setDetailView] = useState(null);
   const [allAgreed, setAllAgreed] = useState(false);
   const [agreements, setAgreements] = useState({
@@ -246,11 +246,7 @@ AI 분석 정확도 및 품질 향상
 
   return (
     <div className="terms-page">
-      <header className="terms-header">
-        <button className="close-btn" onClick={onClose}>
-          ✕
-        </button>
-      </header>
+      <header className="terms-header" />
 
       <div className="terms-main">
         <h1 className="terms-title">아플리 사용을 위해 동의가 필요해요</h1>
