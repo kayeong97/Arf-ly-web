@@ -89,6 +89,20 @@ export default function UserProfile() {
     };
   }, [isNicknameTouched, trimmedNickname]);
 
+  const handleAddressSearch = () => {
+    if (!window.daum?.Postcode) {
+      alert("주소 검색 서비스를 불러오지 못했습니다.");
+      return;
+    }
+
+    new window.daum.Postcode({
+      oncomplete: (data) => {
+        const selectedAddress = data.roadAddress || data.jibunAddress || "";
+        setAddress(selectedAddress);
+      },
+    }).open();
+  };
+
   const handleChange = async () => {
     if (isChangeDisabled) return;
 
@@ -141,10 +155,7 @@ export default function UserProfile() {
         <span>프로필 수정</span>
       </div>
       <div className="userProfile-profileImg">
-        <img
-          className="userProfile-profileImg-main"
-          src={USERPROFILEIMG}
-        />
+        <img className="userProfile-profileImg-main" src={USERPROFILEIMG} />
       </div>
       <div className="userProfile-login-form">
         <span className="userProfile-login-form-text"> 닉네임 </span>
@@ -174,7 +185,8 @@ export default function UserProfile() {
             type="text"
             placeholder="주소"
             value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            readOnly
+            onClick={handleAddressSearch}
           />
         </div>
       </div>
