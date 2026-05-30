@@ -113,11 +113,7 @@ export default function UserProfile() {
       const formData = new FormData();
       const requestBody = {
         nickname: trimmedNickname,
-        password: null,
-        latitude: userInfo.latitude,
-        longitude: userInfo.longitude,
         roadAddress: address,
-        notificationEnabled: Boolean(userInfo.notificationEnabled),
       };
 
       formData.append("request", JSON.stringify(requestBody));
