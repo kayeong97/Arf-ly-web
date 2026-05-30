@@ -8,26 +8,35 @@ import FemaleIcon from "../../assets/pet/register/female.svg";
 import MaleIcon from "../../assets/pet/register/male.svg";
 import PlusIcon from "../../assets/pet/register/plus.svg";
 import SearchIcon from "../../assets/pet/register/search.svg";
-import Profile1 from "../../assets/pet/register/profile1.svg";
-import Profile2 from "../../assets/pet/register/profile2.svg";
-import Profile3 from "../../assets/pet/register/profile3.svg";
-import Profile4 from "../../assets/pet/register/profile4.svg";
-import Profile5 from "../../assets/pet/register/profile5.svg";
-import Profile6 from "../../assets/pet/register/profile6.svg";
-import Profile7 from "../../assets/pet/register/profile7.svg";
-import Profile8 from "../../assets/pet/register/profile8.svg";
+import Profile1Svg from "../../assets/pet/register/profile1.svg";
+import Profile2Svg from "../../assets/pet/register/profile2.svg";
+import Profile3Svg from "../../assets/pet/register/profile3.svg";
+import Profile4Svg from "../../assets/pet/register/profile4.svg";
+import Profile5Svg from "../../assets/pet/register/profile5.svg";
+import Profile6Svg from "../../assets/pet/register/profile6.svg";
+import Profile7Svg from "../../assets/pet/register/profile7.svg";
+import Profile8Svg from "../../assets/pet/register/profile8.svg";
+import Profile1Png from "../../assets/pet/register/profile1.png";
+import Profile2Png from "../../assets/pet/register/profile2.png";
+import Profile3Png from "../../assets/pet/register/profile3.png";
+import Profile4Png from "../../assets/pet/register/profile4.png";
+import Profile5Png from "../../assets/pet/register/profile5.png";
+import Profile6Png from "../../assets/pet/register/profile6.png";
+import Profile7Png from "../../assets/pet/register/profile7.png";
+import Profile8Png from "../../assets/pet/register/profile8.png";
+import CancleIcon from "../../assets/pet/register/cancel.svg";
 
 const API_BASE_URL = import.meta.env.VITE_SERVER_API_BASE_URL;
 
 const profileImages = [
-  Profile1,
-  Profile2,
-  Profile3,
-  Profile4,
-  Profile5,
-  Profile6,
-  Profile7,
-  Profile8,
+  { preview: Profile1Svg, upload: Profile1Png },
+  { preview: Profile2Svg, upload: Profile2Png },
+  { preview: Profile3Svg, upload: Profile3Png },
+  { preview: Profile4Svg, upload: Profile4Png },
+  { preview: Profile5Svg, upload: Profile5Png },
+  { preview: Profile6Svg, upload: Profile6Png },
+  { preview: Profile7Svg, upload: Profile7Png },
+  { preview: Profile8Svg, upload: Profile8Png },
 ];
 
 const initialForm = {
@@ -97,6 +106,7 @@ const PetRegister = () => {
   const [profileImage, setProfileImage] = useState(
     isEditFlow ? editPet.img || "" : "",
   );
+  const [profileUploadImage, setProfileUploadImage] = useState("");
   const [profileFile, setProfileFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [breedOptions, setBreedOptions] = useState([]);
@@ -157,12 +167,13 @@ const PetRegister = () => {
     if (isEditFlow && profileImage === editPet?.img) return null;
     if (!profileImage) return null;
 
-    const response = await fetch(profileImage);
+    const imageToUpload = profileUploadImage || profileImage;
+    const response = await fetch(imageToUpload);
     const blob = await response.blob();
-    const extension = blob.type.split("/")[1] || "svg";
+    const extension = blob.type.split("/")[1] || "png";
 
     return new File([blob], `pet-profile.${extension}`, {
-      type: blob.type || "image/svg+xml",
+      type: blob.type || "image/png",
     });
   };
 
@@ -179,7 +190,7 @@ const PetRegister = () => {
     );
 
     if (imageFile) {
-      formData.append("image", imageFile);
+      formData.append("file", imageFile);
     }
 
     return formData;
@@ -203,6 +214,7 @@ const PetRegister = () => {
     setAllergies([]);
     setAllergyInput("");
     setProfileImage("");
+    setProfileUploadImage("");
     setProfileFile(null);
     setBreedOptions([]);
     setBreedError("");
@@ -326,6 +338,7 @@ const PetRegister = () => {
     if (!file) return;
 
     setProfileImage(URL.createObjectURL(file));
+    setProfileUploadImage("");
     setProfileFile(file);
     setProfileSheetOpen(false);
   };
@@ -581,9 +594,21 @@ const PetRegister = () => {
                 <button type="button" onClick={() => setAllergySheetOpen(true)}>
                   <img src={PlusIcon} alt="추가" />
                 </button>
-                {allergies.map((allergy) => (
-                  <span key={allergy}>{allergy}</span>
-                ))}
+                {allergies.map((allergy) =>
+                  isEditFlow ? (
+                    <button
+                      className="AllergyPreviewChip"
+                      type="button"
+                      key={allergy}
+                      onClick={() => removeAllergy(allergy)}
+                    >
+                      <span>{allergy}</span>
+                      <img src={CancleIcon} alt="삭제" />
+                    </button>
+                  ) : (
+                    <span key={allergy}>{allergy}</span>
+                  ),
+                )}
               </div>
             </div>
 
@@ -776,14 +801,15 @@ const PetRegister = () => {
               {profileImages.map((image, index) => (
                 <button
                   type="button"
-                  key={image}
+                  key={image.preview}
                   onClick={() => {
-                    setProfileImage(image);
+                    setProfileImage(image.preview);
+                    setProfileUploadImage(image.upload);
                     setProfileFile(null);
                     setProfileSheetOpen(false);
                   }}
                 >
-                  <img src={image} alt={`프로필 ${index + 1}`} />
+                  <img src={image.preview} alt={`프로필 ${index + 1}`} />
                 </button>
               ))}
             </div>

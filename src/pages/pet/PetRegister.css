@@ -324,6 +324,30 @@
   align-items: center;
 }
 
+.AllergyPreview .AllergyPreviewChip {
+  width: auto;
+  min-height: 58px;
+  padding: 0 18px 0 23px;
+  border-radius: 999px;
+  background: var(--gray-warm-200);
+  color: var(--common-black);
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 400;
+  gap: 10px;
+}
+
+.AllergyPreview .AllergyPreviewChip span {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+}
+
+.AllergyPreview .AllergyPreviewChip img {
+  width: 14px;
+  height: 14px;
+}
+
 .BreedSearchSection {
   padding-top: 10px;
 }
