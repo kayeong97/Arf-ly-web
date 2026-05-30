@@ -1,0 +1,26 @@
+name: Vercel Develop Deployment
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  Deploy-to-Vercel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. 코드 가져오기
+        uses: actions/checkout@v3
+
+      - name: 2. Vercel 도구 설치하기
+        run: npm install --global vercel@latest
+
+      - name: 3. Vercel 프로젝트 기본 설정 가져오기
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 4. Vercel 서버에 코드 통째로 넘겨서 직접 빌드시키기
+        run: vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}

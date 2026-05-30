@@ -1,0 +1,449 @@
+.medicineAlarm-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: 100dvh;
+  position: relative;
+  background-color: var(--background);
+  overflow: hidden;
+}
+
+.medicineAlarm-top {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medicineAlarm-back-button {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.medicineAlarm-back-button img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.medicineAlarm-top span {
+  color: var(--common-black);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.medicineAlarm-plus-button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  width: 32px;
+  height: 32px;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.medicineAlarm-plus {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.medicineAlarm-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 10px;
+  padding: 24px 12px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.medicineAlarm-list:has(.medicineAlarm-empty) {
+  padding: 0;
+}
+
+.medicineAlarm-item {
+  width: 100%;
+  min-height: 72px;
+  border-radius: 14px;
+  background-color: var(--common-white);
+  padding: 12px 12px 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.medicineAlarm-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.medicineAlarm-title {
+  color: var(--common-black);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.medicineAlarm-time-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.medicineAlarm-period {
+  margin-bottom: 6px;
+  color: var(--common-black);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.medicineAlarm-time {
+  color: var(--common-black);
+  font-size: 50px;
+  font-weight: 500;
+  line-height: 0.95;
+}
+
+.medicineAlarm-toggle {
+  position: relative;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 28px;
+  border: 0;
+  border-radius: 999px;
+  background-color: var(--gray-warm-200);
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.medicineAlarm-toggle span {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--common-white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s ease;
+}
+
+.medicineAlarm-toggle.active {
+  background-color: var(--primary-500);
+}
+
+.medicineAlarm-toggle.active span {
+  transform: translateX(24px);
+}
+
+
+.medicineAlarm-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.medicineAlarm-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid rgba(255, 255, 255, 0.45);
+  border-top-color: var(--secondary-700);
+  border-radius: 50%;
+  animation: medicineAlarm-spin 0.8s linear infinite;
+}
+
+@keyframes medicineAlarm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.medicineAlarm-empty {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 238px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.medicineAlarm-empty p {
+  margin: 0;
+  color: var(--gray-neutral-300);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.medicineAlarm-empty img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 68vw;
+  height: auto;
+}
+
+.medicineAlarm-wrapper:has(.medicineAlarm-empty) {
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.medicineAlarm-modal {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  z-index: 1000;
+  background-color: var(--common-white);
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.medicineAlarm-modal-top {
+  position: relative;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medicineAlarm-modal-top span {
+  color: var(--common-black);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.medicineAlarm-modal-close,
+.medicineAlarm-modal-done {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.medicineAlarm-modal-close {
+  left: 20px;
+  width: 28px;
+  height: 28px;
+  color: var(--common-black);
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.medicineAlarm-modal-done {
+  right: 22px;
+  min-width: 44px;
+  height: 28px;
+  border-radius: 999px;
+  color: var(--gray-warm-300);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 0 10px;
+}
+
+.medicineAlarm-modal-done.active {
+  background-color: var(--primary-400);
+  color: var(--common-white);
+}
+
+.medicineAlarm-modal-done:disabled {
+  cursor: wait;
+  opacity: 1;
+}
+
+.medicineAlarm-modal-content {
+  flex: 1;
+  padding: 36px 18px 28px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.medicineAlarm-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.medicineAlarm-modal-field > span {
+  color: var(--common-black);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.medicineAlarm-modal-field input,
+.medicineAlarm-modal-field textarea {
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  background-color: var(--background);
+  color: var(--common-black);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.medicineAlarm-modal-field input {
+  height: 48px;
+  padding: 0 16px;
+}
+
+.medicineAlarm-modal-field input::placeholder {
+  color: var(--gray-warm-500);
+  font-size: 18px;
+}
+
+.medicineAlarm-modal-field textarea::placeholder {
+    color: var(--gray-warm-500);
+    font-size: 14px;
+}
+
+.medicineAlarm-time-picker {
+  position: relative;
+  height: 196px;
+  margin: 22px 0 34px;
+  display: grid;
+  grid-template-columns: 1fr 34px 1fr 34px;
+  column-gap: 4px;
+  align-items: center;
+}
+
+.medicineAlarm-time-highlight {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: 50%;
+  height: 34px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background-color: var(--primary-50);
+  pointer-events: none;
+}
+
+.medicineAlarm-time-column {
+  position: relative;
+  z-index: 1;
+  height: 180px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 76px 0;
+  box-sizing: border-box;
+}
+
+.medicineAlarm-time-column::-webkit-scrollbar {
+  display: none;
+}
+
+.medicineAlarm-time-column button {
+  width: 100%;
+  height: 28px;
+  flex: 0 0 28px;
+  border: 0;
+  background: transparent;
+  color: var(--gray-neutral-300);
+  font-size: 16px;
+  font-weight: 500;
+  scroll-snap-align: center;
+  cursor: pointer;
+}
+
+.medicineAlarm-time-column button.near-selected {
+  color: var(--common-black);
+}
+
+.medicineAlarm-time-column button.selected {
+  color: var(--common-black);
+  font-weight: 700;
+}
+
+.medicineAlarm-time-unit {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  color: var(--common-black);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.medicineAlarm-modal-field.memo textarea {
+  height: 102px;
+  padding: 16px;
+  resize: none;
+}
+
+.medicineAlarm-delete-button {
+  align-self: center;
+  margin-top: 40px;
+  border: 0;
+  border-radius: 999px;
+  background-color: var(--background);
+  color: var(--primary-500);
+  font-size: 20px;
+  font-weight: 400;
+  padding: 5px 18px;
+  cursor: pointer;
+}
+
+.medicineAlarm-delete-button:disabled {
+  cursor: wait;
+  opacity: 1;
+}
+
+@media (max-width: 430px) {
+    .medicineAlarm-delete-button {
+        font-size: 15px;
+    }
+}
