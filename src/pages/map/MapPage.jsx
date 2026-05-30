@@ -69,7 +69,7 @@ function MapPage() {
 
 			const data = await getMapList();
 
-			const hospitalList = Array.isArray(data) ? data : data?.hospitals;
+			const hospitalList = Array.isArray(data) ? data : data?.hospitalList || data?.hospitals || [];
 
 			if (!Array.isArray(hospitalList)) {
 				setHospitals([]);
@@ -443,16 +443,11 @@ function HospitalImageList({ imageUrl, alt }) {
 	}
 
 	return (
-		<div className="hospital_detail_image_list">
-			{photoNames.map((photoName) => (
-				<HospitalImage
-					key={photoName}
-					photoName={photoName}
-					alt={alt}
-					className="hospital_detail_image"
-				/>
-			))}
-		</div>
+		<HospitalImage
+			photoName={photoNames[0]}
+			alt={alt}
+			className="hospital_detail_image"
+		/>
 	);
 }
 
