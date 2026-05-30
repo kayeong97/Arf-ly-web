@@ -21,6 +21,8 @@ import MyPage from "./pages/mypage/MyPage";
 import IoTRegister from "./pages/mypage/IotRegisteration/IoTRegister.jsx";
 import PetDetail from "./pages/mypage/PetDetail.jsx";
 import UserProfile from "./pages/mypage/UserProfile.jsx";
+import MedicineAlarm from "./pages/mypage/MedicineAlarm.jsx";
+import AlarmNotification from "./pages/mypage/AlarmNotification.jsx";
 
 import MapPage from "./pages/map/MapPage";
 import PetRegister from "./pages/pet/PetRegister";
@@ -54,6 +56,8 @@ function App() {
       <Route path="/iotregister" element={<IoTRegister />} />
       <Route path="/petdetail" element={<PetDetail />} />
       <Route path="/userprofile" element={<UserProfile />} />
+      <Route path="/medicinealarm" element={<MedicineAlarm />} />
+      <Route path="/alarmnotification" element={<AlarmNotification />} />
       {/* 지도 관련 */}
       <Route path="/map" element={<MapPage />} />
     </Routes>
