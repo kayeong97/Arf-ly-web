@@ -443,16 +443,11 @@ function HospitalImageList({ imageUrl, alt }) {
 	}
 
 	return (
-		<div className="hospital_detail_image_list">
-			{photoNames.map((photoName) => (
-				<HospitalImage
-					key={photoName}
-					photoName={photoName}
-					alt={alt}
-					className="hospital_detail_image"
-				/>
-			))}
-		</div>
+		<HospitalImage
+			photoName={photoNames[0]}
+			alt={alt}
+			className="hospital_detail_image"
+		/>
 	);
 }
 
