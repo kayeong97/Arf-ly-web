@@ -381,6 +381,12 @@
   white-space: nowrap;
 }
 
+.walkedResult-defined-card-pet img:first-child{
+  width: 45px;
+  height: 45px;
+  border-radius: 999px;
+}
+
 .walkedResult-defined-empty {
   position: relative;
   width: 100%;

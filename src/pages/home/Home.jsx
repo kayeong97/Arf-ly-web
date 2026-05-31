@@ -471,10 +471,7 @@ export default function Home() {
                   {currentPet.weekWalked.map((walked, index) => {
                     const barHeight = `${Math.max((walked / maxWeekWalked) * 100, 8)}%`;
                     return (
-                      <div
-                        className="home-chart-bar-wrap"
-                        key={`bar-${index}`}
-                      >
+                      <div className="home-chart-bar-wrap" key={`bar-${index}`}>
                         <div
                           className="home-chart-bar"
                           style={{ height: barHeight }}
@@ -530,7 +527,9 @@ export default function Home() {
               </>
             ) : (
               <p className="home-pet-walked-empty">
-                {"기록이 없어요!\n기기를 사용해서 반려동물의\n운동량을 체크해봐요!"}
+                {
+                  "기록이 없어요!\n기기를 사용해서 반려동물의\n운동량을 체크해봐요!"
+                }
               </p>
             )}
           </div>
@@ -737,7 +736,13 @@ export default function Home() {
 
                       {pet.allergic?.length > 3 && <span>...</span>}
                     </div>
-                    <span className="home-diagnosis-more-info">
+                    <span
+                      className="home-diagnosis-more-info"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate("/petdetail", { state: { pet } });
+                      }}
+                    >
                       자세히 보기 &gt;{" "}
                     </span>
                   </button>
@@ -750,8 +755,7 @@ export default function Home() {
                 onClick={() => {
                   setSelectedDiagnosisPet(null);
                   setIsDiagnosisPetSheetOpen(false);
-                  // 반려동물 등록 페이지로 이동
-                  // navigate("mypage");
+                  navigate("/pet/register", { state: { entry: "mypage-add" } })
                 }}
               >
                 <span>+</span>
