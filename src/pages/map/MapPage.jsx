@@ -34,6 +34,29 @@ const getPhotoNames = (imageUrl) => {
 	return [];
 };
 
+const getTodayOperatingTime = (operating) => {
+	if (!Array.isArray(operating) || operating.length === 0) {
+		return "운영시간 정보 없음";
+	}
+
+	const today = new Date().getDay();
+	const dayIndex = today === 0 ? 6 : today - 1;
+
+	const todayOperatingTime = operating[dayIndex];
+
+	if (!todayOperatingTime) {
+		return "운영시간 정보 없음";
+	}
+
+	const colonIndex = todayOperatingTime.indexOf(":");
+
+	if (colonIndex !== -1) {
+		return todayOperatingTime.slice(colonIndex + 1).trim();
+	}
+
+	return todayOperatingTime;
+};
+
 function MapPage() {
 	const [hospitals, setHospitals] = useState([]);
 	const [selectedHospital, setSelectedHospital] = useState(null);
@@ -364,6 +387,8 @@ function HospitalList({ hospitals, isLoading, onHospitalClick }) {
 }
 
 function HospitalDetail({ hospital, onClose }) {
+	const todayOperatingTime = getTodayOperatingTime(hospital.operating);
+
 	return (
 		<div className="hospital_detail_area">
 			<div className="hospital_detail_title_row">
@@ -393,6 +418,7 @@ function HospitalDetail({ hospital, onClose }) {
 				imageUrl={hospital.imageUrl}
 				alt={hospital.hospitalName}
 			/>
+
 			<div className="hospital_detail_info">
 				<div className="hospital_detail_row">
 					<img
@@ -402,6 +428,7 @@ function HospitalDetail({ hospital, onClose }) {
 					/>
 					<p>{hospital.roadAddress}</p>
 				</div>
+
 				<div className="hospital_detail_row">
 					<img
 						src={timeIcon}
@@ -410,9 +437,10 @@ function HospitalDetail({ hospital, onClose }) {
 					/>
 					<p>
 						{hospital.opened ? "진료 중" : "진료 종료"} |{" "}
-						{hospital.operationTime || "운영시간 정보 없음"}
+						{todayOperatingTime}
 					</p>
 				</div>
+
 				<div className="hospital_detail_row">
 					<img
 						src={phoneIcon}
@@ -505,7 +533,6 @@ function HospitalImage({ photoName, alt, className }) {
 	}, [photoName]);
 
 	if (imageSrc) {
-
 		return (
 			<img
 				src={imageSrc}
@@ -542,7 +569,6 @@ function HospitalImage({ photoName, alt, className }) {
 			aria-label="병원 이미지 불러오는 중"
 		/>
 	);
-
 }
 
 export default MapPage;
