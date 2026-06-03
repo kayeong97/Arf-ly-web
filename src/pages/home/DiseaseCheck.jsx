@@ -291,8 +291,8 @@ export default function DiseaseCheck() {
           </button>
           <span>AI 스마트 진단 리포트</span>
         </div>
-        <div className="diseaseCheck-state">
-          진단 리포트를 불러오는 중입니다.
+        <div className="diseaseCheck-loading-overlay">
+          <div className="diseaseCheck-loading-spinner" />
         </div>
       </div>
     );
@@ -401,7 +401,11 @@ export default function DiseaseCheck() {
           ))}
         </section>
 
-        <img className="diseaseCheck-map" src={DISEASECHECKMAP} />
+        <img
+          className="diseaseCheck-map"
+          src={DISEASECHECKMAP}
+          onClick={() => navigate("/map")}
+        />
 
         <section>
           <div className="diseaseCheck-section-title">
